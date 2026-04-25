@@ -22,14 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    tokenInput.addEventListener('change', () => {
-        localStorage.setItem('gh_token', tokenInput.value);
-        if (document.getElementById('manage-articles-list')) {
-            loadAdminArticles();
-        } else {
-            checkForEditId();
-        }
+    tokenInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') saveToken();
     });
+});
+
+window.saveToken = function() {
+    const token = document.getElementById('github-token').value.trim();
+    if (!token) {
+        alert("Veuillez saisir un token.");
+        return;
+    }
+    localStorage.setItem('gh_token', token);
+    showStatus("Token enregistré localement ! Chargement des données...", "success");
+    
+    if (document.getElementById('manage-articles-list')) {
+        loadAdminArticles();
+    } else {
+        checkForEditId();
+    }
+};
 
     // Gestion de l'image de couverture (seulement sur edit.html)
     const imgUpload = document.getElementById('image-upload');
