@@ -39,7 +39,7 @@
         </div>
     </header>
     <main class="article-full">
-        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">Environnement • 2023-10-19</div>
+        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">Data • 19/10/2023</div>
         <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">Houston, we've got a data problem...</h1>
         <img src="../images/houston-weve-got-a-data-problem-1777125582314.webp" class="article-hero-img">
         <div class="article-content">
@@ -83,7 +83,7 @@ conséquences importantes !</i></strong></p><p>Le documentaire pour en savoir pl
                     if (cached) w.innerText = cached;
                     if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
                         try {
-                            const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
+                            const r = await fetch('https://api.github.com/repos/Frugman/capnum');
                             const d = await r.json();
                             if (d.size) {
                                 w.innerText = d.size;
