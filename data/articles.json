@@ -1,6 +1,19 @@
 {
   "articles": [
     {
+      "id": "test-17",
+      "title": "Test 17",
+      "date": "2026-04-25",
+      "category": "Solarpunk",
+      "tags": [
+        "frugalité"
+      ],
+      "image": "images/test-17-1777116448550.webp",
+      "content": "test",
+      "views": 0,
+      "draft": false
+    },
+    {
       "id": "test-15",
       "title": "Test 15",
       "date": "2026-04-25",
