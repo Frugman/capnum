@@ -103,6 +103,7 @@ async function publishArticle() {
     const tags = document.getElementById('tags').value.split(',').map(t => t.trim());
     const content = document.getElementById('editor').innerHTML;
     const status = document.getElementById('status');
+    const imagePreview = document.getElementById('image-preview');
 
     if (!token || !title || !content) {
         showStatus("Erreur : Token, titre et contenu obligatoires.", "error");
@@ -110,46 +111,65 @@ async function publishArticle() {
     }
 
     localStorage.setItem('gh_token', token);
-    showStatus("Publication en cours...", "");
+    showStatus("Publication en cours (JSON + Image + HTML)...", "");
 
-    const id = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
+    const id = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ /g, '-').replace(/[^\w-]/g, '');
     const date = new Date().toISOString().split('T')[0];
+    const imagePath = `images/${id}.webp`;
 
     try {
-        // 1. Récupérer articles.json
-        const articlesPath = 'data/articles.json';
-        const { sha, data } = await getGitHubFile(articlesPath, token);
+        // 1. Envoyer l'image de couverture si elle existe
+        if (imagePreview.dataset.blob) {
+            const base64Image = imagePreview.dataset.blob.split(',')[1];
+            await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${imagePath}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: `Cover image: ${id}`, content: base64Image })
+            });
+        }
+
+        // 2. Générer la page HTML de l'article
+        const articleHtml = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header><a href="../index.html">← Retour à l'accueil</a></header>
+    <main class="article-full">
+        <div class="card-meta">${category} • ${date}</div>
+        <h1>${title}</h1>
+        <img src="../${imagePath}" class="article-hero-img">
+        <div class="article-content">${content}</div>
+    </main>
+    <footer><p>Blog Capnum - 2026</p></footer>
+</body>
+</html>`;
+
+        await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/articles/${id}.html`, {
+            method: 'PUT',
+            headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: `Article HTML: ${id}`, content: btoa(unescape(encodeURIComponent(articleHtml))) })
+        });
+
+        // 3. Mettre à jour articles.json
+        const { sha, data } = await getGitHubFile('data/articles.json', token);
+        const newArticle = { id, title, date, category, tags, image: imagePath, content, views: 0, draft: false };
         
-        const newArticle = {
-            id,
-            title,
-            date,
-            category,
-            tags,
-            image: `images/${id}.webp`,
-            content,
-            views: 0,
-            draft: false
-        };
+        // Eviter les doublons
+        const index = data.articles.findIndex(a => a.id === id);
+        if (index > -1) data.articles[index] = newArticle;
+        else data.articles.unshift(newArticle);
 
-        data.articles.unshift(newArticle);
-        data.site_metadata.last_updated = date;
+        await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Update articles.json: ${title}`);
 
-        // 2. Préparer les fichiers à envoyer
-        const filesToCommit = [
-            { path: articlesPath, content: JSON.stringify(data, null, 2), sha: sha }
-        ];
-
-        // 3. Envoyer sur GitHub (Mise à jour articles.json)
-        await updateGitHubFile(articlesPath, JSON.stringify(data, null, 2), sha, token, `Ajout article: ${title}`);
-
-        // 4. (Optionnel mais recommandé) On génère la page HTML de l'article ici si on veut du 100% statique
-        // Pour l'instant, on se concentre sur le JSON.
-
-        showStatus("🚀 Article publié avec succès !", "success");
+        showStatus("🚀 Article publié et page générée !", "success");
     } catch (error) {
         console.error(error);
-        showStatus("Erreur GitHub : " + error.message, "error");
+        showStatus("Erreur : " + error.message, "error");
     }
 }
 
