@@ -12,25 +12,59 @@ document.addEventListener('DOMContentLoaded', () => {
     // Charger le token s'il existe
     const savedToken = localStorage.getItem('gh_token');
     const tokenInput = document.getElementById('github-token');
+    
     if (savedToken) {
         tokenInput.value = savedToken;
-        loadAdminArticles();
+        if (document.getElementById('manage-articles-list')) {
+            loadAdminArticles();
+        } else {
+            checkForEditId();
+        }
     }
     
     tokenInput.addEventListener('change', () => {
         localStorage.setItem('gh_token', tokenInput.value);
-        loadAdminArticles();
+        if (document.getElementById('manage-articles-list')) {
+            loadAdminArticles();
+        } else {
+            checkForEditId();
+        }
     });
 
-    // Gestion de l'image de couverture
-    document.getElementById('image-upload').addEventListener('change', handleImageUpload);
+    // Gestion de l'image de couverture (seulement sur edit.html)
+    const imgUpload = document.getElementById('image-upload');
+    if (imgUpload) imgUpload.addEventListener('change', handleImageUpload);
     
-    // Gestion des images dans le contenu
-    document.getElementById('content-image-upload').addEventListener('change', handleContentImageUpload);
+    // Gestion des images dans le contenu (seulement sur edit.html)
+    const contentImgUpload = document.getElementById('content-image-upload');
+    if (contentImgUpload) contentImgUpload.addEventListener('change', handleContentImageUpload);
 
-    // Publication
-    document.getElementById('btn-publish').addEventListener('click', publishArticle);
+    // Publication (seulement sur edit.html)
+    const btnPublish = document.getElementById('btn-publish');
+    if (btnPublish) btnPublish.addEventListener('click', publishArticle);
 });
+
+async function checkForEditId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('id');
+    const token = document.getElementById('github-token').value;
+    if (editId && token) {
+        try {
+            const { data } = await getGitHubFile('data/articles.json', token);
+            const article = data.articles.find(a => a.id === editId);
+            if (article) {
+                document.getElementById('title').value = article.title;
+                document.getElementById('category').value = article.category;
+                document.getElementById('tags').value = article.tags.join(', ');
+                document.getElementById('editor').innerHTML = article.content;
+                showStatus("Article chargé. L'image n'est pas pré-chargée.", "success");
+            }
+        } catch (e) {
+            showStatus("Impossible de charger l'article à éditer.", "error");
+        }
+    }
+}
+
 
 let coverImageBase64 = null;
 
@@ -297,7 +331,7 @@ async function loadAdminArticles() {
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid var(--border-color);">
                 <span>${a.title} <span style="opacity: 0.5;">(${a.date})</span></span>
                 <div>
-                    <button onclick="editArticle('${a.id}')" style="background:none; border:none; color:var(--accent-color); font-family: inherit; font-weight: bold; cursor:pointer;">Éditer</button>
+                    <button onclick="window.location.href='edit.html?id=${a.id}'" style="background:none; border:none; color:var(--accent-color); font-family: inherit; font-weight: bold; cursor:pointer;">Éditer</button>
                     <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-family: inherit; font-weight: bold; cursor:pointer; margin-left: 10px;">Supprimer</button>
                 </div>
             </div>
@@ -306,17 +340,6 @@ async function loadAdminArticles() {
         listDiv.innerHTML = '<p style="color:#dc3545;">Erreur chargement. Ton token est-il valide ?</p>';
     }
 }
-
-window.editArticle = function(id) {
-    const article = window.allAdminArticles.find(a => a.id === id);
-    if (!article) return;
-    document.getElementById('title').value = article.title;
-    document.getElementById('category').value = article.category;
-    document.getElementById('tags').value = article.tags.join(', ');
-    document.getElementById('editor').innerHTML = article.content;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    showStatus("Article chargé. (Note : L'image de couverture n'est pas rechargée, ajoute-la à nouveau si tu la modifies)", "success");
-};
 
 window.deleteArticle = async function(id) {
     if (!confirm("Supprimer cet article définitivement ?")) return;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Édition d'article | CAPNUM</title>
+    <title>Tableau de bord | CAPNUM</title>
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .admin-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); }
@@ -56,62 +56,18 @@
 
     <div class="admin-container">
         <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h1 style="margin-top: 0;">✍️ Rédiger ou Modifier</h1>
-            <a href="dashboard.html" class="btn-preview" style="text-decoration: none; padding: 0.5rem 1rem;">🛠️ Tableau de bord</a>
+            <h1 style="margin-top: 0;">🛠️ Tableau de bord</h1>
+            <a href="edit.html" class="btn-preview" style="text-decoration: none; padding: 0.5rem 1rem;">✍️ Rédiger un article</a>
         </header>
-        
-        <div class="form-group">
-            <label for="title">Titre de l'article</label>
-            <input type="text" id="title" placeholder="Ex: Pourquoi le low-tech va sauver le monde">
-        </div>
-
-        <div class="form-group">
-            <label for="category">Catégorie</label>
-            <select id="category">
-                <option value="Environnement">🌱 Environnement</option>
-                <option value="Data">📊 Data</option>
-                <option value="IA">🤖 IA</option>
-                <option value="Low Tech">⚙️ Low Tech</option>
-                <option value="Solarpunk">☀️ Solarpunk</option>
-                <option value="Dégafamisation">🌐 Dégafamisation</option>
-                <option value="RANDOM">🎲 RANDOM (Secret)</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="tags">Tags (séparés par des virgules)</label>
-            <input type="text" id="tags" placeholder="frugalité, écologie, future">
-        </div>
-
-        <div class="form-group">
-            <label>Contenu</label>
-            <div class="toolbar">
-                <button onclick="execCmd('bold')"><b>B</b></button>
-                <button onclick="execCmd('italic')"><i>I</i></button>
-                <button onclick="execCmd('createLink', prompt('URL du lien :'))">🔗</button>
-                <button onclick="execCmd('insertUnorderedList')">• Liste</button>
-                <button onclick="execCmd('formatBlock', 'h2')">H2</button>
-                <button onclick="execCmd('formatBlock', 'h3')">H3</button>
-                <button onclick="document.getElementById('content-image-upload').click()">📷 Image</button>
-                <input type="file" id="content-image-upload" style="display:none" accept="image/*">
-            </div>
-            <div id="editor" contenteditable="true"></div>
-        </div>
-
-        <div class="form-group">
-            <label for="image-upload">Image de couverture</label>
-            <input type="file" id="image-upload" accept="image/*">
-            <img id="image-preview" alt="Aperçu">
-        </div>
-
-        <div class="actions">
-            <button class="btn-publier" id="btn-publish">🚀 PUBLIER SUR GITHUB</button>
-        </div>
 
         <div id="status" class="status-msg"></div>
+        
+        <h2>Articles publiés</h2>
+        <div id="manage-articles-list" style="margin-bottom: 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+            <p style="opacity: 0.7;">Saisissez votre token en bas pour charger vos articles.</p>
+        </div>
 
-        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color);">
-        <div class="form-group">
+        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color);">        <div class="form-group">
             <label for="github-token">Ton Token GitHub (Secret)</label>
             <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx">
             <p style="font-size: 0.8rem; opacity: 0.7;">Ce token est stocké uniquement dans ton navigateur.</p>
