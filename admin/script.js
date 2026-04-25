@@ -41,7 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Publication (seulement sur edit.html)
     const btnPublish = document.getElementById('btn-publish');
-    if (btnPublish) btnPublish.addEventListener('click', publishArticle);
+    if (btnPublish) {
+        btnPublish.addEventListener('click', publishArticle);
+        // Date du jour par défaut
+        if (!new URLSearchParams(window.location.search).get('id')) {
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        }
+    }
 });
 
 async function checkForEditId() {
@@ -55,6 +61,7 @@ async function checkForEditId() {
             if (article) {
                 window.currentEditingArticle = article; // Mémoriser l'article en cours
                 document.getElementById('title').value = article.title;
+                document.getElementById('date').value = article.date; // Charger la date
                 document.getElementById('category').value = article.category;
                 document.getElementById('tags').value = article.tags.join(', ');
                 document.getElementById('editor').innerHTML = article.content;
@@ -151,21 +158,30 @@ async function handleContentImageUpload(e) {
 async function publishArticle() {
     const token = document.getElementById('github-token').value.trim();
     const title = document.getElementById('title').value;
+    const date = document.getElementById('date').value; // Récupérer la date du champ
     const category = document.getElementById('category').value;
     const tags = document.getElementById('tags').value.split(',').map(t => t.trim());
-    const content = document.getElementById('editor').innerHTML;
+    let content = document.getElementById('editor').innerHTML;
     const status = document.getElementById('status');
 
-    if (!token || !title || !content) {
-        showStatus("Erreur : Token, titre et contenu obligatoires.", "error");
+    if (!token || !title || !content || !date) {
+        showStatus("Erreur : Token, titre, date et contenu obligatoires.", "error");
         return;
     }
 
+    // --- AUTOMATISATION DES LIENS (target="_blank") ---
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = content;
+    tempDiv.querySelectorAll('a').forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+    });
+    content = tempDiv.innerHTML;
+
     localStorage.setItem('gh_token', token);
-    showStatus("Publication en cours (JSON + Image + HTML)...", "");
+    showStatus("Publication en cours...", "");
 
     const id = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ /g, '-').replace(/[^\w-]/g, '');
-    const date = new Date().toISOString().split('T')[0];
     const timestamp = Date.now();
     let finalImagePath = null;
 
