@@ -54,6 +54,10 @@
     --menu-link-color: #000000;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Outfit', sans-serif;
     font-size: 1rem; /* Base accessible 16px */
@@ -66,6 +70,7 @@ body {
 }
 
 header, main, footer {
+    width: 100%;
     max-width: 900px;
     margin: auto;
     padding: 2rem;
