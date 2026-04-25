@@ -3,8 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capnum - Blog Low-Tech</title>
+    <title>Articles | CAPNUM</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .cat-header {
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cat-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .cat-header a {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        @media (max-width: 700px) {
+            .cat-grid { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 701px) and (max-width: 1000px) {
+            .cat-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -40,34 +68,14 @@
     </header>
 
     <main>
-        <section class="profile-section">
-            <img src="images/hortense-chevalier-2025.jpeg" alt="Profil de l'auteur">
-            <p>
-                Je m'appelle Hortense, j'ai 43 ans et je vis en Vendée. Curieuse de nature, passionnée d'écologie, je travaille dans l'innovation (data, IA, etc.). Anti-cornucopienne, j'adhère au mouvement Solarpunk&nbsp;: cette utopie concrète qui imagine des sociétés créatives, sobres et résilientes, sans renoncer à la technologie mais en remettant cet outil à sa juste place (feat Ivan Illich). Je partage ici mes expériences, sans filtre — et j'écris comme je parle.
-            </p>
-        </section>
+        <div class="cat-header">
+            <h1 id="cat-title">Tous les articles</h1>
+            <a href="index.html">← Retour à l'accueil</a>
+        </div>
 
-        <section id="filters">
-            <button class="filter-btn active" data-filter="all">Tous</button>
-            <button class="filter-btn" data-filter="Environnement">🌱 Environnement</button>
-            <button class="filter-btn" data-filter="Data">📊 Data</button>
-            <button class="filter-btn" data-filter="IA">🤖 IA</button>
-            <button class="filter-btn" data-filter="Low Tech">⚙️ Low Tech</button>
-            <button class="filter-btn" data-filter="Solarpunk">☀️ Solarpunk</button>
-            <button class="filter-btn" data-filter="Dégafamisation">🌐 Dégafamisation</button>
-        </section>
-
-        <section id="articles-grid">
-            <!-- Les articles seront injectés par le JS -->
-             <p>Chargement des articles...</p>
-        </section>
-
-        <aside id="tag-cloud">
-            <h3>Nuage de tags</h3>
-            <div class="tags-container">
-                <!-- Tags injectés par le JS -->
-            </div>
-        </aside>
+        <div id="cat-grid" class="cat-grid">
+            <p>Chargement...</p>
+        </div>
     </main>
 
     <footer>
@@ -92,13 +100,66 @@
                 })();
             </script>
         </div>
-        <nav class="footer-links">
+        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
             <a href="admin/dashboard.html">Admin</a> • 
             <a href="mentions-legales.html">Mentions légales</a> • 
             <a href="random.html" id="link-random">RANDOM</a>
         </nav>
     </footer>
 
-    <script src="js/app.js"></script>
+    <script>
+        const ICONS = {
+            'Environnement': '🌱', 'Data': '📊', 'IA': '🤖',
+            'Low Tech': '⚙️', 'Solarpunk': '☀️', 'Dégafamisation': '🌐'
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get('cat');
+            const titleEl = document.getElementById('cat-title');
+            const grid = document.getElementById('cat-grid');
+
+            if (cat) {
+                const icon = ICONS[cat] || '';
+                titleEl.textContent = `${icon} ${cat}`;
+                document.title = `${cat} | CAPNUM`;
+                // Highlighter le lien actif dans le nav
+                document.querySelectorAll('.main-nav a').forEach(a => {
+                    if (a.href.includes(`cat=${encodeURIComponent(cat)}`)) {
+                        a.style.opacity = '1';
+                        a.style.fontWeight = 'bold';
+                    }
+                });
+            } else {
+                titleEl.textContent = 'Tous les articles';
+                document.title = 'Tous les articles | CAPNUM';
+            }
+
+            try {
+                const res = await fetch('data/articles.json');
+                const data = await res.json();
+                let articles = data.articles.filter(a => !a.draft && a.category !== 'RANDOM');
+                if (cat) articles = articles.filter(a => a.category === cat);
+
+                if (articles.length === 0) {
+                    grid.innerHTML = '<p>Aucun article dans cette catégorie pour le moment.</p>';
+                    return;
+                }
+
+                grid.innerHTML = articles.map(a => `
+                    <a href="articles/${a.id}.html" class="article-card">
+                        <img src="${a.image}" alt="${a.title}" class="card-image">
+                        <div class="card-content">
+                            <div class="card-meta">${a.category} • ${a.date}</div>
+                            <h3 class="card-title">${a.title}</h3>
+                            <p>${a.content.substring(0, 100).replace(/<[^>]*>/g, '')}...</p>
+                        </div>
+                    </a>
+                `).join('');
+            } catch(e) {
+                grid.innerHTML = '<p>Erreur lors du chargement des articles.</p>';
+            }
+        });
+    </script>
 </body>
 </html>

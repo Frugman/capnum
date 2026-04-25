@@ -67,8 +67,7 @@ function renderGrid(articles, filter = 'all') {
         ? articles.filter(a => !a.draft && a.category !== 'RANDOM')
         : articles.filter(a => !a.draft && a.category === filter);
 
-    const limit = 5;
-    const toShow = filtered.slice(0, limit);
+    const toShow = filtered.slice(0, 5);
 
     toShow.forEach(article => {
         const card = document.createElement('a');
@@ -85,13 +84,16 @@ function renderGrid(articles, filter = 'all') {
         grid.appendChild(card);
     });
 
-    if (filtered.length > limit) {
-        const more = document.createElement('a');
-        more.className = 'article-card view-all-card';
-        more.href = `categories/${filter.toLowerCase()}.html`;
-        more.innerHTML = `<span class="view-all-link">VOIR TOUT →</span>`;
-        grid.appendChild(more);
-    }
+    // Toujours afficher le bouton "+" en 6e position
+    const catParam = filter === 'all' ? 'all' : encodeURIComponent(filter);
+    const more = document.createElement('a');
+    more.className = 'article-card view-all-card';
+    more.href = filter === 'all' ? 'categorie.html' : `categorie.html?cat=${catParam}`;
+    more.innerHTML = `
+        <span class="view-all-plus">+</span>
+        <span class="view-all-link">Voir les autres articles</span>
+    `;
+    grid.appendChild(more);
 }
 
 function renderTags(articles) {
