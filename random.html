@@ -3,123 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>??? | CAPNUM</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>TO8 - Menu Principal | CAPNUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
-        /* Design "Étrange" pour la page secrète */
+        :root {
+            --to8-bg: #B2EBF2;
+            --to8-dark: #008080;
+            --to8-accent: #E0E0A0;
+            --to8-text: #000000;
+        }
+
         body {
-            background-color: #000 !important;
-            color: #0f0 !important;
-            font-family: 'JetBrains Mono', monospace !important;
-            overflow-x: hidden;
-        }
-        
-        /* Cacher le header normal et le footer */
-        .site-header, footer {
-            display: none !important;
-        }
-
-        .glitch-container {
-            max-width: 800px;
-            margin: 5rem auto;
-            padding: 2rem;
-            border: 1px dashed #0f0;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-        }
-
-        h1.glitch {
-            font-size: 3rem;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0 #f00, -2px -2px 0 #00f;
-            animation: glitch-anim 2s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { transform: skewX(0deg); }
-            20% { transform: skewX(-5deg); }
-            40% { transform: skewX(5deg); }
-            60% { transform: skewX(-2deg); }
-            80% { transform: skewX(2deg); }
-            100% { transform: skewX(0deg); }
-        }
-
-        .random-grid {
+            background-color: var(--to8-bg);
+            color: var(--to8-text);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            margin-top: 3rem;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-transform: uppercase;
         }
 
-        .random-card {
-            background: #111;
-            border: 1px solid #0f0;
-            padding: 1.5rem;
-            text-decoration: none;
-            color: #0f0;
-            transition: all 0.2s;
+        /* Barre supérieure */
+        .to8-header {
+            background-color: var(--to8-dark);
+            width: 100%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
+            margin-top: 2rem;
+            max-width: 900px;
         }
 
-        .random-card:hover {
-            background: #0f0;
+        .to8-logo {
+            font-size: 8rem;
+            color: var(--to8-bg);
+            letter-spacing: -5px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .thomson-logo {
+            position: absolute;
+            right: 20px;
+            bottom: 10px;
+            font-size: 1.5rem;
             color: #000;
-            transform: scale(1.02);
-            box-shadow: 0 0 15px #0f0;
+            font-weight: bold;
         }
 
-        .random-card h3 {
-            margin: 0 0 0.5rem 0;
-            font-family: inherit;
-        }
-
-        .back-link {
-            display: inline-block;
+        /* Infos système */
+        .system-info {
+            width: 900px;
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--to8-dark);
             margin-bottom: 2rem;
-            color: #fff;
+        }
+
+        /* Menu */
+        .menu-container {
+            width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             text-decoration: none;
-            border-bottom: 1px solid #fff;
+            color: var(--to8-text);
+            font-size: 2rem;
+            transition: all 0.1s;
+            cursor: pointer;
         }
-        .back-link:hover {
-            color: #0f0;
-            border-bottom-color: #0f0;
+
+        .menu-item:hover {
+            color: var(--to8-dark);
+            transform: translateX(10px);
         }
+
+        .block-icon {
+            width: 80px;
+            height: 40px;
+            background-color: var(--to8-accent);
+            border: 2px solid var(--to8-dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .block-icon::after {
+            content: '';
+            flex: 1;
+            border-top: 2px solid var(--to8-dark);
+        }
+
+        /* Liste secrète */
+        #random-list {
+            margin-top: 2rem;
+            font-size: 1.5rem;
+            display: none;
+        }
+
+        #random-list a {
+            color: var(--to8-dark);
+            display: block;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+        }
+
+        #random-list a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
-    <div class="glitch-container">
-        <a href="index.html" class="back-link">← Retourner à la surface</a>
-        <h1 class="glitch">ZONE RANDOM</h1>
-        <p>> Accès autorisé.<br>> Chargement des archives secrètes...</p>
+
+    <div class="to8-header">
+        <div class="to8-logo">TO8</div>
+        <div class="thomson-logo">THOMSON</div>
+    </div>
+
+    <div class="system-info">
+        <div id="to8-date">DATE: --/--/--</div>
+        <div>RAM: 512K</div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-item" onclick="pickSurprise()">
+            <div class="block-icon"></div>
+            <span>1 SURPRISE (ARTICLE AU HASARD)</span>
+        </div>
         
-        <div id="random-articles" class="random-grid">
-            <p>Scanning data...</p>
+        <div class="menu-item" onclick="toggleSecretList()">
+            <div class="block-icon"></div>
+            <span>2 ACCÈDER AUX ARCHIVES SECRÈTES</span>
+        </div>
+
+        <div class="menu-item" onclick="toggleSiteTheme()">
+            <div class="block-icon"></div>
+            <span>3 RÉGLAGES ET PRÉFÉRENCES</span>
+        </div>
+
+        <a href="index.html" class="menu-item">
+            <div class="block-icon"></div>
+            <span>4 EXPLOITATION DE FICHIERS (ACCUEIL)</span>
+        </a>
+
+        <div id="random-list">
+            <p>Scanning classified data...</p>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const grid = document.getElementById('random-articles');
+        // Date format TO8 (jj-mm-aa)
+        const d = new Date();
+        const formattedDate = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getFullYear()).slice(-2)}`;
+        document.getElementById('to8-date').innerText = `DATE: ${formattedDate}`;
+
+        let allArticles = [];
+
+        async function loadArticles() {
             try {
                 const response = await fetch('data/articles.json');
                 const data = await response.json();
-                const randomArticles = data.articles.filter(a => a.category === 'RANDOM');
-
-                if (randomArticles.length === 0) {
-                    grid.innerHTML = "<p>> Erreur 404 : Aucun fichier classifié trouvé.</p>";
-                    return;
-                }
-
-                grid.innerHTML = randomArticles.map(a => `
-                    <a href="articles/${a.id}.html" class="random-card">
-                        <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.5rem;">[TIMESTAMP: ${a.date}]</div>
-                        <h3>${a.title}</h3>
-                        <p style="margin:0; font-size: 0.9rem;">${a.content.substring(0, 120).replace(/<[^>]*>/g, '')}...</p>
-                    </a>
-                `).join('');
+                allArticles = data.articles;
             } catch (e) {
-                grid.innerHTML = "<p>> FATAL ERROR: Impossible d'accéder au serveur.</p>";
+                console.error("Erreur chargement articles", e);
             }
-        });
+        }
+
+        function pickSurprise() {
+            if (allArticles.length === 0) return;
+            const randomArticle = allArticles[Math.floor(Math.random() * allArticles.length)];
+            window.location.href = `articles/${randomArticle.id}.html`;
+        }
+
+        function toggleSecretList() {
+            const list = document.getElementById('random-list');
+            const randomArticles = allArticles.filter(a => a.category === 'RANDOM');
+            
+            if (list.style.display === 'block') {
+                list.style.display = 'none';
+            } else {
+                list.style.display = 'block';
+                if (randomArticles.length === 0) {
+                    list.innerHTML = "<p>ERREUR: AUCUN FICHIER TROUVÉ.</p>";
+                } else {
+                    list.innerHTML = randomArticles.map(a => `
+                        <a href="articles/${a.id}.html">> ${a.title}</a>
+                    `).join('');
+                }
+            }
+        }
+
+        function toggleSiteTheme() {
+            const current = localStorage.getItem('theme') || 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', next);
+            alert(`MODE ${next.toUpperCase()} ACTIVÉ POUR TOUT LE SITE.`);
+        }
+
+        loadArticles();
     </script>
 </body>
 </html>
