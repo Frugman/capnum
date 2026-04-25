@@ -11,7 +11,10 @@ function initTheme() {
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
         document.documentElement.setAttribute('data-theme', currentTheme);
-        toggleBtn.innerText = currentTheme === 'dark' ? '☀️' : '🌙';
+        toggleBtn.innerText = currentTheme === 'dark' ? 'Mode Clair' : 'Mode Sombre';
+    } else {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        toggleBtn.innerText = isDark ? 'Mode Clair' : 'Mode Sombre';
     }
 
     toggleBtn.addEventListener('click', () => {
@@ -22,7 +25,7 @@ function initTheme() {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        toggleBtn.innerText = newTheme === 'dark' ? '☀️' : '🌙';
+        toggleBtn.innerText = newTheme === 'dark' ? 'Mode Clair' : 'Mode Sombre';
     });
 }
 

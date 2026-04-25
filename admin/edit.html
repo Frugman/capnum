@@ -43,12 +43,15 @@
                 let nt = t === 'dark' ? 'light' : 'dark';
                 document.documentElement.setAttribute('data-theme', nt);
                 localStorage.setItem('theme', nt);
-                this.innerText = nt === 'dark' ? '☀️' : '🌙';
-            ">🌙</button>
+                this.innerText = nt === 'dark' ? 'Mode Clair' : 'Mode Sombre';
+            ">Mode Sombre</button>
             <script>
                 if(localStorage.getItem('theme')) {
                     document.documentElement.setAttribute('data-theme', localStorage.getItem('theme'));
-                    document.getElementById('theme-toggle').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+                    document.getElementById('theme-toggle').innerText = localStorage.getItem('theme') === 'dark' ? 'Mode Clair' : 'Mode Sombre';
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    document.getElementById('theme-toggle').innerText = 'Mode Clair';
                 }
             </script>
         </div>

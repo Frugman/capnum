@@ -205,12 +205,14 @@ async function publishArticle() {
                 let nt = t === 'dark' ? 'light' : 'dark';
                 document.documentElement.setAttribute('data-theme', nt);
                 localStorage.setItem('theme', nt);
-                this.innerText = nt === 'dark' ? '☀️' : '🌙';
-            ">🌙</button>
+                this.innerText = nt === 'dark' ? 'Mode Clair' : 'Mode Sombre';
+            ">Mode Sombre</button>
             <script>
                 if(localStorage.getItem('theme')) {
                     document.documentElement.setAttribute('data-theme', localStorage.getItem('theme'));
-                    document.getElementById('theme-toggle').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+                    document.getElementById('theme-toggle').innerText = localStorage.getItem('theme') === 'dark' ? 'Mode Clair' : 'Mode Sombre';
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.getElementById('theme-toggle').innerText = 'Mode Clair';
                 }
             </script>
         </div>
@@ -222,8 +224,8 @@ async function publishArticle() {
         <div class="article-content">${content}</div>
     </main>
     <footer>
-        <div id="site-info" style="text-align: center; margin-bottom: 1rem;">
-            <p>Poids du site : <span id="site-weight">...</span> Ko | <span id="site-status">Ouvert (8h-24h UTC+2)</span></p>
+        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
             <script>
                 (async function() {
                     const w = document.getElementById('site-weight');
