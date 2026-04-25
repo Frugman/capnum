@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadArticles();
 });
 
+let allArticles = [];
+
 async function loadArticles() {
     try {
         const response = await fetch('data/articles.json');
         const data = await response.json();
-        renderGrid(data.articles);
-        renderTags(data.articles);
+        allArticles = data.articles;
+        renderGrid(allArticles);
+        renderTags(allArticles);
     } catch (e) {
         console.error("Erreur chargement articles:", e);
         document.getElementById('articles-grid').innerHTML = "<p>Aucun article trouvé. Ajoute-en un !</p>";
@@ -31,7 +34,7 @@ function renderGrid(articles, filter = 'all') {
         card.href = `articles/${article.id}.html`;
         card.className = 'article-card';
         card.innerHTML = `
-            <img src="${article.image.startsWith('http') ? article.image : article.image}" alt="${article.title}" class="card-image">
+            <img src="${article.image}" alt="${article.title}" class="card-image">
             <div class="card-content">
                 <div class="card-meta">${article.category} • ${article.date}</div>
                 <h3 class="card-title">${article.title}</h3>
@@ -50,18 +53,32 @@ function renderGrid(articles, filter = 'all') {
     }
 }
 
-let allArticles = [];
+function renderTags(articles) {
+    const container = document.querySelector('.tags-container');
+    if (!container) return;
+    const tags = new Set();
+    articles.forEach(a => {
+        if (a.category !== 'RANDOM') a.tags.forEach(t => tags.add(t));
+    });
+    
+    container.innerHTML = Array.from(tags).map(t => `<a href="#" class="tag">#${t}</a>`).join('');
+}
 
-async function loadArticles() {
-    try {
-        const response = await fetch('data/articles.json');
-        const data = await response.json();
-        allArticles = data.articles;
-        renderGrid(allArticles);
-        renderTags(allArticles);
-    } catch (e) {
-        console.error("Erreur chargement articles:", e);
-        document.getElementById('articles-grid').innerHTML = "<p>Aucun article trouvé. Ajoute-en un !</p>";
+function checkOpeningHours() {
+    const now = new Date();
+    const hour = now.getUTCHours() + 2; 
+    const currentHour = hour >= 24 ? hour - 24 : hour;
+    const isOpen = currentHour >= 8 && currentHour < 24;
+
+    if (!isOpen) {
+        document.body.insertAdjacentHTML('afterbegin', `
+            <div id="closed-message" style="display: flex;">
+                <h2>🌙 Le site se repose...</h2>
+                <p>🌍 Ce blog est low-tech : il dort pour économiser l’énergie.<br>
+                Ouverture de <strong>8h à 24h (UTC+2)</strong>.<br>
+                Revenez nous voir demain !</p>
+            </div>
+        `);
     }
 }
 
