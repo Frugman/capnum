@@ -13,8 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedToken = localStorage.getItem('gh_token');
     if (savedToken) document.getElementById('github-token').value = savedToken;
 
-    // Gestion de l'image
+    // Gestion de l'image de couverture
     document.getElementById('image-upload').addEventListener('change', handleImageUpload);
+    
+    // Gestion des images dans le contenu
+    document.getElementById('content-image-upload').addEventListener('change', handleContentImageUpload);
 
     // Publication
     document.getElementById('btn-publish').addEventListener('click', publishArticle);
@@ -45,6 +48,51 @@ async function handleImageUpload(e) {
         reader.readAsDataURL(compressedFile);
     } catch (error) {
         console.error("Erreur compression:", error);
+    }
+}
+
+async function handleContentImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const token = document.getElementById('github-token').value;
+    if (!token) {
+        alert("Veuillez d'abord saisir votre Token GitHub en bas de page.");
+        return;
+    }
+
+    showStatus("Optimisation de l'image...", "");
+
+    const options = { maxSizeMB: 0.3, maxWidthOrHeight: 1200, useWebWorker: true, fileType: 'image/webp' };
+
+    try {
+        const compressedFile = await imageCompression(file, options);
+        const fileName = `img_${Date.now()}.webp`;
+        const path = `images/${fileName}`;
+
+        // Lecture du fichier pour GitHub
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            const content = event.target.result.split(',')[1]; // Base64
+            
+            showStatus("Envoi sur GitHub...", "");
+            
+            // On envoie l'image directement sur GitHub
+            await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: `Upload image: ${fileName}`, content: content })
+            });
+
+            // Insertion dans l'éditeur
+            const imgUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/main/${path}`;
+            document.execCommand('insertImage', false, imgUrl);
+            
+            showStatus("Image insérée !", "success");
+        };
+        reader.readAsDataURL(compressedFile);
+    } catch (error) {
+        showStatus("Erreur image: " + error.message, "error");
     }
 }
 
