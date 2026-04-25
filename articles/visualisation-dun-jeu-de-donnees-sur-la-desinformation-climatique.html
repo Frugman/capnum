@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation d'un jeu de données sur la désinformation climatique | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="../categorie.html?cat=Environnement">ðŸŒ± Environnement</a>
+                <a href="../categorie.html?cat=Data">ðŸ“Š Data</a>
+                <a href="../categorie.html?cat=IA">ðŸ¤– IA</a>
+                <a href="../categorie.html?cat=Low Tech">âš™ï¸ Low Tech</a>
+                <a href="../categorie.html?cat=Solarpunk">â˜€ï¸ Solarpunk</a>
+                <a href="../categorie.html?cat=DÃ©gafamisation">ðŸŒ DÃ©gafamisation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="article-full">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                <a href="../index.html">â† Accueil</a> &nbsp;|&nbsp; Non classÃ© &nbsp;|&nbsp; 2026-03-31
+            </p>
+            <h1>Visualisation d'un jeu de données sur la désinformation climatique</h1>
+            <div class="article-content">
+                
+<p>Si vous vous souvenez bien, je vous avais déjà parlé de <strong>désinformation climatique</strong> <a href="https://capnum.io/la-course-a-la-desinformation-climatique/">en octobre dernier</a> quand l'étude de QuotaClimat et Science Feedback était sortie sur ce sujet. Aujourd'hui, j'ai trouvé un jeu d'open data avec les données de janvier à août 2025 de l'<a href="https://observatoiremediaecologie.fr/" target="_blank" rel="noreferrer noopener">Observatoire des Médias sur l'Ecologie</a> et <a href="https://science.feedback.org/fr/" target="_blank" rel="noreferrer noopener">Science Feedback</a> (projet Climate Safegards). Et plutôt qu'une masse de données ou un long texte, je voulais vous faire un <strong>petit tableau de bord visuel de la désinformation climatique en France aujourd'hui</strong>. Si c'est le fond qui vous intéresse (pourquoi ? comment ?), scrollez au titre 2 !</p>
+
+
+
+<p>Voici le jeu de données : <a href="https://www.data.gouv.fr/datasets/etat-de-la-mesinformation-et-desinformation-climatique-dans-les-medias-audiovisuels-en-2025" target="_blank" rel="noreferrer noopener">https://www.data.gouv.fr/datasets/etat-de-la-mesinformation-et-desinformation-climatique-dans-les-medias-audiovisuels-en-2025</a></p>
+
+
+
+<h2>Visualiser l'importance de la désinformation climatique</h2>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<p>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+<style>
+    .dashboard-container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #000;
+        margin: 20px 0;
+    }
+    .card {
+        background: #ffffff;
+        border: 1px solid #e1e1e1;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .card h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+        color: #1a1a1a;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 8px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+    .subtitle {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 20px;
+        display: block;
+    }
+    
+    /* Style Table et Boutons */
+    #table-debunks { color: #000 !important; font-size: 0.95rem; }
+    #table-debunks thead th { color: #000; border-bottom: 2px solid #eee; }
+    
+    .btn-link { 
+        background: #04D074;
+        color: white !important; 
+        padding: 6px 12px; 
+        text-decoration: none !important; 
+        border-radius: 4px; 
+        font-size: 0.75rem; 
+        font-weight: bold;
+        display: block;
+        text-align: center;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+        max-width: 130px;
+        margin: 0 auto;
+    }
+    .btn-link:hover { opacity: 0.8; }
+    
+    .dataTables_wrapper .dataTables_length, 
+    .dataTables_wrapper .dataTables_filter, 
+    .dataTables_wrapper .dataTables_info, 
+    .dataTables_wrapper .dataTables_paginate {
+        color: #000 !important;
+        margin-top: 15px;
+    }
+</style>
+
+<p>
+    <p>
+        <h3>Évolution de la désinformation par semaine</h3>
+        
+    </p>
+
+    <p>
+        <h3>Top 10 des médias (nombre de cas)</h3>
+        <p>Période : Janvier 2025 - Août 2025</p>
+        
+    </p>
+
+    <p>
+        <h3>Répartition par thématiques</h3>
+        
+    </p>
+
+    <p>
+        <h3>Explorateur de récits et contre-arguments</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Récit identifié</th>
+                    <th>Thématique</th>
+                    <th>Cas</th>
+                    <th>Vérification</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </p>
+</p>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const URL_EVOLUTION = "https://capnum.io/wp-content/uploads/2026/03/evolution-of-misinformation.csv";
+    const URL_MEDIA = "https://capnum.io/wp-content/uploads/2026/03/misinformation-per-media.csv";
+    const URL_NARRATIVES = "https://capnum.io/wp-content/uploads/2026/03/disinformation-narratives-with-debunks.csv";
+
+    const commonOptions = { download: true, header: true, delimiter: ";", skipEmptyLines: true };
+
+    // --- 1. ÉVOLUTION ---
+    Papa.parse(URL_EVOLUTION, {
+        ...commonOptions,
+        complete: function(results) {
+            const weeklyData = {};
+            results.data.forEach(row => {
+                if (row.week && row.misinformation_cases) {
+                    weeklyData[row.week] = (weeklyData[row.week] || 0) + parseInt(row.misinformation_cases);
+                }
+            });
+            const sortedWeeks = Object.keys(weeklyData).sort((a, b) => new Date(a.split('/').reverse().join('-')) - new Date(b.split('/').reverse().join('-')));
+            
+            new ApexCharts(document.querySelector("#chart-evolution"), {
+                series: [{ name: 'Cas', data: sortedWeeks.map(w => weeklyData[w]) }],
+                chart: { height: 300, type: 'area', toolbar: { show: false } },
+                colors: ['#e63946'],
+                stroke: { curve: 'smooth' },
+                xaxis: { categories: sortedWeeks }
+            }).render();
+        }
+    });
+
+    // --- 2. MÉDIAS (FIX : CNEWS EN HAUT) ---
+    Papa.parse(URL_MEDIA, {
+        ...commonOptions,
+        complete: function(results) {
+            const sortedData = results.data
+                .filter(d => d.channel_title)
+                .sort((a, b) => parseInt(b.misinfo_cases) - parseInt(a.misinfo_cases))
+                .slice(0, 10);
+
+            // Pour ApexCharts horizontal, la première valeur du tableau est affichée EN BAS.
+            // On inverse donc le tableau trié pour que le plus gros (CNews) se retrouve EN HAUT.
+            const chartData = [...sortedData].reverse();
+
+            new ApexCharts(document.querySelector("#chart-media"), {
+                series: [{ name: 'Cas détectés', data: chartData.map(d => parseInt(d.misinfo_cases)) }],
+                chart: { type: 'bar', height: 450, toolbar: { show: false } },
+                plotOptions: { bar: { horizontal: true, distributed: true } },
+                // Dégradé : du Jaune (bas) au Rouge vif (haut)
+                colors: ['#FFD93D', '#FFC107', '#FFA000', '#FF8F00', '#FF6F00', '#F4511E', '#E64A19', '#D84315', '#C62828', '#B71C1C'],
+                xaxis: { categories: chartData.map(d => d.channel_title) },
+                legend: { show: false },
+                dataLabels: { enabled: true, textAnchor: 'start', offsetX: 10, style: { colors: ['#000'] } }
+            }).render();
+        }
+    });
+
+    // --- 3. THÉMATIQUES (FIX : LÉGENDE TRIÉE + SANS % SUR GRAPH) ---
+    Papa.parse(URL_NARRATIVES, {
+        ...commonOptions,
+        complete: function(results) {
+            const topicMap = {};
+            const tableRows = [];
+
+            results.data.forEach(row => {
+                if (row.topics) {
+                    topicMap[row.topics] = (topicMap[row.topics] || 0) + parseInt(row.misinformation_cases || 0);
+                    tableRows.push([
+                        row.cluster, row.topics, row.misinformation_cases,
+                        `<a href="${row.debunk_link}" target="_blank">Lire le débunk</a>`
+                    ]);
+                }
+            });
+
+            // Tri décroissant des thématiques
+            let topicList = Object.keys(topicMap).map(key => ({ name: key, value: topicMap[key] }));
+            topicList.sort((a, b) => b.value - a.value);
+
+            const sortedValues = topicList.map(t => t.value);
+            const sortedLabels = topicList.map(t => t.name);
+            const total = sortedValues.reduce((a, b) => a + b, 0);
+
+            new ApexCharts(document.querySelector("#chart-topics"), {
+                series: sortedValues,
+                labels: sortedLabels,
+                chart: { type: 'donut', height: 400 },
+                colors: ['#33b2df', '#d4526e', '#13d8aa', '#f9a825', '#6a1b9a', '#546E7A', '#A5978B', '#d62828'],
+                dataLabels: { enabled: false }, // Enlevés du graphique
+                legend: { 
+                    position: 'right',
+                    fontSize: '14px',
+                    width: 350,
+                    formatter: function(seriesName, opts) {
+                        const val = opts.w.globals.series[opts.seriesIndex];
+                        const percent = ((val / total) * 100).toFixed(1);
+                        return seriesName + " (" + percent + "%)";
+                    }
+                },
+                stroke: { width: 2, colors: ['#fff'] }
+            }).render();
+
+            $('#table-debunks').DataTable({
+                data: tableRows,
+                language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' },
+                pageLength: 10,
+                order: [[2, "desc"]]
+            });
+        }
+    });
+});
+</script>
+
+
+
+<p><strong>Coin des techos : </strong></p>
+
+
+
+<p>Pour rendre ces 665 cas de désinformation digestes, j'ai créé un tableau de bord léger et dynamique qui repose sur 3 bibliothèques JavaScript : <strong>PapaParse</strong> pour parser les fichiers CSV distants de manière asynchrone, <strong>ApexCharts</strong> pour le rendu des graphiques (notamment le donut trié par volume et le graphique chronologie), et <strong>DataTables</strong> pour transformer la liste des débunks en explorateur filtrable. L'idée était d'offrir une interface "sans serveur" où le traitement de la donnée se fait directement dans votre navigateur pour que ça soit fluide. Et pour l'intégrer à un article Wordpress, bah j'ai juste mis les 3 csv dans ma bibliothèque de médias (pour y faire appel dans le code) et le reste c'est un bloc Gutenberg HTML personnalisé, c'est tout. Et, oui, Gemini m'a aidée parce que je ne suis pas codeuse à ce point lol.</p>
+
+
+
+<h2>Analyse de cette désinformation en 3 points</h2>
+
+
+
+<p>Il y a certainement plus calé que moi sur ce sujet donc je me permets juste de discuter de 3 points qui me semblent juste hyper importants : les discours d'obstruction et le nouveau déni, la désinformation qui se structure, la cible prioritaire de l'énergie.</p>
+
+
+
+<h3>Discours d'obstruction et nouveau déni</h3>
+
+
+
+<p>Ces données montrent un truc fascinant : <strong>on ne nie (presque) plus que le changement climatique existe</strong> et qu'il est causé par les humains (seulement 16 cas sur l'origine anthropique). Faut toujours être vigilant bien sûr mais apparemment, les canicules, gouttes de froid et inondations rendent la négation difficile. Par contre, les climatosceptiques ont bifurqué vers ce que les chercheurs ont appelé <strong>les "discours d'obstruction"</strong> (notamment William Lamb, université de Cambridge, "<a href="https://www.cambridge.org/core/journals/global-sustainability/article/discourses-of-climate-delay/7B11B722E3E3454BB6212378E32985A7" target="_blank" rel="noreferrer noopener">Discourses of climate delay</a>" 2020).</p>
+
+
+
+<p>Puisque nier la réalité physique du réchauffement ne marche plus, ils utilisent 4 tactiques pour retarder la transition écologique :</p>
+
+
+
+<p>
+<p><strong>Renvoyer la responsabilité</strong> sur les autres (le fameux "c'est la Chine qui pollue")</p>
+
+
+
+<p><strong>Promouvoir des solutions non-transformatives</strong> (à rapprocher des cornucopiens, tous ceux qui vantent le "tout-nucléaire" ou le gaz "vert", tout ça pour éviter de changer nos modes de vie)</p>
+
+
+
+<p><strong>Mettre l'accent sur les effets négatifs</strong> (les énergies renouvelables, ça marche pas et ça appauvrit les Français > 125 cas sur le prix de l'électricité soi-disant impacté par le EnR !!!)</p>
+
+
+
+<p><strong>Faire en sorte qu'on se sente impuissants</strong> (foutu pour foutu, c'est trop tard, autant ne rien faire)</p>
+</p>
+
+
+
+<p>Si ça vous rappelle quelque chose, c'est normal, ces 4 méthodes font partie du super graphique des discours d'inaction climatique, inclus dans l'étude de Cambridge, qu'on retrouve traduit en français dans mon <a href="https://solarpunk85.itch.io/manuel-solarpunk-2025" target="_blank" rel="noreferrer noopener">bouquin solarpunk</a> (gratuit, p.80):</p>
+
+
+
+
+
+
+
+<p>Quant au <strong>"nouveau déni"</strong>, le terme est plus récent, issu du <a href="https://counterhate.com/research/new-climate-denial/" target="_blank" rel="noreferrer noopener">rapport</a> "The New Climate Denial" (Center for Countering Digital Hate, janvier 2024). Après avoir analysé des masses de données sur les réseaux sociaux et YouTube, les chercheurs ont montré que l'ancien déni (pas de changement climatique) est beaucoup moins présent dans les discours sceptiques (passé de 65% à 30%). En revanche, 70% ont adopté le "nouveau déni climatique" :</p>
+
+
+
+<p>
+<p><strong>Les solutions ne marchent pas</strong> (la voiture électrique qui pollue plus, les éoliennes inutiles, etc. cliquez sur les debunks dans l'explorateur plus haut)</p>
+
+
+
+<p><strong>La science du climat est "partisane"</strong> (cf. les 16 cas sur la falsification des données, ou d'ailleurs les attaques récentes de la commission d'enquête sur l'audiovisuel public à l'encontre de gens comme Hugo Clément)</p>
+
+
+
+<p><strong>Le changement climatique serait en fait bénéfique</strong> pour l'agriculture ou l'économie (alors celle-là, fallait oser quand même !). </p>
+</p>
+
+
+
+<p>
+<p>Je vous donne deux exemples pour que vous vous rendiez compte du niveau de débilité :</p>
+
+
+
+<p><strong><em>"Le CO² c'est pas polluant, c'est la nourriture des plantes ! Plus y en a, plus la végétation pousse vite, plus les rendements agricoles augmentent, plus la Terre devient verte..."</em></strong> > Euh en laboratoire je dis pas, une hausse de CO² va booster la photosynthèse, mais en plein champ ça marche pas : avec la canicule, tes cultures vont griller bien avant de profiter du surplus de CO² et en plus elles deviennent moins nutritives, alors tes récoltes c'est pile ou face à cause de la météo perturbée et la biomasse perd en qualité.</p>
+
+
+
+<p><strong><em>"Les hivers doux, ça fait des économies d'énergie en chauffage !"</em></strong> > Oui bien sûr, et comme la clim' explose l'été les calculs sont pas bons Kévin, sans compter que les sinistres climatiques coûtent bien plus cher que tout ce que tu pourras économiser l'hiver (6,5 milliards d'euros en France en 2023 selon <a href="https://www.franceassureurs.fr/espace-presse/pour-une-france-assurable/" target="_blank" rel="noreferrer noopener">France Assureurs</a>).</p>
+</p>
+
+
+
+<p><strong>Le but est toujours le même : rendre la transition environnementale effrayante ou inutile</strong>... <em>(et ça me fait sincèrement de la peine d'écrire encore ça en 2026)</em>.</p>
+
+
+
+<h3>L'avènement de la désinformation "industrielle"</h3>
+
+
+
+<p>665 cas de désinformation climatique sur les ondes et les écrans français, ça ne touche pas que des "audiences de niche" mais bien des millions de téléspectateurs et auditeurs ! Et un point crucial qui a été révélé par l'Arcom, c'est <strong>la chute des experts en plateau</strong> (passés de 31% à 18% en 2024), remplacés par des éditorialistes généralistes.</p>
+
+
+
+<p>Avec 148 cas recensés, c'est CNews qui est devant mais on peut calculer un indicateur plus intéressant en comparant le nombre de cas au temps d'antenne dédié au climat, voici alors le nouveau TOP 3 :</p>
+
+
+
+<p>
+<p><strong>Sud Radio - tenant du record avec 1,47 cas par heure</strong> de sujet climatique (presque chaque discussion sur le climat contient une fausse information)<br><em>Propriétaire : le milliardaire Christian Latouche, grand diffuseur des théories du complot et des idées d'extrême-droite (incroyable !)</em></p>
+
+
+
+<p><strong>CNews - second avec 1,02 cas par heure</strong><br><em>Propriétaire : le milliardaire d'extrême-droite Vincent Bolloré (naaan, pas possible !)</em></p>
+
+
+
+<p><strong>Europe 1 et RMC - ex-aequo avec 0,75 cas par heure</strong><br><em>Propriétaires : Vincent Bolloré pour Europe 1, le milliardaire Rodolphe Saadé pour RMC</em></p>
+</p>
+
+
+
+<p>Sur ces médias (<a href="https://www.monde-diplomatique.fr/cartes/PPA#&amp;gid=1&amp;pid=1">p'tit lien</a> vers l'excellente carto du Monde Diplomatique sur qui possède quoi), l'expertise scientifique disparaît au profit d'un narratif de contestation systématique... et quand on sait que <strong>90% des ventes de quotidiens nationaux / 55% de l'audience TV / 40% de l'audience radio est entre les mains d'un groupe de 10 milliardaires</strong> dont les fortunes sont liées à tous les pans imaginables des activités humaines polluantes, bah je crois qu'on peut parler de <strong>désinformation climatique à l'échelle industrielle</strong>, non ?</p>
+
+
+
+<h3>Les énergies renouvelables, leur cible prioritaire</h3>
+
+
+
+<p>Le cluster le plus important de ces jeux de données concerne les énergies renouvelables et les idées fausses les plus fréquentes selon lesquelles les EnR feraient exploser le prix de l'électricité (125 cas !), causeraient des pannes, seraient trop subventionnées ou ne seraient pas efficaces à cause de leur intermittence. C'est pas anodin ! <strong>En saturant l'espace médiatique de doutes sur les EnR comme sur les autres solutions écologiques, ces discours freinent l'adhésion citoyenne aux politiques climatiques !</strong></p>
+
+
+
+<p>
+<p>
+<p>C'est là où le premier graphique (la courbe d'évolution) est intéressant car on remarque des pics très nets, bizarrement pile au moment où on discute de nouvelles lois. <strong>Vous voyez ce magnifique pic fin juin 2025 ???</strong></p>
+
+
+
+<p>C'est à ce moment-là que la proposition de loi Duplomb sur l'agriculture et la proposition de supprimer les ZFE (Zones à Faibles Emissions) étaient discutées à l'Assemblée Nationale... <em>"Corrélation n'est pas causalité"</em> disait mon prof de droit m'enfin quand même !</p>
+</p>
+
+
+
+
+</p>
+
+
+
+
+
+
+
+<h2>La désinformation climatique<br>est UNE ARME POLITIQUE</h2>
+
+
+
+<p>Finalement, l'analyse de ces fichiers CSV montre que la désinformation est une forme de pollution mentale. Tout comme on essaie de dépolluer nos sols ou nos rivières, il y a un énorme chantier pour assainir notre espace informationnel. Et heureusement, y a un peu d'espoir.</p>
+
+
+
+<h3>La condamnation de CNews, la fin de l'impunité ?</h3>
+
+
+
+<p>Rappelons-nous quand même ce qui avait été dit par l'économiste Philippe Herlin le 8 août 2023 sur CNews :</p>
+
+
+
+<p>
+<p><em><strong>"Le réchauffement climatique anthropique est un mensonge, une escroquerie. (…) Nous expliquer que c’est à cause de l’Homme ça non, ça c’est de l’ordre du complot, et pourquoi ça a autant de poids ? Parce que ça justifie l’intervention de l’État dans notre vie, et ça absout l’État de devoir diminuer ses dépenses publiques. (…) C’est une forme de totalitarisme."</strong></em></p>
+</p>
+
+
+
+<p>Aucune réaction sur le plateau, QuotaClimat saisit l'Arcom pour climatoscepticisme sans contradiction. Le 10 juillet 2024, l'Arcom sanctionne CNews avec une amende de 20 000€, ce qui est déjà <strong>une première !</strong> (aucune autorité de régulation n'avait jusqu'ici émis de sanction pécuniaire pour un manquement lié à un sujet environnemental). Peur de rien, CNews conteste la décision devant le Conseil d'Etat qui rejette ses arguments et confirme la sanction le 6 novembre 2024. C'est important car <strong>la plus haute instance judiciaire administrative affirme ainsi que la liberté d'expression ne permet pas de dire n'importe quoi, qu'on peut débattre sur un plateau mais avec honnêteté et rigueur, que le consensus scientifique du GIEC n'est pas une "opinion" mais un fait</strong>. Alors oui, 20 000€, ça ne va pas empêcher M. Bolloré de dormir, c'est pour cela que ces sanctions devraient être plus fréquentes et plus élevées afin d'être vraiment dissuasives.</p>
+
+
+
+<h3>Muscler l'Arcom avec une loi sur la désinformation climatique</h3>
+
+
+
+<p>L'Arcom est clairement sous-armée pour jouer son rôle de gendarme de l'audiovisuel et elle n'a pas de mandat explicite pour sanctionner les atteintes à la fiabilité scientifique. C'est pourquoi le député Stéphane Delautrette (PS) et plusieurs collectifs comme QuotaClimat ont présenté une <a href="https://www.assemblee-nationale.fr/dyn/17/textes/l17b1853_proposition-resolution-europeenne" target="_blank" rel="noreferrer noopener">proposition de résolution</a> contre la désinformation. </p>
+
+
+
+<p>Le 12 janvier 2026, les députés ont adopté une <a href="https://www.assemblee-nationale.fr/dyn/17/textes/l17t0209_texte-adopte-seance" target="_blank" rel="noreferrer noopener">résolution</a> <em>"visant à garantir l'intégrité de l'information sur le changement climatique face à la désinformation climatique et aux ingérences étrangères"</em>. Alors ce n'est pas une loi, elle n'est donc pas contraignante juridiquement, c'est une invitation à ce que, en France comme en Europe, on s'attaque au problème (qu'on légifère quoi) mais c'est toujours un début...</p>
+
+
+
+<h3>Muscler les citoyens face à la désinformation</h3>
+
+
+
+<p>On ne peut pas tout attendre de la loi. Le vrai levier, c'est aussi nous, l'audience. Le chiffre de <strong>6 % de couverture médiatique pour l'environnement en 2025</strong> est un signal d'alarme : le sujet est perçu comme "trop complexe" ou "trop anxiogène", ce qui laisse le champ libre aux polémistes qui font de l'audience avec du clash. Alors que fait-on ?</p>
+
+
+
+<p>On <strong>réintroduit de la science, vulgarisée, pédagogique, ludique</strong> (souvenez-vous de tout ce que vous avez appris plus jeune avec des émissions comme "C'est pas sorcier" !). Il faut exiger des médias qu'ils <strong>remettent des climatologues et des ingénieurs en plateau</strong>, pas juste des éditorialistes qui ont un avis sur tout <em>(et qui ont surtout des avis, comme dirait Coluche)</em>. Côté scolaire, l'<strong>éducation aux médias</strong> (EMI) est plus que jamais essentielle bien sûr. Côté nouveaux médias, il y a heureusement des gens comme Hugo Clément qui appuient là où ça fait mal en montrant ce que le complexe agro-industrialo-extractif peut cacher (émissions <a href="https://www.youtube.com/@surlefrontavechugoclement" target="_blank" rel="noreferrer noopener">Sur le Front</a>, média <a href="https://www.vakita.fr/fr" target="_blank" rel="noreferrer noopener">Vakita</a>) et il y en a plein d'autres (notamment Vert.eco et sa newsletter <a href="https://vert.eco/archive/chaleurs-actuelles-la-premiere" target="_blank" rel="noreferrer noopener">Chaleurs Actuelles</a>). Et la pression citoyenne existe aussi : les signalements à l'Arcom par les téléspectateurs sont en forte hausse comme l'indique le <a href="https://www.assemblee-nationale.fr/dyn/17/rapports/due/l17b2142_rapport-fond" target="_blank" rel="noreferrer noopener">rapport de l'Assemblée Nationale du 26 novembre 2025</a> (lié à la résolution dont on parlait).</p>
+
+
+
+<p>Y a plus qu'à :-D. En attendant, j'ai l'impression que j'ai pas fini de vulgariser de la data environnementale ici...</p>
+
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div id="site-info" style="font-size:0.95rem;opacity:0.9;text-align:justify;margin-bottom:1.5rem;max-width:900px;margin-left:auto;margin-right:auto;">
+            <p>Ce blog est une expÃ©rimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h Ã  8h, on Ã©vite le trafic automatisÃ© inutile la nuit tout en valorisant le droit humain Ã  la dÃ©connexion.</p>
+        </div>
+    </footer>
+</body>
+</html>

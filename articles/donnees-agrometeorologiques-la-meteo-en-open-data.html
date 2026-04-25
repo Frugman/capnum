@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Données agrométéorologiques, la météo en open data | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="../categorie.html?cat=Environnement">ðŸŒ± Environnement</a>
+                <a href="../categorie.html?cat=Data">ðŸ“Š Data</a>
+                <a href="../categorie.html?cat=IA">ðŸ¤– IA</a>
+                <a href="../categorie.html?cat=Low Tech">âš™ï¸ Low Tech</a>
+                <a href="../categorie.html?cat=Solarpunk">â˜€ï¸ Solarpunk</a>
+                <a href="../categorie.html?cat=DÃ©gafamisation">ðŸŒ DÃ©gafamisation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="article-full">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                <a href="../index.html">â† Accueil</a> &nbsp;|&nbsp; Non classÃ© &nbsp;|&nbsp; 2024-03-21
+            </p>
+            <h1>Données agrométéorologiques, la météo en open data</h1>
+            <div class="article-content">
+                
+
+
+
+
+<p>Bonne nouvelle ! Depuis le 1er janvier 2024, on accède gratuitement aux <strong>données publiques de Météo France</strong> sur <a href="https://meteo.data.gouv.fr/" target="_blank" rel="noreferrer noopener">meteo.data.gouv.fr</a>. Bien sûr je n'ai pas pu m'empêcher d'aller y chercher un petit <strong>jeu de données météo</strong> récemment mis à jour et intéressant. J'ai choisi les <a href="https://meteo.data.gouv.fr/datasets/6569af36ba0c3d2f9d4bf98c" target="_blank" rel="noreferrer noopener">données agrométéorologiques</a> de la Vendée sur 2023-2024 (sachant qu'il y a aussi un jeu pour la période 1950-2022). J'avoue cependant que je ne m'attendais pas à ne rien comprendre aux intitulés des colonnes... alors je vous propose de <strong>décrypter ensemble et d'analyser un peu ces données</strong> pour percevoir leur utilité.</p>
+
+
+
+<p><em>Spoiler alert : toute cette histoire s'est avérée beaucoup plus compliquée de prévue et s'est transformée en tentative de vulgarisation des données météo :D</em></p>
+
+
+
+<h2>D'où viennent ces données météo en Vendée ?</h2>
+
+
+
+<p>Les <strong>données météo du 85</strong> proviennent de la vingtaine de <strong>stations Météo France installées en Vendée</strong>. Il y a bien sûr un <a href="https://meteo.data.gouv.fr/datasets/656dab84db1bdf627a40eaae" target="_blank" rel="noreferrer noopener">jeu de données</a> sur ça aussi et des <em>fiches de poste</em> sur chaque station (liens sur l'ID ci-dessous). Elles sont très complètes : localisation, ancienneté, qualité du site, instruments et mesures possibles, photos, etc.</p>
+
+
+
+<a href="https://data.oreme.org/tools/mf_map" target="_blank" rel="noreferrer noopener"></a><figcaption><em>Cliquez sur la carte pour avoir la position de toutes les stations Météo France du pays </em></figcaption>
+
+
+
+<table><tbody><tr><th>ID</th><th>Nom usuel</th></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85004001.pdf" target="_blank" rel="noreferrer noopener">85004001</a></td><td>ANGLES</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85005001.pdf" target="_blank" rel="noreferrer noopener">85005001</a></td><td>ANTIGNY</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85051001.pdf" target="_blank" rel="noreferrer noopener">85051001</a></td><td>CHANTONNAY</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85060002.pdf" target="_blank" rel="noreferrer noopener">85060002</a></td><td>CHATEAU-D'OLONNE</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85092004.pdf" target="_blank" rel="noreferrer noopener">85092004</a></td><td>FONTENAY</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85097001.pdf" target="_blank" rel="noreferrer noopener">85097001</a></td><td>LA-GAUBRETIERE_SAPC</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85104001.pdf" target="_blank" rel="noreferrer noopener">85104001</a></td><td>GRUES</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85109001.pdf" target="_blank" rel="noreferrer noopener">85109001</a></td><td>LES HERBIERS</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85113001.pdf" target="_blank" rel="noreferrer noopener">85113001</a></td><td>L ILE D YEU</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85152001.pdf" target="_blank" rel="noreferrer noopener">85152001</a></td><td>LA MOTHE ACHARD</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85153002.pdf" target="_blank" rel="noreferrer noopener">85153002</a></td><td>MOUCHAMPS_SAPC</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85163001.pdf" target="_blank" rel="noreferrer noopener">85163001</a></td><td>NOIRMOUTIER EN</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85169002.pdf" target="_blank" rel="noreferrer noopener">85169002</a></td><td>PALLUAU</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85172001.pdf" target="_blank" rel="noreferrer noopener">85172001</a></td><td>LE PERRIER</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85182004.pdf" target="_blank" rel="noreferrer noopener">85182004</a></td><td>POUZAUGES SA</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85190001.pdf" target="_blank" rel="noreferrer noopener">85190001</a></td><td>ROCHESERVIERE</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85191003.pdf" target="_blank" rel="noreferrer noopener">85191003</a></td><td>LA ROCHE SUR YON</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85215002.pdf" target="_blank" rel="noreferrer noopener">85215002</a></td><td>ST-FULGENT_SAPC</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85216001.pdf" target="_blank" rel="noreferrer noopener">85216001</a></td><td>SAINTE GEMME LA PLAINE_SAPC</td></tr><tr><td><a href="https://donneespubliques.meteofrance.fr/metadonnees_publiques/fiches/fiche_85234001.pdf" target="_blank" rel="noreferrer noopener">85234001</a></td><td>ST JEAN DE MONT</td></tr></tbody></table>
+
+
+
+<h2>Quelles mesures météo sont réalisées ?</h2>
+
+
+
+<p>C'est l'occasion de s'interroger sur ce qu'on peut réaliser comme <strong>mesures météo avec quel instrument</strong>. Pour cela, je vais prendre la fiche de la station des Ajoncs à La Roche-sur-Yon qui contient :</p>
+
+
+
+<p><em>NB : Je ne suis pas météorologue ni experte en instruments météo donc je vous livre juste ce que j'ai compris en fouillant le web, approximations possibles.</em></p>
+
+
+
+<p>
+<p><strong>Station automatique </strong>: c'est la station en elle-même avec tous ses capteurs mais je la cite car elle est automatique donc elle envoie toute seule les données aux serveurs de Météo France sans intervention humaine.</p>
+
+
+
+<p><strong>Capteur temps présent</strong> : c'est un capteur de visibilité qui, en gros, envoie un rayon à 45° vers l'avant et analyse le rayonnement pour détecter : pluie, pluie verglaçante, bruine, bruine verglaçante, mélange pluie/neige, neige, grésil, brouillard (brume), brume sèche (fumée, sable) ou dégagé <em>(tous ces trucs s'appellent aussi des "hydrométéores précipitants", si avec ça vous ne brillez pas en société ce weekend héhé)</em>.</p>
+
+
+
+<p><strong>Télémètre :</strong> ce module va projeter un rayon laser à diode pulsée (LIDAR, dont on a déjà parlé <a href="https://capnum.io/jumeau-numerique-de-la-vendee-et-lidar/">ici</a>) vers le haut pour détecter différentes couches nuages (ou d'autres obscurcissements) et mesurer leur distance au sol. D'ailleurs, si vous faites de l'astronomie, vous connaissez peut-être cette super application qui détaille la couche nuageuse pour préparer vos soirées d'observation : <a href="https://clearoutside.com/forecast/50.7/-3.52" target="_blank" rel="noreferrer noopener">Clear Outside</a> (ça vous donnera même la position de la station spatiale internationale ISS).</p>
+
+
+
+<p><strong>Capteur état du sol :</strong> comme son nom l'indique, ce module va permettre de voir si le sol est sec, humide, mouillé, enneigé, verglacé, etc. mais il va aussi mesurer la haute de la neige, la température, etc.</p>
+
+
+
+<p><strong>Barographe anéroïde à capsules :</strong> apparemment c'est un baromètre <em>old school</em>, du genre de ceux que vous pouvez voir sur un bateau ancien, qui utilise une capsule de Vidie (inventée en 1844 par Lucien Vidie) aussi appelée anéroïde. Il mesure bien sûr la pression atmosphérique (le poids de l'air et ses variations, pour faire simple) qui permet, non pas de dire quel temps il fait, mais quel temps il va faire : est-ce que l'aiguille va vers le beau temps (pression haute) ou la pluie (pression basse) ? rapidement ou lentement ? On va ainsi pouvoir prévoir pluie, orage, tempête, et retour du beau temps.</p>
+
+
+
+<p><strong>Baromètre Vaisala PTB220 :</strong> la version améliorée et moderne du barographe avec un capteur de pression absolue à base de silicium monocristallin.</p>
+
+
+
+<p><strong>Baromètre à mercure à échelle compensée type Tonnelot :</strong> franchement, je ne sais pas pourquoi il est là celui-là car il est encore plus vieux que le barographe (1830 du constructeur parisien Tonnelot), si quelqu'un sait je suis curieuse :D</p>
+
+
+
+<p><strong>Capteur vent ultrasonique :</strong> celui-ci est un anémomètre à ultrason capable de mesurer la direction, la vitesse et la température virtuelle du vent. Oui, je vous vois venir, c'est quoi cette <strong>température virtuelle</strong> ? Et bien, l'explication n'a pas été facile à trouver sur Internet, bonne raison pour vous la fournir : en gros, l'air comprend toujours une certaine quantité de vapeur d'eau, ce que cet indicateur va corriger. La température virtuelle est donc la température que devrait avoir un air sec pour avoir la même densité à la même pression. Mais à quoi ça sert ? Aucune idée, je veux bien de l'aide si vous savez (un rapport avec le calcul de la température ressentie peut-être ?).</p>
+
+
+
+<p><strong>Sondes thermométriques à résistance de platine :</strong> c'est un bon vieux thermomètre (mais pas au mercure) inventé par W. Siemens en 1861 et largement amélioré et miniaturisé depuis :)</p>
+
+
+
+<p><strong>Pluviomètre à augets :</strong> ce module généralement en forme de cône collecte l'eau de pluie (ou la neige, la grêle...) et permet de mesurer les hauteurs de précipitations (volume) mais aussi d'estimer la durée et l'intensité des précipitations pluvieuses.</p>
+
+
+
+<p><strong>Sonde hygrométrique :</strong> cette sonde mesure la température de l'air et l'<strong>humidité relative</strong> pour calculer le <strong>point de rosée</strong>. Je vous sens dubitatifs, moi aussi à vrai dire. Alors l'humidité relative, c'est simplement une mesure de la vapeur d'eau dans l'air exprimée en pourcentage (% HR). Quant au point de rosée, c'est la température à laquelle on va avoir un début de condensation de la vapeur d'eau en goutte d'eau (la première goutte de rosée quoi).</p>
+
+
+
+<p><strong>Luminancemètre : </strong>a priori c'est parce que la station est sur un aérodrome car ce module permet de donner des informations sur la visibilité pour les avions en calculant la luminance (sensation visuelle de luminosité d'une surface) de fond du ciel.</p>
+</p>
+
+
+
+
+<figure><figcaption><strong>Barographe anéroïde à capsules</strong></figcaption>
+
+
+
+<figcaption><strong>Capteur vent ultrasonique</strong></figcaption>
+
+
+
+<figcaption><strong>Pluviomètre à augets</strong></figcaption>
+
+
+
+<figcaption><strong>Capteur temps présent</strong></figcaption>
+</figure>
+
+
+
+<p>Bon j'avoue, c'est plus complexe que je ne pensais et j'espère que ça m'aidera à <strong>comprendre le jeu de données météo</strong> dont il est temps d'étudier les intitulés de colonnes.</p>
+
+
+
+<h2>Détails du jeu de données agrométéorologiques vendéen</h2>
+
+
+
+<p>Les premières colonnes sont faciles :</p>
+
+
+
+<p>
+<p>NUM_POSTE : numéro Météo-France du poste sur 8 chiffres</p>
+
+
+
+<p>NOM_USUEL : nom usuel du poste</p>
+
+
+
+<p>LAT : latitude</p>
+
+
+
+<p>LON : longitude</p>
+
+
+
+<p>ALTI : altitude du pied de l'abri ou du pluviomètre si pas d'abri (en m)</p>
+
+
+
+<p>DAT : date (année mois)</p>
+
+
+
+<p>NUM_DECADE : numéro de la décade (période de 10 jours donc il y en a 3 dans le mois)</p>
+</p>
+
+
+
+<p>A partir de là, ça se corse :</p>
+
+
+
+<p>
+<p><strong>RR : cumul mensuel des hauteurs de précipitations</strong> en millimètres</p>
+
+
+
+<p><strong>TN : moyenne température minimale</strong> sur la décade / les 10 jours</p>
+
+
+
+<p>CTN : code calcul de TN pour la décade (en gros, le code calcul est un code de contrôle : 0 = OK, pas de données manquantes ; 1 = au moins une donnée manquante qui a été estimée pour le calcul)</p>
+
+
+
+<p><strong>TX : moyenne température maximale</strong> sur la décade</p>
+
+
+
+<p>CTX : idem code calcul TN (c'est toujours le même)</p>
+
+
+
+<p><strong>FFM : moyenne décadaire de la force du vent</strong> moyenné sur 10 minutes</p>
+
+
+
+<p>CFFM : code calcul</p>
+
+
+
+<p><strong>TSVM : moyenne décadaire de la tension de vapeur (en hPa)</strong>, la pression atmosphérique quoi.</p>
+
+
+
+<p>CTSVM : code calcul</p>
+
+
+
+<p><strong>INST : durée totale d’insolation sur la décade</strong> (total de minutes de soleil sur les 10 jours)</p>
+
+
+
+<p>CINST : code calcul</p>
+
+
+
+<p><strong>GLOT : cumul de rayonnement global</strong> (en J/cm2), un peu plus compliqué : le rayonnement global du soleil en France est d'environ 1100 kWh/m² (alors qu'à l'équateur, il est de 2200 kWh/m²). Ici, il est exprimé en joules par cm² (à multiplier par 10 000 pour avoir les Watts par m²).</p>
+
+
+
+<p>CGLOT : code calcul</p>
+
+
+
+<p><strong>ETP Penman décadaire</strong> (en mm et 1/10), également compliqué mais dédié à agriculture et aux hydrologues pour le coup : L'ETP, c'est l'<strong>EvapoTranspiration Potentielle</strong> d'un couvert végétal bas, continu et homogène, bien alimenté en eau et sans limitation nutritionnelle, physiologique ou pathologique (genre une prairie en pleine croissance bien humide mais sans excès d'eau). Elle est calculée grâce à la formule de Penman à partir des paramètres déjà calculés (température minimale, température maximale, vitesse moyenne du vent à 10m, tension de vapeur moyenne, insolation, rayonnement global...). Plus clairement, ça mesure les pertes d'eau par évaporation du sol et transpiration des plantes. Avec d'autres indicateurs comme le coefficient de la culture concernée (Kc), ça va permettre de prévoir l'impact de la météo sur cette culture (voire l'impact du réchauffement climatique).</p>
+</p>
+
+
+
+<p>C'est vraiment un métier, météorologue :D, chapeau !</p>
+
+
+
+<h2>Analyse des données agrométéorologiques de la Vendée sur 2023-2024</h2>
+
+
+
+<h3>Préparation du jeu de données</h3>
+
+
+
+<p>J'importe le <strong>jeu de données météo en CSV</strong> dans un Google Sheet et je commence par nettoyer un peu en ajoutant un filtre sur chaque colonne pour enlever les infos peu sûres (celles où le code contrôle n'est pas 0). Les colonnes contrôle qui ne comportent que des zéros sont supprimées pour plus de lisibilité. Je renomme ensuite les entêtes de colonne pour plus de clarté. Je m'aperçois aussi que Google Sheets m'a mis les valeurs à l'américaine avec un point au lieu d'une virgule pour les décimales, je fais donc un "chercher et remplacer" pour changer les points en virgules, comme ça j'ai bien un format nombre pour faire mes calculs et formules. </p>
+
+
+
+<h3>Premier coup d'œil rapide pour repérer des incohérences</h3>
+
+
+
+<p>On s'aperçoit vite que <strong>toutes les stations ne sont pas équipées des mêmes modules</strong>. Elles mesurent toutes les températures mini et maxi ainsi que le volume de précipitations. En revanche, seules les stations de Château d'Olonne, Fontenay-le-Comte, Grues, L'Ile d'Yeu, Noirmoutier, Le Perrier, Pouzauges et La Roche-sur-Yon mesurent la force du vent et la pression atmosphérique. De plus, seules les stations de Château d'Olonne et La Roche mesurent la durée d'insolation, le rayonnement global et l'évapotranspiration. Bref, il va être difficile de mener une analyse globale sur tous les paramètres donc commençons par les températures et les précipitations pour comparer.</p>
+
+
+
+<h3>Tableau croisé dynamique</h3>
+
+
+
+<p><strong>Rien de tel qu'un TCD pour appréhender une grande masse d'infos</strong>. Je commence par faire un TCD avec le nom des postes en lignes, la date + décade en colonnes et j'affiche en valeurs les températures minimales <em>(dans la capture ci-dessous, je n'ai laissé déplié que le 1er mois)</em>.</p>
+
+
+
+
+
+
+
+<p><strong>Astuce Google Sheets TCD <em>(parce que je ne savais pas)</em> :</strong> Quand, dans les colonnes, vous cochez "afficher les totaux", ce total est en fait lié à votre choix "Synthétiser via" dans les valeurs. Ici, j'ai mis les valeurs synthétisées par moyenne (ce qui n'est pas dérangeant vu qu'il n'y a qu'une valeur par décade) afin que le total du mois soit bien une moyenne des 3 décades :D</p>
+
+
+
+<h3>Création de graphique</h3>
+
+
+
+<p>Je re-prépare mes données et le tableau croisé dynamique pour <strong>créer un graphique barres</strong> avec des noms de villes bien écrits, des moyennes de température plus courtes (00,0), et je décide de ne prendre que les moyennes mensuelles de 2023. Je crée mon graphique et je choisis une couleur par mois pour qu'on puisse identifier les 12 mois (bleu = hiver, vert = printemps, orange = été, marron = automne, logique) sans avoir à les nommer. Bon forcément, 20 stations ça prend un peu de place mais voici le résultat :</p>
+
+
+
+
+
+
+
+<p>Si on zoome sur 3 stations, ça donne :</p>
+
+
+
+
+
+
+
+<p>On peut également dresser 2 courbes des <strong>températures vendéennes mini et maxi en 2023</strong> :</p>
+
+
+
+
+
+
+
+<h3>Tirer une analyse d'un graphique plus complexe</h3>
+
+
+
+<p>Les graphiques, c'est sympa et toujours intéressant mais en regardant le dernier, il me donne très envie de le comparer à une autre année genre 1950, 1975 et 2000 pour voir la différence <em>(voir si le <strong>réchauffement climatique</strong> est percevable chez nous)</em>. Je vais chercher le jeu de données et je refais tout, c'est parti ! En arrivant à mon TCD de 1950 à 2022, je m'aperçois qu'en 1950 nous n'avons les mesures que de 2 stations : L'île d'Yeu, La Mothe Achard. Alors pour faire une comparaison valable, nous allons comparer les températures minimale et maximale sur ces 2 stations en 1950, 1975, 2000 et 2022.</p>
+
+
+
+<p>Voici la comparaison sur le front de mer à L'île d'Yeu :</p>
+
+
+
+
+
+
+
+<p>Et la comparaison à La Mothe Achard plus dans les terres :</p>
+
+
+
+
+
+
+
+<h2>Conclusion et observations</h2>
+
+
+
+<p>De ce travail (d'environ 7 heures en tout), je retiens 2 éléments importants sur l'<strong>open data de Météo France</strong> et l'open data en général. </p>
+
+
+
+<p>Premièrement, <strong>ouvrir les jeux de données à tous et toutes c'est bien, les enrichir avec des explications c'est mieux</strong> <em>(ne serait-ce que la signification des entêtes de colonnes !!!)</em> ! Il me semble absolument essentiel que le mouvement open data ne se contente pas de mettre à disposition des données mais s'assure qu'elles sont compréhensibles par divers publics (et non uniquement les experts comme ici). Pour que la data soit UTILE, il faut d'une part <strong>acculturer les citoyens à son exploitation et fournir une data accessible</strong> / explicite / à jour / cohérente (bref, une <a href="https://www.ccsd.cnrs.fr/principes-fair/" target="_blank" rel="noreferrer noopener">data FAIR</a>).</p>
+
+
+
+<p>Deuxièmement, vous avez pu voir toutes les difficultés auxquelles j'ai fait face dans cette expérience mais à la fin, j'arrive quand même à 2 graphiques sur lesquels il semble bien que le réchauffement climatique soit visible, même dans notre Vendée tempérée <em>(et son micro-climat bien sûr héhé)</em>. Ainsi, alors qu'il existe encore des climato-sceptiques en France, <strong>l'open data météorologique a un rôle immense à jouer</strong> dans la démonstration et surtout l'appréhension du réchauffement climatique. Entre guillemets, s'il y a un type de data à soigner en ce moment, c'est bien la <strong>data scientifique liée au climat</strong> !</p>
+
+
+
+<p><strong><em>Si vous êtes arrivé.es jusqu'ici, bravo et merci :D N'hésitez pas à commenter, à pointer mes erreurs (il y en a certainement) pour que je les corrige, à donner votre avis ou des idées !</em></strong></p>
+
+
+
+<p><p><strong>BONUS :</strong> Voici le <a href="https://docs.google.com/spreadsheets/d/1khjqLgNseM2ZNAbzE_NPWoD_A6NExMvBAbKawvHv2M8/edit?usp=sharing" target="_blank" rel="noreferrer noopener">Google Sheet complet des données météo Vendée</a> avec les droits d'édition (donc faites-en votre propre copie et ne modifiez pas l'original s'il vous plaît) si vous voulez vérifier, vous entraîner, etc.</p></p>
+
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div id="site-info" style="font-size:0.95rem;opacity:0.9;text-align:justify;margin-bottom:1.5rem;max-width:900px;margin-left:auto;margin-right:auto;">
+            <p>Ce blog est une expÃ©rimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h Ã  8h, on Ã©vite le trafic automatisÃ© inutile la nuit tout en valorisant le droit humain Ã  la dÃ©connexion.</p>
+        </div>
+    </footer>
+</body>
+</html>

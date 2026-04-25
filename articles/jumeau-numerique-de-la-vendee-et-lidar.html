@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jumeau numérique de la Vendée et LIDAR | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="../categorie.html?cat=Environnement">ðŸŒ± Environnement</a>
+                <a href="../categorie.html?cat=Data">ðŸ“Š Data</a>
+                <a href="../categorie.html?cat=IA">ðŸ¤– IA</a>
+                <a href="../categorie.html?cat=Low Tech">âš™ï¸ Low Tech</a>
+                <a href="../categorie.html?cat=Solarpunk">â˜€ï¸ Solarpunk</a>
+                <a href="../categorie.html?cat=DÃ©gafamisation">ðŸŒ DÃ©gafamisation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="article-full">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                <a href="../index.html">â† Accueil</a> &nbsp;|&nbsp; Non classÃ© &nbsp;|&nbsp; 2024-03-08
+            </p>
+            <h1>Jumeau numérique de la Vendée et LIDAR</h1>
+            <div class="article-content">
+                
+<p>En 2021, le <strong>programme national LiDAR HD</strong> a été lancé pour créer une cartographie 3D de la France. Ce projet, piloté par l'IGN, permettra de disposer de données 3D relatives au sol et au sur-sol (bâtiments, végétation...) mais encore plus important : ces données seront homogènes, <strong>ouvertes et accessibles à tous !</strong> </p>
+
+
+
+<p>Fin 2023, la Vendée <em>(via l'organisme <a href="http://www.geovendee.fr/accueil" target="_blank" rel="noreferrer noopener">Géo Vendée</a> et le programme vendéen PCRS IMAGE qu'il pilote depuis fin 2022)</em> a été ajoutée au programme et va fournir à l'IGN sa propre cartographie LiDAR HD. Elle ira même plus loin avec <strong>un axe "jumeau numérique et cadastre solaire HD"</strong> pour lequel la Banque des Territoires attribuera une subvention de 1 200 000€ (<a href="https://www.maisondescommunes85.fr/actualites/expertise-donnee-au-service-territoire" target="_blank" rel="noreferrer noopener">source</a>).</p>
+
+
+
+<h2>Pourquoi cartographier avec le LIDAR ?</h2>
+
+
+
+
+
+
+
+<p>Vous n'avez peut-être jamais entendu parler de la <strong>technologie LIDAR</strong> et pourtant, elle est déjà présente un peu partout (notamment sur l'iPhone 12) pour mesurer des distances ou scanner un objet en 3D. Le principe est assez simple dans le cas de la <strong>cartographie LIDAR</strong> : un avion/drone équipé d'un scanner laser survole un espace et le scanner envoie des impulsions infrarouges à haute fréquence qui viennent se cogner contre les surfaces des bâtiments, du sol, des objets, des arbres, etc. Puis, il calcule les distances en fonction du délai de retour de l'impulsion et génère ainsi un nuage de points 3D représentant chaque objet. Couplé à la position satellite de l'avion, on peut ainsi <strong>cartographier très finement n'importe quel environnement extérieur</strong> (cf. schéma à droite).</p>
+
+
+
+<p>Ce <strong>travail de cartographie au Lidar</strong> va donc permettre d'avoir une vue très fine de ce qui compose le sol et le sur-sol de la Vendée et sera doublé d'un <strong>traitement par intelligence artificielle</strong> pour classifier chaque point : bâti, sol, végétation, etc. C'est un outil indispensable, surtout couplé à un jumeau numérique, même si je me pose quelques petites questions sur sa mise à jour dans le temps et sur la durée d'exactitude des informations relevées...</p>
+
+
+
+<h2>A quoi servira un jumeau numérique ?</h2>
+
+
+
+<p>Et bien c'est tout l'intérêt de collecter des données de qualité sur un territoire (ou autre chose, une machine industrielle, un processus) : pouvoir <strong>créer un jumeau virtuel</strong> correspondant le plus possible à la réalité afin de pouvoir étudier, prototyper, expérimenter, tester sans toucher à l'existant. On peut <strong>ajouter à la cartographie des jeux de données</strong> sur plein de processus urbains : éclairage public, réseau routier, espaces de végétation, matériaux des bâtiments, dates de construction, réseau d'eau, d'énergie... le tout plus ou moins dynamique (mis à jour automatiquement) en fonction des technos et APIs utilisées. En créant un <strong>jumeau numérique de la Vendée</strong>, nous allons disposer d'un modèle très précis, riche d'enseignements et sur lequel nous pourrons tester les futures politiques publiques locales. </p>
+
+
+
+<p>En plus, la création d'un jumeau numérique permet très souvent de <strong>"désiloter" la donnée et les services</strong> des collectivités territoriales ou des villes (qui ont tendance à fonctionner en "silos" et à ne pas se passer forcément les données ou qui ne sont pas habitués à travailler ensemble). Cela permet aux équipes des territoires de travailler sur un référentiel commun et des données homogènes.</p>
+
+
+
+<p>Les <strong>jumeaux numériques et la cartographie LIDAR</strong> peuvent servir à tester de nombreuses solutions et politiques publiques, je voulais juste vous en donner quelques exemples concrets :</p>
+
+
+
+<p>
+<p>Simuler l'impact environnemental et visuel de nouveaux projets immobiliers avant construction</p>
+
+
+
+<p>Modéliser l'impact de différents scénarios d'urbanisation (circulation, nuisances, etc.)</p>
+
+
+
+<p>Optimiser la planification de nouveaux axes de transport, réseaux d'énergie, de telecoms, etc.</p>
+
+
+
+<p>Mieux gérer certains risques naturels en cartographiant les zones à risques (inondations, glissements de terrain, feux de forêts, etc.), étudier les causes possibles et tester des solutions</p>
+
+
+
+<p>Analyser la température dans les espaces urbanisés pour détecter les ICU (ilôts de chaleur urbains) et tester différents scénarios pour les faire disparaître (revégétalisation, albedo des bâtiments, points d'eau...), idem pour la qualité de l'air, de l'eau grâce aux capteurs connectés.</p>
+</p>
+
+
+
+<figcaption><em>Exemple du jumeau numérique avec cartographie 3D de Rennes</em></figcaption>
+
+
+
+<h2>Et à quoi servira un cadastre solaire de la Vendée ?</h2>
+
+
+
+<p>Le <strong>cadastre solaire</strong> est sans doute l'un des plus beaux exemples de l'utilité d'une cartographie et d'un jumeau numérique. Il s'agit d'avoir une vue globale de toutes les toitures disponibles, de calculer <em>(en fonction de leur nature, de leur taille, de leur inclinaison, de la météo locale, des ombrages, etc.)</em> un indice de rentabilité solaire pour chacune, et de les représenter sur le cadastre solaire pour <strong>voir où nous avons intérêt à installer des panneaux solaires</strong>. Voici une illustration tirée de la maisondescommunes85.fr :</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>Quelques <strong>cadastres solaires</strong> existent déjà, notamment pas loin <strong>à Nantes</strong>. Ils y ont d'ailleurs ajouté <strong>un excellent outil d'estimation de la rentabilité</strong> que je dois absolument vous montrer. Quel meilleur moyen de convaincre d'installer des panneaux solaires que de calculer directement en combien de temps ils seront amortis et ce qu'ils rapporteront ensuite ? J'ai choisi une grande toiture facilement reconnaissable et sur laquelle, a priori, il n'y a pas de panneaux photovoltaïques pour le moment : le centre commercial de Beaulieu &gt;&gt;</p>
+
+
+
+<p>Voici <strong>à quoi ressemble le cadastre solaire de Nantes</strong> :</p>
+
+
+
+
+
+
+
+<p>Je sélectionne ma toiture, des informations résumées s'affichent puis je clique sur le bouton Estimer :</p>
+
+
+
+
+<figure>
+</figure>
+
+
+
+<p>Ainsi, le centre commercial de Beaulieu dispose de 44 000 m² de toiture dont 629m² ont un excellent potentiel solaire et 31 255m² un bon potentiel. Pour être raisonnable (car au-delà de 500 kWc, on part sur un autre type d'installation plus coûteux), je n'ai pris que 2627 m² où mettre des panneaux solaires, ce qui représente un investissement d'un peu plus de 600 000€ (certes). En revendant cette électricité, générée sans aucune matière fossile, à EDF, mon investissement sera amorti au bout de 9 ans. <strong>Au bout de 20 ans, j'aurai même payé les panneaux et généré quasi 700 000€ supplémentaires ! Au passage, j'aurai évité l'émission de 45 tonnes de CO² chaque année soit 900 tonnes au bout de 20 ans :D.</strong> </p>
+
+
+
+<p>Bien sûr, les vrais calculs seraient sans doute un peu plus complexes que cette estimation mais c'est pour vous montrer <strong>comment un cadastre solaire peut servir d'indicateur et d'incitation à protéger l'environnement tout en devenant une opportunité financière</strong> dans certains cas.</p>
+
+
+
+<h2>Excellent, ça arrive quand ?</h2>
+
+
+
+<p>Le début de la production était prévu début janvier 2024. Une <strong>journée d'information sera organisée le 28 mars 2024 pour les élus</strong> pour leur expliquer le déploiement du <strong>jumeau numérique vendéen</strong> et du cadastre solaire. Joints par téléphone, Géo Vendée m'a confirmé qu'il s'agissait bien d'une journée réservée aux élus <em>(pas moyen d'y glisser un oeil, zut)</em> et qu'ils communiqueraient par la suite sur la mise en œuvre. Quant au projet national LiDAR HD, sa conclusion est prévue pour 2025.</p>
+
+
+
+<p><strong><em>Si vous avez des infos en plus ou si vous avez la chance d'aller à la journée d'information du 28 mars, n'hésitez pas à m'en parler en commentaires ou directement par e-mail ;)</em></strong></p>
+
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div id="site-info" style="font-size:0.95rem;opacity:0.9;text-align:justify;margin-bottom:1.5rem;max-width:900px;margin-left:auto;margin-right:auto;">
+            <p>Ce blog est une expÃ©rimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h Ã  8h, on Ã©vite le trafic automatisÃ© inutile la nuit tout en valorisant le droit humain Ã  la dÃ©connexion.</p>
+        </div>
+    </footer>
+</body>
+</html>

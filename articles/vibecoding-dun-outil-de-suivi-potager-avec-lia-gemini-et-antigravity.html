@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibecoding d'un outil de  suivi potager avec l'IA Gemini et Antigravity | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="../categorie.html?cat=Environnement">ðŸŒ± Environnement</a>
+                <a href="../categorie.html?cat=Data">ðŸ“Š Data</a>
+                <a href="../categorie.html?cat=IA">ðŸ¤– IA</a>
+                <a href="../categorie.html?cat=Low Tech">âš™ï¸ Low Tech</a>
+                <a href="../categorie.html?cat=Solarpunk">â˜€ï¸ Solarpunk</a>
+                <a href="../categorie.html?cat=DÃ©gafamisation">ðŸŒ DÃ©gafamisation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="article-full">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                <a href="../index.html">â† Accueil</a> &nbsp;|&nbsp; Non classÃ© &nbsp;|&nbsp; 2026-03-21
+            </p>
+            <h1>Vibecoding d'un outil de  suivi potager avec l'IA Gemini et Antigravity</h1>
+            <div class="article-content">
+                
+<p>
+<p>
+<p>Le printemps arrive et avec lui, cette sensation familière : je regarde mes bacs, ma serre improvisée contre ma fenêtre la plus ensoleillée, je sais vaguement que j'ai semé des poivrons la semaine dernière, je ne sais plus exactement lesquels, je ne me souviens plus si j'ai raté mon repiquage l'an passé sur la variété Yag Bibberi, et mes dizaines de notes sur des post-it sont perdues au fond d'un tiroir. Bref, un chaos "organisé" comme beaucoup de jardiniers amateurs connaissent.</p>
+</p>
+
+
+
+
+</p>
+
+
+
+<p>L'idée m'est donc venue : et si je créais <strong>un outil de suivi potager sur mesure</strong>, exactement adapté à ma façon de jardiner, à mes bacs surélevés, à mes variétés ? Pas une application générique avec des fonctionnalités dont je n'ai pas besoin. Mon outil, pour mon jardin. N'étant pas développeuse mais me débrouillant en html/css/js et surtout en gestion de projet web, j'ai voulu de nouveau tester le vibecoding avec l'intelligence artificielle (cf. <a href="https://capnum.io/comparaison-des-modeles-agricoles/">article précédent sur un comparateur de modèles agricoles</a>).</p>
+
+
+
+<figcaption>Mon potager l'année dernière ! Bacs A, B, C, D</figcaption>
+
+
+
+<h2>Étape 1 : Poser les bases avec Gemini</h2>
+
+
+
+<p>Tout a commencé avec Gemini, le modèle d'IA de Google. Je lui ai <strong>décrit mon besoin en langage naturel (avec mes mots quoi)</strong> : je veux suivre mes semis, savoir quand repiquer, où j'ai planté quoi, pouvoir consulter des fiches semences, etc. J'ai demandé une application web simple, sans serveur, qui stocke tout localement.</p>
+
+
+
+<p>Ce que Gemini m'a produit était déjà surprenant : une architecture cohérente en HTML, CSS et Javascript, avec deux fichiers JSON pour stocker les données <em>(semences.json et journal.json)</em>. Un <em>dictionnaire botanique</em> contenant les règles propres à chaque plante (durée de vie d'une graine, nb de jours avant levée, repiquage, profondeur à laquelle semer, besoins en eau...), et un <em>journal de bord</em> dans lequel chaque action est consignée brute ("Le 12 mars, semé 4 graines de tomates en serre intérieure").</p>
+
+
+
+<p>La base fonctionnait. Elle était rustique, parfois incohérente dans ses interfaces, mais elle tenait debout. Ah oui important, je la voulais en mobile-first dark mode afin de pouvoir la consulter dans le jardin sur mon smartphone.</p>
+
+
+
+<p>
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+<h2>Étape 2 : Personnaliser avec Antigravity</h2>
+
+
+
+<p>Tous ces fichiers, je les ai mis sur un repository GitHub et activé GitHub Pages afin de pouvoir ouvrir l'outil sur mon navigateur (qu'il ait une URL). Mais il faut bien se dire qu'à chaque fois que je voulais améliorer quelque chose ou réparer un bug, je devais recopier le code généré par Gemini dans chaque fichier concerné, faire les commit, attendre les push, bref ça prend du temps (sans compter que l'IA, avec sa mémoire limitée, oublie des trucs, génère des incohérences, etc.). C'était très intéressant et utile pour concevoir la base, l'architecture, mais pour la faire évoluer je suis passée sur Antigravity.</p>
+
+
+
+<p><a href="https://antigravity.google/" target="_blank" rel="noreferrer noopener">Antigravity </a>est ce qu'on appelle un <strong>outil de <em>vibecoding</em></strong> : on lui donne des instructions en langage naturel et il modifie le code directement. Il a une bien meilleure mémoire puisqu'on travaille dans un "workspace" (un environnement de travail avec des plans d'implémentation, etc.). Il nécessite un peu de configuration au début pour le relier à GitHub afin qu'il puisse faire lui-même les commit et les push mais ça vaut le coup. J'ai pu affiner les fonctionnalités une par une, en décrivant des besoins très précis ancrés dans ma réalité de jardinière amateure. Par exemple :</p>
+
+
+
+<h3>La gestion spatiale des bacs</h3>
+
+
+
+<p>
+<p>
+<p>L'application sait <em>où sont mes plantes</em> en temps réel. Je crée juste une note via un module bien fait en page d'accueil quand je sème, repique, plante quelque part. L'appli relit tout l'historique du journal et calcule l'état actuel du bac. Si j'ai semé en serre intérieure puis planté au Bac A, elle affiche les plantules dans le bon emplacement et vide automatiquement la serre. Et si je vais faire une erreur d'association dans un bac précis (mettre des betteraves avec des tomates, par exemple), elle m'alerte avant que je fasse la bêtise (l'encart rouge Alerte compagnonnage).</p>
+</p>
+
+
+
+
+</p>
+
+
+
+<h3>L'agenda "générateur de missions"</h3>
+
+
+
+<p>Ce n'est pas un calendrier classique où on note des choses. <strong>C'est un moteur qui calcule</strong>. Dès qu'un semis est enregistré, il regarde les caractéristiques de la plante, estime la date de repiquage, projette la récolte, et affiche ces tâches au bon moment. J'ai même intégré une sorte de "<strong>Loi du Samedi</strong>" : si une tâche tombe en semaine, elle est automatiquement repoussée au week-end parce que perso j'ai pas du tout le temps de m'occuper du potager chaque jour. </p>
+
+
+
+
+
+
+
+<p>S'il peut calculer tout ça, c'est aussi parce que le json des semences est très fourni et précis :</p>
+
+
+
+<p>
+<p>
+<p><strong>Pour CHAQUE semence, on retrouve :</strong></p>
+
+
+
+<p>
+<p>Identifiant système unique</p>
+
+
+
+<p>Nom commun de la plante</p>
+
+
+
+<p>Variété spécifique</p>
+
+
+
+<p>Famille botanique</p>
+
+
+
+<p>Provenance (où je l'ai achetée/collectée)</p>
+
+
+
+<p>Durée de conservation germinative</p>
+
+
+
+<p>Description courte</p>
+
+
+
+<p>Nombre de jours avant germination (levée)</p>
+
+
+
+<p>Nombre de jours avant repiquage</p>
+
+
+
+<p>Nombre de jours avant plantation</p>
+
+
+
+<p>Nombre de jours avant maturité globale</p>
+
+
+
+<p>Exposition solaire recommandée</p>
+
+
+
+<p>Besoin en arrosage</p>
+
+
+
+<p>Style de semis conseillé</p>
+
+
+
+<p>Profondeur exacte de semis</p>
+
+
+
+<p>Plage de température de levée</p>
+
+
+
+<p>Distance entre plants sur rang</p>
+
+
+
+<p>Distance minimale entre rangs</p>
+
+
+
+<p><strong>DATE IDEALE DE SEMIS/PLANTATION en fonction de ma localisation en Vendée</strong></p>
+
+
+
+<p>Liste des soins spécifiques (maladies, tuteurs)</p>
+
+
+
+<p>Liste des plantes compagnes</p>
+
+
+
+<p>Liste des plantes ennemies </p>
+
+
+
+<p>Intitulé d'une tâche d'entretien récurrente</p>
+
+
+
+<p>Délai cible de cette tâche</p>
+
+
+
+<p>Point de départ du délai (levée ou plantation)</p>
+
+
+
+<p>Fréquence de répétition de cette tâche</p>
+
+
+
+<p>Nombre d'apparitions de la tâche</p>
+
+
+
+<p>Texte conseil spécifique au semis local</p>
+
+
+
+<p>Historique annuel des récoltes menées</p>
+</p>
+</p>
+
+
+
+<p>
+
+
+
+
+<p>Et franchement, c'est pas trop bien présenté et clair ??? J'adore cette fiche semence :-).</p>
+
+
+
+<p>Et la cerise sur le gâteau, c'est vraiment cette Date idéale de semis/plantation qui est a été calculée en fonction de notre climat local (parce que selon si on est à Toulouse à Brest, c'est quand même pas la même chose !).</p>
+</p>
+</p>
+
+
+
+<h3>L'architecture "low-tech" pensée à l'avance</h3>
+
+
+
+<p>Alors même si je dois avouer que c'est plus par flemme et pingrerie que je n'ai pas pris un vrai hébergement et créé une appli avec base de données PHP, j'aime beaucoup le fait que l'outil <strong>ne nécessite aucun serveur. Elle est 100% frontend</strong> et utilise le répertoire GitHub comme base de données silencieuse (via un jeton secret ou "token"). Toutes les données tiennent dans de simples fichiers html/css/json <em>(et quelques .md d'information et quelques icônes .png)</em>, le tout pour <strong>un POIDS TOTAL de 800 Ko</strong> <em>(moins qu'une photo hd sur votre PC)</em> !!! C'est gratuit, résilient <em>(j'ai le code en local sur le PC et dans le cloud sur GitHub, synchronisés)</em>, et les données m'appartiennent entièrement <em>(même s'il n'y a aucune donnée personnelle ou sensible dessus)</em>.</p>
+
+
+
+<h3>Les autres fonctionnalités très cool</h3>
+
+
+
+<p>
+<p><strong>L'encart météo</strong> : intégration d'une météo locale (API Météo France avec données de météo agricole) et alertes risque de gel, sécheresse</p>
+
+
+
+<p><strong>L'Action Express </strong>: module tableau de bord avec menus déroulants simples pour dicter une action rapidement, sans passer par des formulaires longs</p>
+
+
+
+<p><strong>Le widget "Levées sous surveillance" </strong>: suivi isolé des graines en cours de germination, séparé de l'agenda pour ne pas polluer la vue quotidienne</p>
+</p>
+
+
+
+
+
+
+
+<p>
+<p><strong>Le bilan de fin de saison</strong> : onglet permettant de remonter le temps et de comparer les réussites et les échecs d'une saison à l'autre</p>
+
+
+
+<p><strong>Le petit lexique</strong> de termes techniques : en poquet, buttage, etc.</p>
+
+
+
+<p><strong>Le bilan des récoltes</strong> qui se calcule automatiquement à la fin de la saison (je crée une action via le module Action Express quand je récolte pour dire combien j'en récolte bien sûr)</p>
+
+
+
+<p><strong>L'ajout possible de photos</strong> aux notes <strong>AVEC un petit moteur de compression </strong>des images car nos smartphones prennent des photos beaucoup trop grandes et lourdes pour l'usage que j'en fais ici</p>
+
+
+
+<p><strong>L'installation en app native</strong> : l'outil s'installe comme une vraie application sur téléphone (via un fichier <code>manifest.json</code>), sans passer par un store</p>
+</p>
+
+
+
+<p>
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+<h2>Ce que l'IA rend vraiment possible</h2>
+
+
+
+<p>Soyons honnêtes sur ce que cette expérience démontre. <strong>L'IA m'a permis de créer un outil fonctionnel que je n'aurais jamais eu le temps ni les compétences de coder seule</strong>. La barrière d'entrée technique a clairement baissé, et le résultat final ressemble vraiment à ce que j'avais en tête. Mieux, j'ai parfois demandé à l'IA si elle pensait à des fonctionnalités utiles auxquelles je n'aurais pas pensé, c'est comme ça qu'est né l'encart météo agricole locale.</p>
+
+
+
+<p>Ce qui m'a le plus frappé, c'est la capacité à traduire un cas d'usage précis en code. Décrire <em>"je veux que l'application reporte les tâches  au samedi"</em> et obtenir une implémentation fonctionnelle en quelques minutes, c'est quelque chose d'assez vertigineux quand on vient d'un monde où ça aurait pris des heures de codage, de revue de code, de tests, de commentaire <em>(oui parce que l'IA commente son code et aussi ses commit github et ça c'est très très cool)</em>.</p>
+
+
+
+<h2>Les limites, et elles sont importantes</h2>
+
+
+
+<p>Mais il faut être tout aussi honnête sur ce que ce type d'expérience n'est pas.</p>
+
+
+
+<p>Mon outil potager est un outil <strong>personnel</strong>, pour un seul utilisateur, sur un seul jardin, avec des données que je contrôle entièrement. Il n'a pas besoin d'être sécurisé, d'être audité, de passer à l'échelle ou de gérer plusieurs comptes.</p>
+
+
+
+<p><strong>Si ce même outil devait devenir une application grand public, les difficultés techniques seraient d'un ordre de grandeur complètement différent.</strong> Il faudrait une vraie gestion des utilisateurs avec authentification sécurisée, une base de données partagée et robuste, une politique de confidentialité des données, une infrastructure capable d'encaisser de la charge, des tests de régression pour ne pas casser les fonctionnalités existantes à chaque mise à jour... Autant de sujets où le vibecoding atteint vite ses limites et où l'expertise d'un vrai développeur devient indispensable. <strong>Pour moi, l'IA codeuse reste donc un assistant de prototypage ou de création d'applis persos.</strong></p>
+
+
+
+<p>L'IA a rendu accessible la création d'outils personnalisés à des non-développeurs comme moi. C'est une révolution réelle pour les usages personnels et les petits prototypes. Elle ne remplace pas pour autant l'ingénierie logicielle quand les enjeux montent. <strong>Et ne nous leurrons pas, même comme ça, il faut avoir une bonne culture du code et une expérience minimale d'ingénierie projet web pour penser les fonctionnalités à partir du cas utilisateur</strong>. Antigravity est meilleur que Gemini pour voir "la vue d'ensemble" et préserver A PEU PRES la cohérence du projet (ça ne l'a pas empêché de faire des bourdes, des impensés genre les formulaires de modification dont les champs ne correspondent pas à la fiche modifiée).</p>
+
+
+
+<p><em><strong>Combien de temps ça prend ?</strong> La première version avec l'aide de Gemini m'a pris 6 à 7 heures, puis les améliorations avec Antigravity une dizaine d'heures max, soit moins de 20H de travail en tout.</em></p>
+
+
+
+<p><strong>Quoiqu'il en soit, mon outil de suivi potager fonctionne parfaitement pour ce qu'il est : une extension de ma mémoire qui m'évite de multiplier les post-its perdus, taillée sur mesure, qui fait exactement ce dont j'ai besoin et rien d'autre et que je peux faire évoluer si j'ai de nouvelles idées ou de nouveaux besoins. Et pour ça, je le trouve fascinant.</strong></p>
+
+
+
+<p>Bonus : Comme d'habitude, si vous voulez cloner mon repo github pour avoir tout le code et l'adapter à vos besoins ou en faire l'appli payante de demain, c'est par ici gratuitement (licence GNU General Public License v3.0): <a href="https://github.com/Frugman/potager" target="_blank" rel="noreferrer noopener">https://github.com/Frugman/potager</a></p>
+
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div id="site-info" style="font-size:0.95rem;opacity:0.9;text-align:justify;margin-bottom:1.5rem;max-width:900px;margin-left:auto;margin-right:auto;">
+            <p>Ce blog est une expÃ©rimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h Ã  8h, on Ã©vite le trafic automatisÃ© inutile la nuit tout en valorisant le droit humain Ã  la dÃ©connexion.</p>
+        </div>
+    </footer>
+</body>
+</html>

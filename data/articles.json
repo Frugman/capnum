@@ -1,15 +1,536 @@
 {
-  "articles": [],
-  "categories": [
-    "Environnement",
-    "Data",
-    "IA",
-    "Low Tech",
-    "Solarpunk",
-    "Dégafamisation"
-  ],
-  "site_metadata": {
-    "total_weight_kb": 0,
-    "last_updated": ""
-  }
+    "categories":  [
+                       "Environnement",
+                       "Data",
+                       "IA",
+                       "Low Tech",
+                       "Solarpunk",
+                       "DÃ©gafamisation"
+                   ],
+    "articles":  [
+                     {
+                         "id":  "quest-ce-que-la-data-synthetique",
+                         "title":  "Qu\u0027est-ce que la data synthétique ?",
+                         "date":  "2024-01-09",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\n\n\n\n\u003cp\u003eLe mot \"synthétique\" est utilisé ici dans le sens du mot anglais \"synthetic\", c\u0027est-à-dire \"faux, simulé\" (comme un tissu synthétique), et non dans le sens français de \"synthèse, résumé\".\u003c/p\u003e\n",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "houston-weve-got-a-data-problem",
+                         "title":  "Houston, we\u0027ve got a data problem...",
+                         "date":  "2023-10-19",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\n\n\n\n\u003cp\u003e1993, la NASA lance le programme spatial Mars Surveyor pour mieux connaître le climat martien à l\u0027aide de sondes Viking. L\u0027une d\u0027elle, Mars Climate Orbiter (MCO) est lancée de Cap Canaveral en",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "data-que-cultive-t-on-ici",
+                         "title":  "Data agricole \"que cultive-t-on ici ?\"",
+                         "date":  "2024-02-06",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eVous êtes-vous jamais demandé ce qui était \u003cstrong\u003ecultivé dans les champs autour de chez vous\u003c/strong\u003e ? Toutes les cultures ne sont pas forcément reconnaissables même à pleine croissance. Et sur",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "rapport-ademe-low-tech-2022",
+                         "title":  "Rapport ADEME Low Tech 2022",
+                         "date":  "2024-02-06",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eSource : \u003ca href=\"https://librairie.ademe.fr/consommer-autrement/5421-demarches-low-tech.html\" target=\"_blank\" rel=\"noreferrer noopener\"\u003ehttps://librairie.ademe.fr/consommer-autrement/5421-demarch",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "la-convivialite-ivan-illich-1973",
+                         "title":  "La Convivialité, Ivan Illich 1973",
+                         "date":  "2024-02-06",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eLu en 2023, 50 ans après sa première publication, extraordinaire !\u003c/p\u003e\n\n\n\n\u003cp\u003e\u003cstrong\u003eRésumé : \u003c/strong\u003e\u003c/p\u003e\n\n\n\n\u003cp\u003eLes crises actuelles et à venir sont le résultat d’\u003cstrong\u003eun système industrialis",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "tuto-premiere-plongee-dans-lopen-data",
+                         "title":  "Tuto Première plongée dans l\u0027open data",
+                         "date":  "2024-02-07",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eParfois, je me dis que vous connaissez peut-être le terme \"open data\" mais que vous n\u0027avez peut-être jamais osé aller \u003cstrong\u003echercher un jeu de données et plonger dedans pour l\u0027interpréter et y t",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "chatgpt-4-0-analyse-un-jeu-de-donnees",
+                         "title":  "ChatGPT 4.0 analyse un jeu de données",
+                         "date":  "2024-02-08",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eDans cet \u003ca href=\"https://capnum.io/tuto-premiere-plongee-dans-lopen-data/\"\u003earticle tutoriel\u003c/a\u003e, je vous montrais comment trouver et explorer votre premier jeu de données en open data jusqu\u0027à fai",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "project-drawdown-explique-en-francais",
+                         "title":  "PROJECT DRAWDOWN - Expliqué en français",
+                         "date":  "2024-02-09",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eLe \u003cstrong\u003eProject Drawdown\u003c/strong\u003e réunit depuis 2017 de nombreuses ressources sur les solutions climatiques pouvant être déployées pour arriver au point futur où les émissions de CO² dans l\u0027atm",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "tuto-creer-une-carte-osm-avec-un-jeu-dopen-data",
+                         "title":  "Tuto - Créer une carte OSM avec un jeu d\u0027open data",
+                         "date":  "2024-02-14",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eCe soir, je crée ma première \u003cstrong\u003ecartographie open data\u003c/strong\u003e en utilisant l\u0027outil gratuit open source Framacarte.org et un \u003ca href=\"https://www.data.gouv.fr/fr/datasets/sre-eolien-terrestr",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "ia-en-vendee-je-teste-mia-de-rendi-renda",
+                         "title":  "IA en Vendée - Je teste Mia de Rendi Renda",
+                         "date":  "2024-02-17",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eEn cherchant des \u003cstrong\u003eactualités sur l\u0027intelligence artificielle en Vendée\u003c/strong\u003e, je suis tombée sur un article de presse présentant Mia, l\u0027assistant pour PME de la société Rendi Renda boost",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "faire-commun-face-au-desastre",
+                         "title":  "Faire commun face au désastre",
+                         "date":  "2024-02-25",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eLors d\u0027un entretien avec Mediapart en 2020, la philosophe Isabelle Stengers décrit un monde actuel si complexe et intriqué qu\u0027il revient à déresponsabiliser chacun. Sa proposition est de \u003cstrong\u003er",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "test-doutils-ia-gen-et-ocr-sur-un-texte-manuscrit",
+                         "title":  "Test d\u0027outils IA gen et OCR sur un texte manuscrit",
+                         "date":  "2024-02-26",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eMa mère m\u0027a prêté le mémoire que mon arrière-grand-père, instituteur en Vendée, a remis pour son certificat de fin d\u0027études normales dans les années 1920s. Elle connaît mon intérêt pour les agricu",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "irruption-de-gaia-et-representation-de-la-zone-critique",
+                         "title":  "Irruption de Gaïa et représentation de la zone critique",
+                         "date":  "2024-02-27",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003e\u003cem\u003e\u003cstrong\u003eMise à jour 06/03/2024 : les infographies à la fin ont été modifiées suite à vos retours !\u003c/strong\u003e\u003c/em\u003e\u003c/p\u003e\n\n\n\n\u003cp\u003eS\u0027il y a bien \u003cstrong\u003eun concept irradiant toute la question écologiq",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "carte-de-la-permaculture-en-vendee",
+                         "title":  "Carte de la permaculture en Vendée",
+                         "date":  "2024-03-06",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003ePas moyen de trouver un annuaire, une liste, un réseau et encore moins \u003cstrong\u003eune carte de la permaculture en Vendée en ligne\u003c/strong\u003e. Fermes agroécologiques, forêts nourricières, vergers circul",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "jumeau-numerique-de-la-vendee-et-lidar",
+                         "title":  "Jumeau numérique de la Vendée et LIDAR",
+                         "date":  "2024-03-08",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eEn 2021, le \u003cstrong\u003eprogramme national LiDAR HD\u003c/strong\u003e a été lancé pour créer une cartographie 3D de la France. Ce projet, piloté par l\u0027IGN, permettra de disposer de données 3D relatives au sol ",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "espoirs-portes-par-la-low-tech",
+                         "title":  "Espoirs portés par la LOW-TECH",
+                         "date":  "2024-03-18",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\n\n\n\n\u003cp\u003eDepuis plusieurs années, je suis attentivement le développement du \u003cstrong\u003emouvement low-tech\u003c/strong\u003e en France et dans le monde. Cela me fait penser à cette période encore récente où de nomb",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "donnees-agrometeorologiques-la-meteo-en-open-data",
+                         "title":  "Données agrométéorologiques, la météo en open data",
+                         "date":  "2024-03-21",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\n\n\n\n\u003cp\u003eBonne nouvelle ! Depuis le 1er janvier 2024, on accède gratuitement aux \u003cstrong\u003edonnées publiques de Météo France\u003c/strong\u003e sur \u003ca href=\"https://meteo.data.gouv.fr/\" target=\"_blank\" rel=\"norefe",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "pour-ou-contre-nouvelle-centrale-photovoltaique-a-la-roche-sur-yon",
+                         "title":  "Pour ou Contre : Nouvelle centrale photovoltaïque à La Roche-sur-Yon",
+                         "date":  "2024-03-25",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eUne \u003cstrong\u003enouvelle centrale photovoltaïque\u003c/strong\u003e est prévue sur le lieu-dit de \"La Noue\" \u003cstrong\u003eà La Roche-sur-Yon en Vendée\u003c/strong\u003e, l\u0027occasion de se faire une idée des \u003cstrong\u003eavantages/i",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "sinspirer-avec-lia-episode-1",
+                         "title":  "Trouver l\u0027inspiration avec l\u0027IA gen - Episode 1",
+                         "date":  "2024-03-28",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eCela fait presque deux ans que j\u0027ai rédigé mon premier prompt d\u0027\u003cstrong\u003eIA générative\u003c/strong\u003e. Que ce soit avec Midjourney, ChatGPT Dall-E, Stable Diffusion ou d\u0027autres, j\u0027ai adoré créer des imag",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "comment-ameliorer-les-jeux-dopen-data",
+                         "title":  "Comment améliorer les jeux d\u0027open data ?",
+                         "date":  "2024-08-02",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eAlors qu\u0027on invite les professionnels et les citoyens à \u003cstrong\u003es\u0027emparer de l\u0027open data\u003c/strong\u003e, les \u003cstrong\u003ejeux de data disponibles\u003c/strong\u003e sont-ils vraiment de qualité et prêts-à-l\u0027emploi ? ",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "lia-pour-traquer-les-fuites-de-methane",
+                         "title":  "L\u0027IA pour traquer les fuites de méthane",
+                         "date":  "2024-04-15",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eQuand je lis ce genre de titre, je suis d\u0027abord intéressée par la technique \"mais \u003cstrong\u003ecomment fait l\u0027intelligence artificielle pour détecter les fuites de méthane\u003c/strong\u003e avec les satellites ",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "trouver-linspiration-avec-lia-gen-episode-2",
+                         "title":  "Trouver l\u0027inspiration avec l\u0027IA gen - Episode 2",
+                         "date":  "2024-05-06",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eDans le \u003ca href=\"https://capnum.io/sinspirer-avec-lia-episode-1/\"\u003e1er épisode\u003c/a\u003e, je vous ai montré comment \u003cstrong\u003eutiliser l\u0027IA générative (Dall-E, Midjourney) pour trouver de l\u0027inspiration\u003c/st",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "manuel-solarpunk",
+                         "title":  "Manuel Solarpunk - PDF gratuit",
+                         "date":  "2024-11-28",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003e\u003cem\u003e\u003cstrong\u003eMise à jour 15 Novembre 2024 : Enfin la version finalisée est en ligne !\u003c/strong\u003e\u003c/em\u003e\u003c/p\u003e\n\n\n\n\u003cp\u003eIl y a déjà longtemps que je suis le \u003cstrong\u003emouvement \"Solarpunk\"\u003c/strong\u003e.  Le solarp",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "je-prototype-un-four-solaire-type-box-1-2",
+                         "title":  "Je prototype un four solaire type box 1/2",
+                         "date":  "2024-09-28",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eOui, il y aura 2 épisodes parce que le \u003cstrong\u003eprototype de four solaire\u003c/strong\u003e est terminé mais pas encore testé. Si ça se trouve, ça fera pshiit ! ou ça brûlera ! ou il ne se passera rien ! Br",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "je-prototype-un-four-solaire-type-box-2-2",
+                         "title":  "Je prototype un four solaire type box 2/2",
+                         "date":  "2024-10-10",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eVoici l\u0027épisode 2 de ce \u003cstrong\u003eprojet personnel de four solaire\u003c/strong\u003e, n\u0027hésitez pas à lire l\u0027épisode 1 sur la \u003ca href=\"https://capnum.io/je-prototype-un-four-solaire-type-box-1-2/\"\u003efabricatio",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "data-et-carte-mondiale-de-la-biodiversite",
+                         "title":  "Data et carte mondiale de la biodiversité",
+                         "date":  "2024-11-01",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eMaxime Blondeau est décidément LE cosmographe à suivre sur Linkedin \u003e \u003ca href=\"https://www.linkedin.com/in/maxime-blondeau-a71b6521/\" target=\"_blank\" rel=\"noreferrer noopener\"\u003eson profil\u003c/a\u003e. C\u0027es",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "auto-entrepreneurs-aucune-obligation-rse",
+                         "title":  "2,7 millions d\u0027auto-entrepreneurs et aucune obligation RSE ?",
+                         "date":  "2024-11-27",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eEn testant l\u0027\u003ca href=\"https://portail-rse.beta.gouv.fr/simulation\" target=\"_blank\" rel=\"noreferrer noopener\"\u003eoutil de simulation du Portail RSE\u003c/a\u003e avec mon numéro de SIREN, je découvre sans surpr",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "ecrire-un-guide-de-lecotudiant-avec-lia",
+                         "title":  "Ecrire un guide de l\u0027écotudiant avec l\u0027IA",
+                         "date":  "2024-12-01",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eTout part d\u0027un petit post Instagram où une étudiante explique les gestes écologiques qu\u0027elle a mis en place pour réduire ses déchets. Je me dis \u003cem\u003e\"mais moi aussi, j\u0027ai une super nièce qui commen",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "je-nai-pas-reussi-a-ecrire-un-article-et-voeux",
+                         "title":  "Je n\u0027ai pas réussi à écrire un article (et vœux)",
+                         "date":  "2025-01-04",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eC\u0027est samedi et, après avoir fait un millier de choses pendant cette semaine de vacances, dont préparer un réveillon pour 15 personnes, je m\u0027aperçois que je n\u0027ai pas écrit de nouvel article depuis",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "reperer-les-fuites-deau-grace-aux-chiens-et-a-lintelligence-artificielle",
+                         "title":  "Repérer les fuites d\u0027eau grâce aux chiens et à l\u0027intelligence artificielle",
+                         "date":  "2025-01-12",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eComme quoi, il faut toujours se laisser aller à la curiosité. Quelqu\u0027un a suivi mon compte Linkedin aujourd\u0027hui et comme il y avait \"cyno\" dans son métier (=chien), j\u0027ai voulu jeter un coup d\u0027œil ",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "ia-generative-vera-whatsapp",
+                         "title":  "L\u0027IA gen s\u0027incruste sur ton whatsapp !",
+                         "date":  "2025-01-15",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eCe midi, monsieur mon mari arrive et demande à son smartphone si la Terre est plate... Un peu surprise, je lui demande ce qu\u0027il fait ou si ça y est la sénilité a enfin fait son œuvre. Il me dit \"j",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "perles-du-simple-sabotage-field-manual",
+                         "title":  "Perles du \"Simple Sabotage Field Manual\"",
+                         "date":  "2025-02-11",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eDepuis l\u0027investiture du président américain Donald Trump, un étrange vieux manuel a été téléchargé plus de 150 000 fois sur le site du Project Gutenberg : le \"\u003cstrong\u003eSimple Sabotage Field Manual\u003c",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "francois-le-pape-solarpunk",
+                         "title":  "François, le Pape Solarpunk",
+                         "date":  "2025-04-21",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\n\n\n\n\u003cp\u003eJe ne peux pas commencer cet article sans évoquer l’émotion qui traverse le monde aujourd’hui : le pape François est décédé ce lundi 21 avril 2025, à l’âge de 88 ans, des suites d’un AVC.\u0026nbsp",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "creer-une-carte-umap-dynamique-avec-un-jeu-dopen-data",
+                         "title":  "Créer une carte umap dynamique des professionnels de santé à La Roche-sur-Yon avec un jeu d\u0027open data",
+                         "date":  "2025-05-01",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eHier soir, je me baladais sur \u003ca href=\"https://data.larochesuryon.fr/\"\u003ehttps://data.larochesuryon.fr/\u003c/a\u003e où on peut trouver quelques \u003cstrong\u003ejeux de données sur l\u0027agglomération de La Roche-sur-Yo",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "les-donnees-sur-les-pesticides-en-vendee",
+                         "title":  "Les données sur les pesticides en Vendée",
+                         "date":  "2025-07-24",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eLa pétition citoyenne \u003cstrong\u003econtre la loi Duplomb\u003c/strong\u003e est en train de s\u0027approcher doucement du record précédent (pétition L\u0027Affaire du siècle, 2018, 2 millions de signatures en un mois). Mê",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "la-course-a-la-desinformation-climatique",
+                         "title":  "La course à la désinformation climatique",
+                         "date":  "2025-10-30",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eLe même jour, sur Linkedin, j\u0027ai vu passer ces 2 publications : l\u0027\u003ca href=\"https://www.linkedin.com/posts/quotaclimat_cest-s%C3%BBrement-le-r%C3%A9sultat-phare-de-notre-activity-738738240699697152",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "comparaison-des-modeles-agricoles",
+                         "title":  "Comparaison des modèles agricoles et calcul de rentabilité",
+                         "date":  "2025-11-17",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003e\n\u003cp\u003eMise à jour : si vous voulez, j\u0027ai créé un petit simulateur d\u0027exploitation agricole ici : \u003ca href=\"https://capnum.io/calculateur-modeles-agricoles/\" target=\"_blank\" rel=\"noreferrer noopener\"\u003eh",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "vibecoding-dun-outil-de-suivi-potager-avec-lia-gemini-et-antigravity",
+                         "title":  "Vibecoding d\u0027un outil de  suivi potager avec l\u0027IA Gemini et Antigravity",
+                         "date":  "2026-03-21",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003e\n\u003cp\u003e\n\u003cp\u003eLe printemps arrive et avec lui, cette sensation familière : je regarde mes bacs, ma serre improvisée contre ma fenêtre la plus ensoleillée, je sais vaguement que j\u0027ai semé des poivrons la",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "visualisation-dun-jeu-de-donnees-sur-la-desinformation-climatique",
+                         "title":  "Visualisation d\u0027un jeu de données sur la désinformation climatique",
+                         "date":  "2026-03-31",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\u003cp\u003eSi vous vous souvenez bien, je vous avais déjà parlé de \u003cstrong\u003edésinformation climatique\u003c/strong\u003e \u003ca href=\"https://capnum.io/la-course-a-la-desinformation-climatique/\"\u003een octobre dernier\u003c/a\u003e quan",
+                         "views":  0,
+                         "draft":  false
+                     },
+                     {
+                         "id":  "degafamisation-1-quitter-les-reseaux-sociaux",
+                         "title":  "Dégafamisation #1 - Quitter les réseaux sociaux",
+                         "date":  "2026-04-23",
+                         "category":  "Environnement",
+                         "tags":  [
+
+                                  ],
+                         "image":  "",
+                         "content":  "\n\n\n\n\n\u003cp\u003eLa semaine dernière, j\u0027ai décidé de franchir le pas et de \u003cstrong\u003ecommencer sérieusement la \"dégafamisation\" de mon environnement numérique\u003c/strong\u003e, c\u0027est-à-dire trouver des alternatives aux ",
+                         "views":  0,
+                         "draft":  false
+                     }
+                 ],
+    "site_metadata":  {
+                          "total_weight_kb":  0,
+                          "last_updated":  ""
+                      }
 }

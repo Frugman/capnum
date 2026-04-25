@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuto - Créer une carte OSM avec un jeu d'open data | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="../index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="../categorie.html?cat=Environnement">ðŸŒ± Environnement</a>
+                <a href="../categorie.html?cat=Data">ðŸ“Š Data</a>
+                <a href="../categorie.html?cat=IA">ðŸ¤– IA</a>
+                <a href="../categorie.html?cat=Low Tech">âš™ï¸ Low Tech</a>
+                <a href="../categorie.html?cat=Solarpunk">â˜€ï¸ Solarpunk</a>
+                <a href="../categorie.html?cat=DÃ©gafamisation">ðŸŒ DÃ©gafamisation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="article-full">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                <a href="../index.html">â† Accueil</a> &nbsp;|&nbsp; Non classÃ© &nbsp;|&nbsp; 2024-02-14
+            </p>
+            <h1>Tuto - Créer une carte OSM avec un jeu d'open data</h1>
+            <div class="article-content">
+                
+<p>Ce soir, je crée ma première <strong>cartographie open data</strong> en utilisant l'outil gratuit open source Framacarte.org et un <a href="https://www.data.gouv.fr/fr/datasets/sre-eolien-terrestre-mats-deoliennes-en-pays-de-la-loire/#/resources" target="_blank" rel="noreferrer noopener">jeu de données récent sur les éoliennes en Pays de la Loire</a>. Bien sûr, il faut que le dataset que vous choisirez contienne des coordonnées géographiques ou à tout le moins des adresses postales complètes. Je vous fais un <strong>tutoriel open data et cartographie</strong> au passage :D</p>
+
+
+
+<h2>Phase 1 - On se crée 2 comptes</h2>
+
+
+
+<p>Il vous suffit d'aller sur <a href="https://framacarte.org/fr/" target="_blank" rel="noreferrer noopener">framacarte.org</a> et de vous créer un compte gratuit. On va vous demander de choisir un fournisseur, cliquez sur la loupe qui vous enverra vers openstreetmap.org sur lequel il faut aussi vous créer un compte et autoriser l'accès. En effet, Framacarte utilise les fonds de carte d'Open Street Map (OSM). Une fois les comptes créés, vous devriez arriver sur cette page :</p>
+
+
+
+
+
+
+
+<p>Vous n'aurez plus qu'à cliquer tout en haut à droite pour <strong>Créer une carte</strong> mais il faut d'abord préparer des fichiers. Oui car sur votre carte, vous voudrez peut-être afficher différents calques. Par exemple, au vu du jeu de données que j'ai choisi, j'aimerais me limiter à la Vendée et faire au moins 2 calques pour commencer : un avec les éoliennes existantes et un avec les éoliennes en projet. </p>
+
+
+
+<h2>Phase 2 - On prépare les fichiers</h2>
+
+
+
+<p>Comme nous allons <strong>importer des données dans la carte</strong>, il nous faudra 2 fichiers différents pour les 2 calques différents. Cependant, si vous ne voulez pas aller aussi loin, sachez que vous pouvez très bien utiliser le fichier global en .geojson de votre jeu de données et l'importer tel quel (ça fonctionne, j'ai testé). Ici, vous aurez donc une <strong>carte de toutes les éoliennes (indifférenciées) sur les Pays de la Loire</strong>.</p>
+
+
+
+<p>En ce qui me concerne, je fais passer ce fichier global (téléchargé en .csv) dans un tableur. Je compte bien le nettoyer et le filtrer pour créer mes 2 fichiers plus précis mais d'abord, il faut que je comprenne les intitulés assez nébuleux des colonnes. Malheureusement, la fiche info du dataset sur data.gouv.fr ne donne pas de précisions MAIS je vois à droite qu'il provient d'un portail externe. </p>
+
+
+
+
+
+
+
+<p>Je clique donc pour "Voir la source originale" qui est <a href="https://data.paysdelaloire.fr/explore/dataset/234400034_eolien-terrestre-mats-deoliennes-en-pays-de-la-loire0/information/" target="_blank" rel="noreferrer noopener">data.paysdelaloire.fr</a>. Là dans leur fiche, je vois "Modèle de données" et hourra, il contient une <strong>description de chaque entête de colonne</strong>. Voici celles qui m'intéressent particulièrement :</p>
+
+
+
+<p>
+<p>geo_point_2d : les coordonnées GPS de chaque éolienne</p>
+
+
+
+<p>departement : pour pouvoir filtrer sur la Vendée seulement</p>
+
+
+
+<p>etat_mat : construite et en service (CO), construite mais hors service (HS), non construite donc en projet (NCO), démontée (DM), autre état (AU)</p>
+
+
+
+<p>en_service : OUI ou NON</p>
+
+
+
+<p>pu_nominal : la puissance nominale de l'éolienne en mégawatt</p>
+
+
+
+<p>date_prod : date de mise en production</p>
+
+
+
+<p>epci : le nom de l'EPCI sur lequel l'éolienne est installée</p>
+</p>
+
+
+
+<p><strong>Voici un aperçu de mes 2 fichiers .csv :</strong></p>
+
+
+
+<figcaption>Les éoliennes en service</figcaption>
+
+
+
+<figcaption>Les éoliennes en projet</figcaption>
+
+
+
+<p>Exportez-les en .csv.</p>
+
+
+
+<h2>Phase 3 - On crée la carte et les calques</h2>
+
+
+
+<p>De retour sur Framacarte.org, on clique sur "Créer une carte" en haut à droite. Bienvenue dans l'interface d'édition. Commencez par cliquer sur le titre en haut à gauche pour la renommer, puis sur Enregistrer en haut à droite.</p>
+
+
+
+<p>Ensuite, on va aller créer nos 2 calques en cliquant sur l'icône des 3 carrés superposés en barre de droite. On modifie le calque 1 avec le crayon pour le renommer en "En service" et on va pouvoir choisir l'apparence de nos puces en allant dans "Propriétés de la forme" (là j'ai choisi la couleur Dark green et la forme Goutte). Cliquez sur "Fermer" et créez le second calque "En projet" (couleur Gold, même forme).</p>
+
+
+
+<p>Il est temps d'importer les données (et de croiser les doigts), n'hésitez pas à enregistrer avant. Cliquez sur le rond blanc avec une flèche noire au milieu dans la barre de droite. Cliquez sur "Select. fichiers" en haut et mettez votre premier csv. Vérifiez plus bas que le format csv a bien été mis automatiquement et choisissez le bon calque de données. Importez.</p>
+
+
+
+<p><strong>Aïe !</strong> Cela me donne une série de points aux environs de l'Azerbaïdjan... On n'est pas sortis. Il doit y avoir un problème avec la colonne geo_point_2d, retour dans le tableur. Je lis dans l'aide de Framacarte qu'il vaut mieux indiquer les mots latitude et longitude dans l'entête. J'en profite pour les scinder en 2 colonnes au cas où. </p>
+
+
+
+
+
+
+
+<p><strong>Je ré-exporte et je ré-importe dans Framacarte. Victoire !</strong></p>
+
+
+
+<p><em>Au cas où vous vous poseriez la question "comment distinguer latitude et longitude" comme moi, et bien la latitude c'est l'axe vertical donc, par déduction, on doit être bien au nord de l'équateur du coup les nombres genre 45....... doivent être les latitudes, et les autres genre -1.0....... doivent être les longitudes. Oui, ce n'est pas très encyclopédique mais les cours de géographie sont un peu loin dans mon cas :D </em></p>
+
+
+
+<p>Bon finalement j'opte pour la forme "Epingle" et les couleurs Dark Green et GoldenRod plus lisibles. En prime, je vais dans l'onglet Exporter et je copie le code iframe ci-dessous pour vous partager ma carte.</p>
+
+
+
+<iframe width="100%" height="500px" frameborder="0" allowfullscreen allow="geolocation" src="//framacarte.org/fr/map/eoliennes-en-vendee_179545?scaleControl=true&miniMap=false&scrollWheelZoom=true&zoomControl=true&editMode=disabled&moreControl=false&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=true&captionMenus=false&datalayers=321788%2C321789"></iframe><p><a href="//framacarte.org/fr/map/eoliennes-en-vendee_179545?scaleControl=true&miniMap=false&scrollWheelZoom=true&zoomControl=true&editMode=disabled&moreControl=false&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=true&captionMenus=false&datalayers=321788%2C321789">Voir en plein écran</a></p>
+
+
+
+<h2>Phase 4 - Vérifier sa carte</h2>
+
+
+
+<p>Je rajoute cette étape qui me semble importante. Pour vérifier ma carte, je vais simplement zoomer sur une éolienne et vérifier sur Google Maps qu'elle est bien là, ici une série de 4 éoliennes près de Saint-Paul-Mont-Penit :</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Conclusion</h2>
+
+
+
+<p>J'ai adoré <strong>créer cette première carte à partir d'un jeu d'open data</strong> et j'aime bien le résultat mais cette carte a été réalisée avec 2 fichiers CSV qui ne sont pas dynamiques. Cette carte ne donne la situation qu'à aujourd'hui (enfin, même pas, à la date de dernière mise à jour du jeu de données utilisé soit le 31 janvier 2024). Prochaine fois, je veux tenter 2 améliorations : réaliser une carte avec un flux dynamique qui la mettra à jour à chaque fois que le jeu de données est mis à jour ET si possible intégrer la donnée "puissance nominale" et faire un dégradé vert de chaque éolienne en service en fonction de sa puissance. Je ne sais pas si c'est possible mais ça se tente, à la prochaine :D</p>
+
+
+
+<p><em>PS : Comme d'habitude, n'hésitez pas à commenter pour me montrer vos cartes ou pour me donner des idées pour améliorer ce tutoriel (c'est ma première, il y a forcément des choses à améliorer !). Merci !</em></p>
+
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div id="site-info" style="font-size:0.95rem;opacity:0.9;text-align:justify;margin-bottom:1.5rem;max-width:900px;margin-left:auto;margin-right:auto;">
+            <p>Ce blog est une expÃ©rimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h Ã  8h, on Ã©vite le trafic automatisÃ© inutile la nuit tout en valorisant le droit humain Ã  la dÃ©connexion.</p>
+        </div>
+    </footer>
+</body>
+</html>
