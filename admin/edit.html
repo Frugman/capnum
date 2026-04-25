@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Édition d'article | CAPNUM</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .admin-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; font-family: 'JetBrains Mono', monospace; }
+        input, select, textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-color); font-family: inherit; }
+        
+        /* Toolbar WYSIWYG */
+        .toolbar { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; background: var(--footer-bg); padding: 0.5rem; border-radius: 8px 8px 0 0; border: 1px solid var(--border-color); border-bottom: none; }
+        .toolbar button { padding: 0.3rem 0.6rem; cursor: pointer; border: 1px solid var(--border-color); background: var(--card-bg); border-radius: 4px; }
+        #editor { min-height: 300px; padding: 1rem; border: 1px solid var(--border-color); border-radius: 0 0 8px 8px; background: var(--card-bg); overflow-y: auto; }
+        
+        .actions { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn-publier { background: var(--accent-color); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-preview { background: var(--accent-light); color: var(--accent-color); border: 1px solid var(--accent-color); padding: 1rem 2rem; border-radius: 8px; cursor: pointer; }
+        
+        #image-preview { max-width: 200px; margin-top: 1rem; display: none; border-radius: 8px; }
+        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none; }
+        .status-msg.success { background: #d4edda; color: #155724; display: block; }
+        .status-msg.error { background: #f8d7da; color: #721c24; display: block; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>✍️ Rédiger un article</h1>
+        
+        <div class="form-group">
+            <label for="title">Titre de l'article</label>
+            <input type="text" id="title" placeholder="Ex: Pourquoi le low-tech va sauver le monde">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Catégorie</label>
+            <select id="category">
+                <option value="Environnement">🌱 Environnement</option>
+                <option value="Data">📊 Data</option>
+                <option value="IA">🤖 IA</option>
+                <option value="Low Tech">⚙️ Low Tech</option>
+                <option value="Solarpunk">☀️ Solarpunk</option>
+                <option value="Dégafamisation">🌐 Dégafamisation</option>
+                <option value="RANDOM">🎲 RANDOM (Secret)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Tags (séparés par des virgules)</label>
+            <input type="text" id="tags" placeholder="frugalité, écologie, future">
+        </div>
+
+        <div class="form-group">
+            <label>Contenu</label>
+            <div class="toolbar">
+                <button onclick="execCmd('bold')"><b>B</b></button>
+                <button onclick="execCmd('italic')"><i>I</i></button>
+                <button onclick="execCmd('createLink', prompt('URL du lien :'))">🔗</button>
+                <button onclick="execCmd('insertUnorderedList')">• Liste</button>
+                <button onclick="execCmd('formatBlock', 'h2')">H2</button>
+                <button onclick="execCmd('formatBlock', 'h3')">H3</button>
+            </div>
+            <div id="editor" contenteditable="true"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="image-upload">Image de couverture</label>
+            <input type="file" id="image-upload" accept="image/*">
+            <img id="image-preview" alt="Aperçu">
+        </div>
+
+        <div class="actions">
+            <button class="btn-publier" id="btn-publish">🚀 PUBLIER SUR GITHUB</button>
+            <button class="btn-preview" id="btn-preview">👁️ APERÇU</button>
+        </div>
+
+        <div id="status" class="status-msg"></div>
+
+        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color);">
+        <div class="form-group">
+            <label for="github-token">Ton Token GitHub (Secret)</label>
+            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx">
+            <p style="font-size: 0.8rem; opacity: 0.7;">Ce token est stocké uniquement dans ton navigateur.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function execCmd(cmd, val = null) {
+            document.execCommand(cmd, false, val);
+        }
+    </script>
+</body>
+</html>

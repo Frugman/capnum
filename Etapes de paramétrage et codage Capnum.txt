@@ -1,0 +1,180 @@
+Voici un **plan étape par étape** avec les prompts précis à me donner pour avancer efficacement. Chaque étape est conçue pour être **autonome** et **logique**, afin que tu puisses me solliciter dans une nouvelle conversation en copiant/collant simplement le prompt correspondant.
+
+---
+
+### **Étape 1 : Préparation de l’Environnement et Structure de Base**
+**Objectif** : Créer la structure des fichiers et configurer GitHub Pages + le nom de domaine.
+**Prompt à me donner** :
+*"Prépare la structure complète des fichiers et dossiers pour le blog (comme décrit dans le cahier des charges), avec :
+1. Un exemple de fichier `articles.json` vide (avec les champs nécessaires et la catégorie 'RANDOM').
+2. Les fichiers HTML de base (`index.html`, `categories/environnement.html`, `admin/edit.html`) **sans contenu**, juste la structure et les liens entre eux.
+3. Un fichier `.htaccess` pour la redirection `www` → `non-www`.
+4. Les instructions précises pour :
+   - Créer un dépôt GitHub et activer GitHub Pages (branche `main`, dossier racine).
+   - Configurer le CNAME pour mon domaine Infomaniak (`ton-domaine.com`).
+Merci de commenter chaque fichier pour que je sache où et comment les modifier plus tard."*
+
+---
+
+### **Étape 2 : Page d’Accueil (Grille Filtrable)**
+**Objectif** : Implémenter l’accueil avec la photo de profil, les boutons de catégories, la grille filtrable, et le nuage de tags.
+**Prompt à me donner** :
+*"Génère le code complet pour la page `index.html` avec :
+1. **En-tête** : Ma photo de profil (placeholder) + titre du site + texte de présentation (à remplir plus tard).
+2. **Top bar** : Menu avec liens vers les 6 catégories visibles (pas 'RANDOM').
+3. **Boutons de filtre** : 6 boutons (1 par catégorie) + bouton 'Tous', avec le CSS pour qu’ils ressemblent à des icônes/emojis (ex : 🌱 pour Environnement).
+4. **Grille d’articles** : Structure pour afficher 5 articles + 1 bouton 'Voir tous' (lien vers `/categories/{categorie}.html`).
+5. **Nuage de tags** : Dynamique (généré à partir de `articles.json`).
+6. **Footer** : Lien 'Ajouter un article', 'Mentions légales', 'RANDOM', et le texte sur le poids/horaires.
+7. **JavaScript** : Code pour le filtrage dynamique (par catégorie/tag) et l’affichage des 5 premiers articles + bouton 'Voir tous'.
+Inclus le CSS nécessaire pour un design responsive (mobile-friendly)."*
+
+---
+**Fichiers à me fournir** (si tu veux que je les utilise) :
+- Une image placeholder pour ta photo de profil (ou décris-la).
+- La liste des emojis/icônes que tu veux pour chaque catégorie.
+
+---
+
+### **Étape 3 : Script de Génération des Pages**
+**Objectif** : Créer un script Node.js pour générer les pages statiques (articles, catégories) à partir de `articles.json`.
+**Prompt à me donner** :
+*"Écris un script Node.js (`generate.js`) qui :
+1. Lit `data/articles.json`.
+2. Génère :
+   - Les pages individuelles des articles (`articles/{id}.html`) avec leur contenu, titre, date, image, et un lien 'Modifier' en bas.
+   - Les pages de catégories (`categories/{categorie}.html`) listant **tous les articles** de la catégorie (triés par date).
+   - La page secrète `categories/random.html` (même structure, mais sans tags).
+3. Met à jour les liens dans `index.html` (grille, nuage de tags) en fonction des articles existants.
+4. Calcule le poids total du site (en Ko) et l’affiche dans le footer de chaque page.
+5. Donne les instructions pour exécuter le script avant de pusher sur GitHub.
+Prévois des commentaires pour que je puisse modifier le script plus tard (ex : ajouter une nouvelle catégorie)."*
+
+---
+**Fichiers à me fournir** :
+- Un exemple de contenu pour `articles.json` (2-3 articles fictifs avec toutes les métadonnées).
+
+---
+
+### **Étape 4 : Formulaire d’Édition**
+**Objectif** : Créer le formulaire protégé pour ajouter/modifier/supprimer des articles.
+**Prompt à me donner** :
+*"Génère le code pour `admin/edit.html` et `admin/script.js` avec :
+1. **Protection par mot de passe** : Un `prompt()` simple avant d’accéder au formulaire.
+2. **Formulaire** :
+   - Champs : titre, contenu (éditeur WYSIWYG basique avec boutons gras/italique/lien/image), catégorie (y compris 'RANDOM'), tags, image (upload + compression WebP).
+   - Boutons : 'Enregistrer en brouillon', 'Aperçu', 'Publier', 'Supprimer' (pour l’édition).
+3. **Logique JavaScript** :
+   - Chargement des articles existants (si `id` dans l’URL).
+   - Gestion de l’upload/compression des images (avec fallback).
+   - Mise à jour de `articles.json` et régénération des pages via le script Node.js.
+4. **CSS** : Style minimaliste et responsive.
+Inclus des commentaires pour expliquer comment ajouter des champs ou modifier le comportement."*
+
+---
+**Précisions à me donner** :
+- Le mot de passe que tu veux utiliser (ou laisse-moi en générer un aléatoire).
+- Les boutons que tu veux dans l’éditeur WYSIWYG (ex : gras, italique, liste, image, lien).
+
+---
+
+### **Étape 5 : Horaires de Fermeture**
+**Objectif** : Implémenter la fermeture du site en dehors des horaires (UTC+2).
+**Prompt à me donner** :
+*"Ajoute le code JavaScript pour gérer les horaires de fermeture (8h–24h UTC+2) :
+1. Masque tout le contenu du site en dehors de ces horaires.
+2. Affiche un message centralisé (style sobre) avec les horaires.
+3. Intègre ce code dans toutes les pages (sauf `admin/edit.html`).
+4. Vérifie que le message s’affiche correctement sur mobile.
+Donne-moi aussi le code pour afficher les horaires dans le footer (ex : 'Ouvert de 8h à 24h')."*
+
+---
+
+### **Étape 6 : Optimisation des Images**
+**Objectif** : Intégrer la compression/conversion WebP côté client dans le formulaire.
+**Prompt à me donner** :
+*"Dans le formulaire d’édition (`admin/edit.html`), ajoute :
+1. Un champ d’upload d’images avec prévisualisation.
+2. La logique pour :
+   - Compresser l’image (max 1200px, qualité 80%).
+   - La convertir en WebP.
+   - Gérer le fallback (image originale + avertissement) si échec.
+3. Stocke le chemin de l’image dans `articles.json` (ex : `images/article1.webp`).
+4. Donne les instructions pour que je puisse tester localement (ex : dossier `images/` à créer).
+Utilise les librairies `browser-image-compression` et `webp-converter-browser` (via CDN)."*
+
+---
+**Fichiers à me fournir** :
+- Aucune image nécessaire, mais précise si tu veux des dimensions spécifiques pour les miniatures.
+
+---
+
+### **Étape 7 : Dark Mode**
+**Objectif** : Ajouter le bouton de bascule pour le dark mode.
+**Prompt à me donner** :
+*"Ajoute un bouton de toggle pour le dark mode :
+1. Bouton avec icônes 🌞/🌙 en haut à droite de toutes les pages (sauf `admin/edit.html`).
+2. CSS pour le thème sombre (couleurs à ta discrétion, mais sobres).
+3. Pas de sauvegarde des préférences (pas de `localStorage`).
+4. Vérifie que le bouton est accessible et visible sur mobile."*
+
+---
+**Précisions à me donner** :
+- Les couleurs que tu préfères pour le dark mode (ou laisse-moi choisir des tons neutres).
+
+---
+
+### **Étape 8 : Compteur de Vues**
+**Objectif** : Implémenter le compteur de vues persistant (approximatif).
+**Prompt à me donner** :
+*"Implémente un compteur de vues pour les articles :
+1. Incrémente le champ `views` dans `articles.json` à chaque chargement de page d’article.
+2. Affiche le nombre de vues **uniquement dans la page d’admin** (pas visible par les visiteurs).
+3. Gère les conflits basiques (ex : si deux personnes visitent en même temps, une des vues peut ne pas être comptée).
+4. Donne-moi un exemple de code pour afficher les stats dans une page admin dédiée (ex : `/admin/stats.html`)."*
+
+---
+**Fichiers à me fournir** :
+- Aucuns, mais précise si tu veux un format spécifique pour la page de stats (tableau, liste, etc.).
+
+---
+
+### **Étape 9 : Page de Stats (Admin)**
+**Objectif** : Créer une page pour toi avec les stats de vues.
+**Prompt à me donner** :
+*"Crée une page `/admin/stats.html` protégée par mot de passe qui :
+1. Affiche un tableau avec : Titre de l’article | Date | Vues.
+2. Trie les articles par nombre de vues (du plus vu au moins vu).
+3. Inclus un lien vers le formulaire d’édition.
+Utilise le même mot de passe que pour le formulaire d’édition."*
+
+---
+
+### **Étape 10 : Tests et Déploiement Final**
+**Objectif** : Vérifier que tout fonctionne et déployer.
+**Prompt à me donner** :
+*"Donne-moi une checklist pour :
+1. Tester localement toutes les fonctionnalités (filtrage, horaires, formulaire, etc.).
+2. Vérifier le responsive (mobile/tablette).
+3. Déployer sur GitHub Pages et configurer le domaine Infomaniak.
+4. Automatiser la régénération du site quand j’ajoute/modifie un article.
+Inclus les commandes exactes pour exécuter le script de génération et pusher sur GitHub."*
+
+---
+**Fichiers à me fournir** :
+- Aucuns, mais dis-moi si tu veux des captures d’écran pour valider les tests.
+
+---
+
+### **Résumé des Étapes et Ordre Recommandé**
+1. **Structure de base** (Étape 1).
+2. **Page d’accueil** (Étape 2).
+3. **Script de génération** (Étape 3).
+4. **Formulaire d’édition** (Étape 4).
+5. **Horaires de fermeture** (Étape 5).
+6. **Optimisation des images** (Étape 6).
+7. **Dark mode** (Étape 7).
+8. **Compteur de vues** (Étape 8).
+9. **Page de stats** (Étape 9).
+10. **Tests et déploiement** (Étape 10).
+

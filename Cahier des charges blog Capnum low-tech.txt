@@ -1,0 +1,184 @@
+Voici le **cahier des charges final et brut**, mis à jour avec tes dernières précisions. Il est organisé pour que je puisse m’y référer clairement pendant le développement, sans fioritures.
+
+---
+
+### **Cahier des Charges Final (Version Développeur)**
+**Objectif** : Blog statique frugal en HTML/CSS/JS, hébergé sur GitHub Pages + nom de domaine Infomaniak, avec :
+- Horaires de fermeture (UTC+2 : 8h–24h).
+- Formulaire d’édition en ligne protégé par mot de passe.
+- Filtrage dynamique des articles (catégories/tags).
+- Catégorie secrète "RANDOM" accessible uniquement via le footer.
+- Grille limitée à **5 articles + bouton "Voir tous"**.
+
+---
+
+#### **1. Structure des Données**
+##### **Fichier `data/articles.json`**
+```json
+{
+  "articles": [
+    {
+      "id": "article-1",
+      "title": "Titre de l’article",
+      "date": "2026-04-24",
+      "category": "Low Tech", // ou "RANDOM" (catégorie secrète)
+      "tags": ["écologie", "frugalité"], // vide si catégorie = "RANDOM"
+      "image": "images/article-1.webp",
+      "content": "<h1>Titre</h1><p>Contenu en HTML (éditeur WYSIWYG).</p>",
+      "views": 0,
+      "draft": false
+    }
+  ],
+  "categories": ["Environnement", "Data", "IA", "Low Tech", "Solarpunk", "Dégafamisation"]
+  // "RANDOM" n’apparaît pas ici (catégorie secrète)
+}
+```
+
+---
+
+#### **2. Pages et Structure des Fichiers**
+```
+mon-blog/
+├── index.html                  # Accueil avec grille filtrable
+├── categories/
+│   ├── environnement.html      # Page catégorie (affiche TOUS les articles de la catégorie)
+│   ├── data.html
+│   ├── ia.html
+│   ├── low-tech.html
+│   ├── solarpunk.html
+│   ├── degafamisation.html
+│   └── random.html              # Page secrète (lien uniquement dans le footer)
+├── articles/
+│   └── article-1.html          # Pages individuelles des articles
+├── admin/
+│   ├── edit.html               # Formulaire d’édition (protégé par mot de passe)
+│   └── script.js               # Logique du formulaire
+├── css/
+│   └── style.css                # Styles globaux
+├── images/                     # Images optimisées (WebP)
+├── data/
+│   └── articles.json           # Base de données
+└── .htaccess                   # Redirection www → non-www
+```
+
+---
+
+#### **3. Fonctionnalités Clés**
+##### **A. Accueil (`index.html`)**
+- **En-tête** :
+  - Photo de profil + titre du site + présentation.
+- **Barre de menu (top bar)** :
+  - Liens vers les 6 pages de catégories **visibles** (pas "RANDOM").
+- **Boutons de filtre** :
+  - 6 boutons (1 par catégorie visible) + bouton "Tous".
+  - Cliquer sur un bouton filtre la grille pour afficher **5 articles max** de la catégorie + bouton "Voir tous" (renvoie vers `/categories/{categorie}.html`).
+- **Grille d’articles** :
+  - 5 articles max par catégorie/tag.
+  - Le 6ème emplacement = bouton **"Voir tous les articles"** (lien vers la page catégorie/tag).
+- **Nuage de tags** :
+  - Affiche tous les tags **sauf ceux des articles "RANDOM"**.
+  - Cliquer sur un tag filtre la grille (5 articles max + bouton "Voir tous").
+- **Footer** :
+  - Lien "Ajouter un article" (vers `/admin/edit.html`).
+  - Lien "Mentions légales".
+  - Lien **"RANDOM"** (vers `/categories/random.html`).
+  - Poids du site + horaires d’ouverture.
+
+##### **B. Pages de Catégories (`/categories/{categorie}.html`)**
+- Affiche **tous les articles** de la catégorie (pas de limite à 5).
+- Tri par date (du plus récent au plus ancien).
+- Pas de filtrage dynamique (page statique générée à l’avance).
+
+##### **C. Formulaire d’Édition (`/admin/edit.html`)**
+- **Accès protégé** : Mot de passe simple (`prompt()`).
+- **Champs** :
+  - Titre, contenu (éditeur WYSIWYG basique : gras, italique, liens, images), catégorie (y compris "RANDOM"), tags, image de couverture.
+- **Boutons** :
+  - "Enregistrer en brouillon" (`draft: true`).
+  - "Aperçu" (ouvre un nouvel onglet avec le rendu).
+  - "Publier" (`draft: false` + génération de la page HTML).
+- **Édition/Supppression** :
+  - Lien "Modifier" en bas de chaque article → formulaire pré-rempli.
+  - Bouton "Supprimer" (avec confirmation) → suppression de la page HTML + mise à jour de `articles.json`.
+
+##### **D. Optimisation des Images**
+- **Upload via formulaire** → compression/convert WebP côté client (`browser-image-compression` + `webp-converter-browser`).
+- **Fallback** : Si la conversion échoue, accepter l’image originale avec un avertissement.
+
+##### **E. Horaires de Fermeture (UTC+2)**
+- **8h–24h** (heure de Paris) :
+  - En dehors de ces horaires, masquer le contenu et afficher un message central :
+    ```html
+    <div id="closed-message">
+      🌍 Ce site dort pour économiser l’énergie.<br>
+      Horaires d’ouverture : 8h–24h (UTC+2).<br>
+      Revenez plus tard !
+    </div>
+    ```
+  - Implémenté en JavaScript (côté client).
+
+##### **F. Dark Mode**
+- Bouton toggle (icônes 🌞/🌙) **sans sauvegarde** (pas de `localStorage`).
+
+##### **G. Compteur de Vues**
+- Incrémenté dans `articles.json` à chaque chargement de page.
+- **Approximation acceptée** (pas de gestion des conflits).
+
+---
+#### **4. Workflow Technique**
+##### **A. Génération des Pages**
+- **Script Node.js** (exécuté localement avant `git push`) :
+  1. Lit `data/articles.json`.
+  2. Génère :
+     - `index.html` (accueil avec grille filtrable).
+     - Pages individuelles des articles (`articles/{id}.html`).
+     - Pages de catégories (`categories/{categorie}.html`).
+     - Page secrète `categories/random.html`.
+  3. Met à jour les liens dans les pages (grille, menu, nuage de tags).
+  4. Calcule le poids total du site (affiché dans le footer).
+
+##### **B. Déploiement**
+- **GitHub Pages** :
+  - Branche `main` → dossier racine.
+  - Fichier `CNAME` : `ton-domaine.com`.
+- **DNS Infomaniak** :
+  - CNAME pour `ton-domaine.com` et `www` → `ton-username.github.io`.
+  - Redirection `www` → `non-www` via `.htaccess`.
+
+---
+#### **5. Exemples de Code à Générer**
+1. **Template `index.html`** :
+   - En-tête + grille filtrable + nuage de tags + footer.
+2. **Template `categories/{categorie}.html`** :
+   - Liste complète des articles de la catégorie.
+3. **Formulaire `admin/edit.html`** :
+   - Champs + éditeur WYSIWYG basique + gestion des images.
+4. **Script Node.js** :
+   - Génération des pages + calcul du poids.
+5. **JavaScript pour le filtrage dynamique** :
+   - Logique des boutons de catégories/tags.
+
+---
+#### **6. Points Spécifiques**
+- **Catégorie "RANDOM"** :
+  - **Never listed** : N’apparaît ni dans la grille, ni dans le menu, ni dans le nuage de tags.
+  - **Accessible uniquement via le footer**.
+  - Articles sans tags (`tags: []`).
+
+- **Bouton "Voir tous"** :
+  - Dans la grille d’accueil, le 6ème emplacement est toujours un bouton "Voir tous les articles" qui renvoie vers `/categories/{categorie}.html` ou `/tags/{tag}.html` (selon le filtre actif).
+
+- **Éditeur WYSIWYG** :
+  - Utiliser une librairie légère comme [`Tribute`](https://github.com/zurb/tribute) pour les mentions ou un éditeur minimaliste custom (boutons pour gras/italique/liens/images).
+
+---
+#### **7. Tests et Validation**
+- **Responsive** :
+  - Vérifier l’affichage sur mobile (boutons de catégories en 2 lignes, grille adaptée).
+- **Filtrage** :
+  - Tester le filtrage par catégorie/tag + bouton "Voir tous".
+- **Horaires** :
+  - Simuler la fermeture en modifiant `OPENING_HOUR_UTC`/`CLOSING_HOUR_UTC`.
+- **Poids du site** :
+  - Vérifier que le poids affiché dans le footer est cohérent.
+
