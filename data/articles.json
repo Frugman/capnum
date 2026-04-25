@@ -1,6 +1,19 @@
 {
   "articles": [
     {
+      "id": "test-15",
+      "title": "Test 15",
+      "date": "2026-04-25",
+      "category": "IA",
+      "tags": [
+        "souveraineté"
+      ],
+      "image": "images/test-15-1777112851473.webp",
+      "content": "test",
+      "views": 0,
+      "draft": false
+    },
+    {
       "id": "test-2",
       "title": "Test 2",
       "date": "2026-04-25",
