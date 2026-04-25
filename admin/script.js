@@ -157,11 +157,28 @@ async function publishArticle() {
 </body>
 </html>`;
 
-        await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/articles/${id}.html`, {
+        let htmlSha;
+        try {
+            const { sha } = await getGitHubFile(`articles/${id}.html`, token);
+            htmlSha = sha;
+        } catch (e) {
+            // Fichier n'existe pas, c'est normal
+        }
+
+        const htmlRes = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/articles/${id}.html`, {
             method: 'PUT',
             headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: `Article HTML: ${id}`, content: btoa(unescape(encodeURIComponent(articleHtml))) })
+            body: JSON.stringify({ 
+                message: `Article HTML: ${id}`, 
+                content: btoa(unescape(encodeURIComponent(articleHtml))),
+                sha: htmlSha 
+            })
         });
+
+        if (!htmlRes.ok) {
+            const errData = await htmlRes.json();
+            throw new Error("Erreur génération HTML: " + (errData.message || htmlRes.statusText));
+        }
 
         // 3. Mettre à jour articles.json
         const { sha, data } = await getGitHubFile('data/articles.json', token);
