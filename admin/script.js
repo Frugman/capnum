@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function handleImageUpload(e) {
-    const file = e.target.target.files[0];
+    const file = e.target.files[0];
     if (!file) return;
 
     const preview = document.getElementById('image-preview');
