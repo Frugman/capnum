@@ -77,6 +77,9 @@ h1, h2, h3 {
     margin: 2rem 0;
 }
 
+#editor { height: 500px; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 0 0 8px 8px; background: var(--card-bg); overflow-y: auto; }
+        #editor img { max-width: 100%; height: auto; display: block; margin: 1.5rem auto; border-radius: 8px; }
+
 .filter-btn {
     padding: 0.5rem 1rem;
     border: 1px solid var(--border-color);
@@ -101,6 +104,7 @@ h1, h2, h3 {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
+    min-height: 800px; /* Fixe la hauteur mini pour éviter le saut au filtrage */
 }
 
 .article-card {
