@@ -1,7 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     checkOpeningHours();
     loadArticles();
 });
+
+function initTheme() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (!toggleBtn) return;
+
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        toggleBtn.innerText = currentTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        let theme = document.documentElement.getAttribute('data-theme');
+        if (!theme) {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        toggleBtn.innerText = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+}
 
 let allArticles = [];
 
@@ -10,7 +33,22 @@ async function loadArticles() {
         const response = await fetch('data/articles.json');
         const data = await response.json();
         allArticles = data.articles;
-        renderGrid(allArticles);
+        
+        // Filtrage depuis l'URL (nav depuis le header)
+        const urlParams = new URLSearchParams(window.location.search);
+        const cat = urlParams.get('cat');
+        
+        if (cat) {
+            const btn = document.querySelector(`.filter-btn[data-filter="${cat}"]`);
+            if (btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            renderGrid(allArticles, cat);
+        } else {
+            renderGrid(allArticles);
+        }
+        
         renderTags(allArticles);
     } catch (e) {
         console.error("Erreur chargement articles:", e);

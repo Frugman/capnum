@@ -155,7 +155,32 @@ async function publishArticle() {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header style="padding: 2rem; max-width: 900px; margin: auto;"><a href="../index.html" style="color: var(--accent-color); text-decoration: none; font-family: 'JetBrains Mono', monospace;">← Retour à l'accueil</a></header>
+    <header class="site-header">
+        <a href="../index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="../index.html?cat=Environnement">🌱 Environnement</a>
+                <a href="../index.html?cat=Data">📊 Data</a>
+                <a href="../index.html?cat=IA">🤖 IA</a>
+                <a href="../index.html?cat=Low Tech">⚙️ Low Tech</a>
+                <a href="../index.html?cat=Solarpunk">☀️ Solarpunk</a>
+                <a href="../index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
+            </nav>
+            <button id="theme-toggle" aria-label="Changer de thème" onclick="
+                let t = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                let nt = t === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', nt);
+                localStorage.setItem('theme', nt);
+                this.innerText = nt === 'dark' ? '☀️' : '🌙';
+            ">🌙</button>
+            <script>
+                if(localStorage.getItem('theme')) {
+                    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme'));
+                    document.getElementById('theme-toggle').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+                }
+            </script>
+        </div>
+    </header>
     <main class="article-full">
         <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">${category} • ${date}</div>
         <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">${title}</h1>

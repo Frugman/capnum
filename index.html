@@ -7,32 +7,48 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <div class="profile-header">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Capnum" alt="Profil" class="profile-img" style="width: 80px; border-radius: 50%; border: 3px solid var(--accent-color);">
-            <h1>CAPNUM</h1>
-            <p class="subtitle">Blog low-tech pour un futur désirable. Écologie, IA frugale et solarpunk.</p>
+    <header class="site-header">
+        <a href="index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="index.html?cat=Environnement">🌱 Environnement</a>
+                <a href="index.html?cat=Data">📊 Data</a>
+                <a href="index.html?cat=IA">🤖 IA</a>
+                <a href="index.html?cat=Low Tech">⚙️ Low Tech</a>
+                <a href="index.html?cat=Solarpunk">☀️ Solarpunk</a>
+                <a href="index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
+            </nav>
+            <button id="theme-toggle" aria-label="Changer de thème">🌙</button>
+            <script>
+                if(localStorage.getItem('theme')) {
+                    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme'));
+                    document.getElementById('theme-toggle').innerText = localStorage.getItem('theme') === 'dark' ? '☀️' : '🌙';
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    document.getElementById('theme-toggle').innerText = '☀️';
+                }
+            </script>
         </div>
     </header>
-    
-    <nav id="top-bar">
-        <a href="categories/environnement.html">🌱 Environnement</a>
-        <a href="categories/data.html">📊 Data</a>
-        <a href="categories/ia.html">🤖 IA</a>
-        <a href="categories/low-tech.html">⚙️ Low Tech</a>
-        <a href="categories/solarpunk.html">☀️ Solarpunk</a>
-        <a href="categories/degafamisation.html">🌐 Dégafamisation</a>
-    </nav>
 
     <main>
+        <section class="profile-section">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Capnum" alt="Profil de l'auteur">
+            <p>
+                <strong>Bienvenue sur Capnum !</strong><br>
+                Blog low-tech pour un futur désirable. J'écris ici sur l'écologie, l'IA frugale et le mouvement solarpunk.<br>
+                <em>Naviguez léger, pensez loin.</em>
+            </p>
+        </section>
+
         <section id="filters">
             <button class="filter-btn active" data-filter="all">Tous</button>
-            <button class="filter-btn" data-filter="Environnement">🌱</button>
-            <button class="filter-btn" data-filter="Data">📊</button>
-            <button class="filter-btn" data-filter="IA">🤖</button>
-            <button class="filter-btn" data-filter="Low Tech">⚙️</button>
-            <button class="filter-btn" data-filter="Solarpunk">☀️</button>
-            <button class="filter-btn" data-filter="Dégafamisation">🌐</button>
+            <button class="filter-btn" data-filter="Environnement">🌱 Environnement</button>
+            <button class="filter-btn" data-filter="Data">📊 Data</button>
+            <button class="filter-btn" data-filter="IA">🤖 IA</button>
+            <button class="filter-btn" data-filter="Low Tech">⚙️ Low Tech</button>
+            <button class="filter-btn" data-filter="Solarpunk">☀️ Solarpunk</button>
+            <button class="filter-btn" data-filter="Dégafamisation">🌐 Dégafamisation</button>
         </section>
 
         <section id="articles-grid">
