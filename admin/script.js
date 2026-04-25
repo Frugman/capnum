@@ -305,11 +305,21 @@ async function getGitHubFile(path, token) {
     });
     if (!resp.ok) throw new Error("Impossible de lire " + path);
     const json = await resp.json();
-    // Décodage UTF-8 robuste
     const decoded = decodeURIComponent(escape(atob(json.content)));
+    
+    let parsedData = null;
+    if (path.endsWith('.json')) {
+        try {
+            parsedData = JSON.parse(decoded);
+        } catch (e) {
+            console.error("Erreur de parsing JSON pour " + path);
+        }
+    }
+
     return {
         sha: json.sha,
-        data: JSON.parse(decoded)
+        content: decoded,
+        data: parsedData
     };
 }
 
