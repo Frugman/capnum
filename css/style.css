@@ -3,12 +3,12 @@
 :root {
     --bg-color: #fdfcf8;
     --text-color: #1a1a1a;
-    --accent-color: #2e5a27;
-    --link-color: #2e5a27;
-    --accent-light: #e8f0e6;
+    --accent-color: #2c7a7b; /* Teal élégant */
+    --link-color: #2c7a7b;
+    --accent-light: #e6fffa;
     --card-bg: #ffffff;
-    --border-color: #e0e0e0;
-    --footer-bg: #f0f0f0;
+    --border-color: #e2e8f0;
+    --footer-bg: #f7fafc;
     --shadow: 0 4px 12px rgba(0,0,0,0.05);
     --menu-link-color: #000000;
 }
@@ -16,12 +16,12 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-color: #121212;
-        --text-color: #e0e0e0;
-        --accent-color: #6fb064;
-        --link-color: #8ce973;
-        --accent-light: #1e2a1b;
+        --text-color: #e2e8f0;
+        --accent-color: #4fd1c5; /* Teal brillant mais pas fluo */
+        --link-color: #4fd1c5;
+        --accent-light: #1a3635;
         --card-bg: #1e1e1e;
-        --border-color: #333;
+        --border-color: #2d3748;
         --footer-bg: #1a1a1a;
         --shadow: 0 4px 12px rgba(0,0,0,0.3);
         --menu-link-color: #ffffff;
@@ -30,12 +30,12 @@
 
 [data-theme="dark"] {
     --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --accent-color: #6fb064;
-    --link-color: #8ce973;
-    --accent-light: #1e2a1b;
+    --text-color: #e2e8f0;
+    --accent-color: #4fd1c5;
+    --link-color: #4fd1c5;
+    --accent-light: #1a3635;
     --card-bg: #1e1e1e;
-    --border-color: #333;
+    --border-color: #2d3748;
     --footer-bg: #1a1a1a;
     --shadow: 0 4px 12px rgba(0,0,0,0.3);
     --menu-link-color: #ffffff;
@@ -44,19 +44,20 @@
 [data-theme="light"] {
     --bg-color: #fdfcf8;
     --text-color: #1a1a1a;
-    --accent-color: #2e5a27;
-    --link-color: #2e5a27;
-    --accent-light: #e8f0e6;
+    --accent-color: #2c7a7b;
+    --link-color: #2c7a7b;
+    --accent-light: #e6fffa;
     --card-bg: #ffffff;
-    --border-color: #e0e0e0;
-    --footer-bg: #f0f0f0;
+    --border-color: #e2e8f0;
+    --footer-bg: #f7fafc;
     --shadow: 0 4px 12px rgba(0,0,0,0.05);
     --menu-link-color: #000000;
 }
 
 body {
     font-family: 'Outfit', sans-serif;
-    line-height: 1.7;
+    font-size: 1rem; /* Base accessible 16px */
+    line-height: 1.6;
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
@@ -70,27 +71,32 @@ header, main, footer {
     padding: 2rem;
 }
 
-/* Links Laser Effect */
+/* Links */
 a {
     color: var(--link-color);
     text-decoration: none;
-    transition: color 0.2s, text-shadow 0.2s;
+    transition: all 0.2s;
 }
 
 a:visited {
-    color: var(--link-color); /* Fini le violet moche ! */
+    color: var(--link-color);
 }
 
 a:hover {
-    color: var(--link-color);
-    text-shadow: 0 0 8px var(--link-color); /* Effet laser */
+    color: var(--accent-color);
+    filter: brightness(1.2);
 }
 
 /* Typography */
 h1, h2, h3 {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 600;
+    color: var(--accent-color); /* Vert appliqué systématiquement aux titres */
 }
+
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.15rem; }
 
 /* Site Header */
 .site-header {
