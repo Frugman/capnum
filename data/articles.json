@@ -1,6 +1,19 @@
 {
   "articles": [
     {
+      "id": "test-2",
+      "title": "Test 2",
+      "date": "2026-04-25",
+      "category": "Environnement",
+      "tags": [
+        "agriculture"
+      ],
+      "image": "images/test-2-1777112445981.webp",
+      "content": "test",
+      "views": 0,
+      "draft": false
+    },
+    {
       "id": "test-1",
       "title": "Test 1",
       "date": "2026-04-25",
