@@ -21,3 +21,9 @@
 - **GitHub** : Création du dépôt `FRUGMAN/CAPNUM` et push (forcé pour nettoyer le remote).
 - **GitHub Pages** : Configuration en cours.
 - **Admin** : `admin/script.js` configuré pour l'utilisateur `FRUGMAN`.
+
+## À faire (Demandes utilisateur en attente)
+- [ ] **CSS** : Corriger l'image de couverture qui déborde du cadre à droite dans les articles.
+- [ ] **Footer** : Uniformiser le footer des articles avec celui de la page d'accueil.
+- [ ] **Admin** : Supprimer le bouton "Aperçu".
+- [ ] **Admin** : Créer une fonctionnalité pour éditer et supprimer les articles existants.

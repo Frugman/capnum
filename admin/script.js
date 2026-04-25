@@ -11,7 +11,16 @@ const GITHUB_CONFIG = {
 document.addEventListener('DOMContentLoaded', () => {
     // Charger le token s'il existe
     const savedToken = localStorage.getItem('gh_token');
-    if (savedToken) document.getElementById('github-token').value = savedToken;
+    const tokenInput = document.getElementById('github-token');
+    if (savedToken) {
+        tokenInput.value = savedToken;
+        loadAdminArticles();
+    }
+    
+    tokenInput.addEventListener('change', () => {
+        localStorage.setItem('gh_token', tokenInput.value);
+        loadAdminArticles();
+    });
 
     // Gestion de l'image de couverture
     document.getElementById('image-upload').addEventListener('change', handleImageUpload);
@@ -153,7 +162,16 @@ async function publishArticle() {
         ${heroHtml}
         <div class="article-content">${content}</div>
     </main>
-    <footer style="margin-top: 5rem; padding: 2rem; text-align: center; background: var(--footer-bg);"><p>Blog Capnum - 2026</p></footer>
+    <footer>
+        <div id="site-info" style="text-align: center; margin-bottom: 1rem;">
+            <p>Poids estimé : <span id="site-weight">0</span> Ko | <span id="site-status">Ouvert (8h-24h UTC+2)</span></p>
+        </div>
+        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
+            <a href="../admin/edit.html">Ajouter</a> • 
+            <a href="../mentions-legales.html">Mentions légales</a> • 
+            <a href="../categories/random.html" id="link-random">RANDOM</a>
+        </nav>
+    </footer>
 </body>
 </html>`;
 
@@ -235,3 +253,69 @@ function showStatus(msg, type) {
     s.innerText = msg;
     s.className = 'status-msg ' + type;
 }
+
+// ---- GESTION DES ARTICLES ----
+
+async function loadAdminArticles() {
+    const token = document.getElementById('github-token').value;
+    if (!token) return;
+    const listDiv = document.getElementById('manage-articles-list');
+    listDiv.innerHTML = '<p>Chargement des articles...</p>';
+    try {
+        const { data } = await getGitHubFile('data/articles.json', token);
+        if (!data.articles || data.articles.length === 0) {
+            listDiv.innerHTML = '<p>Aucun article trouvé.</p>';
+            return;
+        }
+        window.allAdminArticles = data.articles;
+        listDiv.innerHTML = data.articles.map(a => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid var(--border-color);">
+                <span>${a.title} <span style="opacity: 0.5;">(${a.date})</span></span>
+                <div>
+                    <button onclick="editArticle('${a.id}')" style="background:none; border:none; color:var(--accent-color); font-family: inherit; font-weight: bold; cursor:pointer;">Éditer</button>
+                    <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-family: inherit; font-weight: bold; cursor:pointer; margin-left: 10px;">Supprimer</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        listDiv.innerHTML = '<p style="color:#dc3545;">Erreur chargement. Ton token est-il valide ?</p>';
+    }
+}
+
+window.editArticle = function(id) {
+    const article = window.allAdminArticles.find(a => a.id === id);
+    if (!article) return;
+    document.getElementById('title').value = article.title;
+    document.getElementById('category').value = article.category;
+    document.getElementById('tags').value = article.tags.join(', ');
+    document.getElementById('editor').innerHTML = article.content;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showStatus("Article chargé. (Note : L'image de couverture n'est pas rechargée, ajoute-la à nouveau si tu la modifies)", "success");
+};
+
+window.deleteArticle = async function(id) {
+    if (!confirm("Supprimer cet article définitivement ?")) return;
+    const token = document.getElementById('github-token').value;
+    showStatus("Suppression en cours...", "");
+    try {
+        // 1. Mettre à jour JSON
+        const { sha, data } = await getGitHubFile('data/articles.json', token);
+        data.articles = data.articles.filter(a => a.id !== id);
+        await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Delete article: ${id}`);
+        
+        // 2. Supprimer la page HTML
+        try {
+            const htmlData = await getGitHubFile(`articles/${id}.html`, token);
+            await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/articles/${id}.html`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: `Delete HTML: ${id}`, sha: htmlData.sha })
+            });
+        } catch(e) { console.log("HTML introuvable, skip"); }
+        
+        showStatus("Article supprimé avec succès !", "success");
+        loadAdminArticles();
+    } catch (e) {
+        showStatus("Erreur suppression: " + e.message, "error");
+    }
+};
