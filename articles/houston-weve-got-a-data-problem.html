@@ -11,64 +11,95 @@
         <a href="../index.html" class="site-logo">CAPNUM</a>
         <div class="header-right">
             <nav class="main-nav">
-                <a href="../categorie.html?cat=Environnement">ðŸŒ± Environnement</a>
-                <a href="../categorie.html?cat=Data">ðŸ“Š Data</a>
-                <a href="../categorie.html?cat=IA">ðŸ¤– IA</a>
-                <a href="../categorie.html?cat=Low Tech">âš™ï¸ Low Tech</a>
-                <a href="../categorie.html?cat=Solarpunk">â˜€ï¸ Solarpunk</a>
-                <a href="../categorie.html?cat=DÃ©gafamisation">ðŸŒ DÃ©gafamisation</a>
+                <a href="../index.html?cat=Environnement">🌱 Environnement</a>
+                <a href="../index.html?cat=Data">📊 Data</a>
+                <a href="../index.html?cat=IA">🤖 IA</a>
+                <a href="../index.html?cat=Low Tech">⚙️ Low Tech</a>
+                <a href="../index.html?cat=Solarpunk">☀️ Solarpunk</a>
+                <a href="../index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
             </nav>
+            <label class="theme-switch" aria-label="Changer de thème">
+                <input type="checkbox" id="theme-toggle-input" onchange="
+                    let nt = this.checked ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-theme', nt);
+                    localStorage.setItem('theme', nt);
+                ">
+                <div class="slider round">
+                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
+            </label>
+            <script>
+                (function() {
+                    let t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                    document.documentElement.setAttribute('data-theme', t);
+                    document.getElementById('theme-toggle-input').checked = (t === 'dark');
+                })();
+            </script>
         </div>
     </header>
-
-    <main>
-        <article class="article-full">
-            <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
-                <a href="../index.html">â† Accueil</a> &nbsp;|&nbsp; Non classÃ© &nbsp;|&nbsp; 2023-10-19
-            </p>
-            <h1>Houston, we've got a data problem...</h1>
-            <div class="article-content">
-                
+    <main class="article-full">
+        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">Environnement • 2026-04-25</div>
+        <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">Houston, we've got a data problem...</h1>
+        <img src="../images/houston-weve-got-a-data-problem-1777122693041.webp" class="article-hero-img">
+        <div class="article-content">
 
 
 
 
-<p>1993, la NASA lance le programme spatial Mars Surveyor pour mieux connaître le climat martien à l'aide de sondes Viking. L'une d'elle, Mars Climate Orbiter (MCO) est lancée de Cap Canaveral en 1998 et doit mettre 9 mois à atteindre Mars. Mais une fois lancée, il faut encore faire des ajustements de trajectoire jusqu'au bout et tout ça à des millions de km. Donc la donnée de l'appareil est envoyée au centre de contrôle et traitée dans le programme SM_FORCES, puis ajustée et renvoyée vers l'appareil qui traite l'ajustement avec le programme AMD (Angular Momentum).</p>
+<p>1993, la NASA lance le programme spatial Mars Surveyor pour mieux 
+connaître le climat martien à l’aide de sondes Viking. L’une d’elle, 
+<b>Mars Climate Orbiter</b> (MCO) est lancée de Cap Canaveral en 1998 et doit 
+mettre 9 mois à atteindre Mars. Mais une fois lancée, il faut encore 
+faire des ajustements de trajectoire jusqu’au bout et tout ça à des 
+millions de km. Donc la donnée de l’appareil est envoyée au centre de 
+contrôle et traitée dans le programme SM_FORCES, puis ajustée et 
+renvoyée vers l’appareil qui traite l’ajustement avec le programme AMD 
+(Angular Momentum).</p>
 
 
 
-<p><strong>Problème : </strong>les données qui arrivent sur la position de la sonde sont bizarres, et pour cause : l'AMD utilise le système métrique pour mesurer l'impulsion en Newton, alors que les ordinateurs utilisent le système impérial pounds/seconde. 1 pound = 4.45 Newtons, autant dire qu'avec une impulsion multipliée par plus de 4 et un total de 7 ajustements erronés, le pauvre MCO s'est crashé sur la surface de Mars dont on le croyait encore éloigné de 170 km !</p>
+<p><strong>Problème : </strong>les données qui arrivent sur la position 
+de la sonde sont bizarres, et pour cause : l’AMD utilise le système 
+métrique pour mesurer l’impulsion en Newton, alors que les ordinateurs 
+utilisent le système impérial pounds/seconde. 1 pound = 4.45 Newtons, 
+autant dire qu’avec une impulsion multipliée par plus de 4 et un total 
+de 7 ajustements erronés, <b>le pauvre MCO s’est crashé sur la surface de 
+Mars dont on le croyait encore éloigné de 170 km</b> !</p>
 
 
 
-<p><strong>Comme quoi, si la NASA peut pécher par excès de confiance, personne n'est à l'abri d'une donnée de mauvaise qualité aux conséquences importantes ! :D</strong></p>
-
-
-
-
-
-
-
-<p><em><strong>Pour aller plus loin :</strong></em></p>
-
-
-
-<p>Passionnés par cette histoire ? Retrouvez le documentaire de Curious Droid avec tous les détails sur YouTube :</p>
-
-
-
-<p>
-https://www.youtube.com/watch?v=lcYkOh4nweE
-</p>
-
-            </div>
-        </article>
+<p><strong><i>Comme quoi, si la NASA peut pécher par excès de confiance, 
+personne n’est à l’abri d’une donnée de mauvaise qualité aux 
+conséquences importantes !</i></strong></p><p>Le documentaire pour en savoir plus : <a href="https://www.youtube.com/watch?v=lcYkOh4nweE">https://www.youtube.com/watch?v=lcYkOh4nweE</a></p></div>
     </main>
-
     <footer>
-        <div id="site-info" style="font-size:0.95rem;opacity:0.9;text-align:justify;margin-bottom:1.5rem;max-width:900px;margin-left:auto;margin-right:auto;">
-            <p>Ce blog est une expÃ©rimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h Ã  8h, on Ã©vite le trafic automatisÃ© inutile la nuit tout en valorisant le droit humain Ã  la dÃ©connexion.</p>
+        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
+            <script>
+                (async function() {
+                    const w = document.getElementById('site-weight');
+                    const cached = localStorage.getItem('siteWeight');
+                    if (cached) w.innerText = cached;
+                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
+                        try {
+                            const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
+                            const d = await r.json();
+                            if (d.size) {
+                                w.innerText = d.size;
+                                localStorage.setItem('siteWeight', d.size);
+                                localStorage.setItem('siteWeightTime', Date.now());
+                            }
+                        } catch(e) {}
+                    }
+                })();
+            </script>
         </div>
+        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
+            <a href="../admin/dashboard.html">Admin</a> • 
+            <a href="../mentions-legales.html">Mentions légales</a> • 
+            <a href="../random.html" id="link-random">RANDOM</a>
+        </nav>
     </footer>
 </body>
 </html>
