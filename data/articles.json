@@ -27,7 +27,7 @@
       "tags": [
         "spatial"
       ],
-      "image": "images/houston-weve-got-a-data-problem-1777122693041.webp",
+      "image": "images/houston-weve-got-a-data-problem-1777124370772.webp",
       "content": "\n\n\n\n\n<p>1993, la NASA lance le programme spatial Mars Surveyor pour mieux \nconnaître le climat martien à l’aide de sondes Viking. L’une d’elle, \n<b>Mars Climate Orbiter</b> (MCO) est lancée de Cap Canaveral en 1998 et doit \nmettre 9 mois à atteindre Mars. Mais une fois lancée, il faut encore \nfaire des ajustements de trajectoire jusqu’au bout et tout ça à des \nmillions de km. Donc la donnée de l’appareil est envoyée au centre de \ncontrôle et traitée dans le programme SM_FORCES, puis ajustée et \nrenvoyée vers l’appareil qui traite l’ajustement avec le programme AMD \n(Angular Momentum).</p>\n\n\n\n<p><strong>Problème : </strong>les données qui arrivent sur la position \nde la sonde sont bizarres, et pour cause : l’AMD utilise le système \nmétrique pour mesurer l’impulsion en Newton, alors que les ordinateurs \nutilisent le système impérial pounds/seconde. 1 pound = 4.45 Newtons, \nautant dire qu’avec une impulsion multipliée par plus de 4 et un total \nde 7 ajustements erronés, <b>le pauvre MCO s’est crashé sur la surface de \nMars dont on le croyait encore éloigné de 170 km</b> !</p>\n\n\n\n<p><strong><i>Comme quoi, si la NASA peut pécher par excès de confiance, \npersonne n’est à l’abri d’une donnée de mauvaise qualité aux \nconséquences importantes !</i></strong></p><p>Le documentaire pour en savoir plus : <a href=\"https://www.youtube.com/watch?v=lcYkOh4nweE\">https://www.youtube.com/watch?v=lcYkOh4nweE</a></p>",
       "views": 0,
       "draft": false
