@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,12 +37,12 @@
         <a href="index.html" class="site-logo">CAPNUM</a>
         <div class="header-right">
             <nav class="main-nav">
-                <a href="index.html?cat=Environnement">🌱 Environnement</a>
-                <a href="index.html?cat=Data">📊 Data</a>
-                <a href="index.html?cat=IA">🤖 IA</a>
-                <a href="index.html?cat=Low Tech">⚙️ Low Tech</a>
-                <a href="index.html?cat=Solarpunk">☀️ Solarpunk</a>
-                <a href="index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
+                <a href="index.html?cat=Environnement">Environnement</a>
+                <a href="index.html?cat=Data">Data</a>
+                <a href="index.html?cat=IA">IA</a>
+                <a href="index.html?cat=Low Tech">Low Tech</a>
+                <a href="index.html?cat=Solarpunk">Solarpunk</a>
+                <a href="index.html?cat=Dégafamisation">Dégafamisation</a>
             </nav>
             <label class="theme-switch" aria-label="Changer de thème">
                 <input type="checkbox" id="theme-toggle-input" onchange="
@@ -91,7 +91,6 @@
             <p>Pour toute question ou demande, vous pouvez me contacter à l'adresse suivante :</p>
             <p>
                 <script>
-                    // Obfuscation basique pour éviter le spam par les robots
                     var user = "fc.hortense.chevalier";
                     var domain = "mailo.com";
                     document.write('<a href="mailto:' + user + '@' + domain + '" style="font-family: \'JetBrains Mono\', monospace; color: var(--accent-color);">' + user + '@' + domain + '</a>');
@@ -104,30 +103,12 @@
     </main>
 
     <footer>
-        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
-            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
-            <script>
-                (async function() {
-                    const w = document.getElementById('site-weight');
-                    const cached = localStorage.getItem('siteWeight');
-                    if (cached) w.innerText = cached;
-                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
-                        try {
-                            const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
-                            const d = await r.json();
-                            if (d.size) {
-                                w.innerText = d.size;
-                                localStorage.setItem('siteWeight', d.size);
-                                localStorage.setItem('siteWeightTime', Date.now());
-                            }
-                        } catch(e) {}
-                    }
-                })();
-            </script>
+        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem;">
+            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
         </div>
-        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
+        <nav class="footer-links">
             <a href="admin/dashboard.html">Admin</a> • 
-            <a href="mentions-legales.html">Mentions légales</a> • 
+            <a href="index.html">Accueil</a> • 
             <a href="random.html" id="link-random">RANDOM</a>
         </nav>
     </footer>
