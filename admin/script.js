@@ -3,7 +3,7 @@
  */
 
 const GITHUB_CONFIG = {
-    owner: 'VOTRE_USERNAME', // À remplir ou détecter
+    owner: 'FRUGMAN',
     repo: 'CAPNUM',
     branch: 'main'
 };
