@@ -226,9 +226,9 @@ async function publishArticle() {
             <p>Poids estimé : <span id="site-weight">0</span> Ko | <span id="site-status">Ouvert (8h-24h UTC+2)</span></p>
         </div>
         <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
-            <a href="../admin/edit.html">Ajouter</a> • 
+            <a href="../admin/dashboard.html">Admin</a> • 
             <a href="../mentions-legales.html">Mentions légales</a> • 
-            <a href="../categories/random.html" id="link-random">RANDOM</a>
+            <a href="../random.html" id="link-random">RANDOM</a>
         </nav>
     </footer>
 </body>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>??? | CAPNUM</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Design "Étrange" pour la page secrète */
+        body {
+            background-color: #000 !important;
+            color: #0f0 !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            overflow-x: hidden;
+        }
+        
+        /* Cacher le header normal et le footer */
+        .site-header, footer {
+            display: none !important;
+        }
+
+        .glitch-container {
+            max-width: 800px;
+            margin: 5rem auto;
+            padding: 2rem;
+            border: 1px dashed #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+
+        h1.glitch {
+            font-size: 3rem;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 #f00, -2px -2px 0 #00f;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: skewX(0deg); }
+            20% { transform: skewX(-5deg); }
+            40% { transform: skewX(5deg); }
+            60% { transform: skewX(-2deg); }
+            80% { transform: skewX(2deg); }
+            100% { transform: skewX(0deg); }
+        }
+
+        .random-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .random-card {
+            background: #111;
+            border: 1px solid #0f0;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: #0f0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .random-card:hover {
+            background: #0f0;
+            color: #000;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px #0f0;
+        }
+
+        .random-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-family: inherit;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid #fff;
+        }
+        .back-link:hover {
+            color: #0f0;
+            border-bottom-color: #0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-container">
+        <a href="index.html" class="back-link">← Retourner à la surface</a>
+        <h1 class="glitch">ZONE RANDOM</h1>
+        <p>> Accès autorisé.<br>> Chargement des archives secrètes...</p>
+        
+        <div id="random-articles" class="random-grid">
+            <p>Scanning data...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('random-articles');
+            try {
+                const response = await fetch('data/articles.json');
+                const data = await response.json();
+                const randomArticles = data.articles.filter(a => a.category === 'RANDOM');
+
+                if (randomArticles.length === 0) {
+                    grid.innerHTML = "<p>> Erreur 404 : Aucun fichier classifié trouvé.</p>";
+                    return;
+                }
+
+                grid.innerHTML = randomArticles.map(a => `
+                    <a href="articles/${a.id}.html" class="random-card">
+                        <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.5rem;">[TIMESTAMP: ${a.date}]</div>
+                        <h3>${a.title}</h3>
+                        <p style="margin:0; font-size: 0.9rem;">${a.content.substring(0, 120).replace(/<[^>]*>/g, '')}...</p>
+                    </a>
+                `).join('');
+            } catch (e) {
+                grid.innerHTML = "<p>> FATAL ERROR: Impossible d'accéder au serveur.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
