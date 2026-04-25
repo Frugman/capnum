@@ -81,12 +81,14 @@ function renderGrid(articles, mode = 'cat', filter = 'all') {
         card.href = `articles/${article.id}.html`;
         card.className = 'article-card';
         const formattedDate = article.date.split('-').reverse().join('/');
+        const excerpt = article.content.replace(/<[^>]*>/g, '').substring(0, 120).trim() + '...';
+        
         card.innerHTML = `
             <img src="${article.image}" alt="${article.title}" class="card-image">
             <div class="card-content">
-                <div class="card-meta">${article.category} • ${formattedDate}</div>
                 <h3 class="card-title">${article.title}</h3>
-                <p>${article.content.substring(0, 100).replace(/<[^>]*>/g, '')}...</p>
+                <div class="card-excerpt">${excerpt}</div>
+                <div class="card-meta">${article.category} • ${formattedDate}</div>
             </div>
         `;
         grid.appendChild(card);
