@@ -201,8 +201,15 @@ async function publishArticle() {
             }
         }
 
+        // On détermine l'image finale pour le JSON et le HTML
+        const existingImg = window.currentEditingArticle ? window.currentEditingArticle.image : 'https://picsum.photos/400/300';
+        const finalImage = finalImagePath || existingImg;
+        const formattedDate = date.split('-').reverse().join('/');
+
         // 2. Générer la page HTML de l'article
-        const heroHtml = finalImagePath ? `<img src="../${finalImagePath}" class="article-hero-img">` : '';
+        const heroSrc = finalImage.startsWith('http') ? finalImage : '../' + finalImage;
+        const heroHtml = `<img src="${heroSrc}" class="article-hero-img">`;
+
         const articleHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -244,7 +251,7 @@ async function publishArticle() {
         </div>
     </header>
     <main class="article-full">
-        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">${category} • ${date}</div>
+        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">${category} • ${formattedDate}</div>
         <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">${title}</h1>
         ${heroHtml}
         <div class="article-content">${content}</div>
