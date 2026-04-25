@@ -349,13 +349,19 @@ async function loadAdminArticles() {
             listDiv.innerHTML = '<p>Aucun article trouvé.</p>';
             return;
         }
-        window.allAdminArticles = data.articles;
-        listDiv.innerHTML = data.articles.map(a => `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; border-bottom: 1px solid var(--border-color);">
-                <span>${a.title} <span style="opacity: 0.5;">(${a.date})</span></span>
-                <div>
-                    <button onclick="window.location.href='edit.html?id=${a.id}'" style="background:none; border:none; color:var(--accent-color); font-family: inherit; font-weight: bold; cursor:pointer;">Éditer</button>
-                    <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-family: inherit; font-weight: bold; cursor:pointer; margin-left: 10px;">Supprimer</button>
+        
+        // TRI : Du plus récent au plus ancien
+        const sortedArticles = data.articles.sort((a, b) => b.date.localeCompare(a.date));
+        window.allAdminArticles = sortedArticles;
+
+        listDiv.innerHTML = sortedArticles.map(a => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0.5rem; border-bottom: 1px solid var(--border-color); gap: 1rem;">
+                <span style="flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${a.title}">
+                    ${a.title} <span style="opacity: 0.5; font-size: 0.8rem; margin-left: 5px;">(${a.date})</span>
+                </span>
+                <div style="display: flex; gap: 15px; flex-shrink: 0;">
+                    <button onclick="window.location.href='edit.html?id=${a.id}'" style="background:none; border:none; color:var(--accent-color); font-family: inherit; font-weight: bold; cursor:pointer; padding: 5px;">Éditer</button>
+                    <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-family: inherit; font-weight: bold; cursor:pointer; padding: 5px;">Supprimer</button>
                 </div>
             </div>
         `).join('');
