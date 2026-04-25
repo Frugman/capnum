@@ -37,6 +37,27 @@
     - Ajout du support pour conserver l'image de couverture existante lors d'une édition.
     - Encodage forcé en UTF-8 sans BOM sur tous les scripts de génération.
 
+## Étape 5 : Personnalisation Visuelle et Expériences Rétro (25/04/2026)
+*   **Identité Visuelle** : Adoption d'une palette "Solarpunk" personnalisée.
+    *   Dark Mode : Vert électrique `#00ff93`.
+    *   Light Mode : Vert forêt `#009556`.
+    *   Application systématique aux titres, liens et boutons.
+*   **Optimisation Grid** : 
+    *   Cartes d'articles à hauteur égale via Flexbox.
+    *   Réorganisation de la structure : Titre (1.1rem) > Extrait (120 chars) > Metas (Catégorie + Date) en bas.
+*   **Page RANDOM (TO8 Edition)** :
+    *   Refonte totale inspirée de l'ordinateur Thomson TO8.
+    *   Utilisation de la police pixelisée `VT323` et couleurs d'origine.
+    *   Intégration d'un mini-jeu de **Tic-Tac-Toe** (Morpion) contre l'ordinateur.
+    *   Easter Eggs : Référence "WarGames" (Guerre thermo-nucléaire) et date système figée en octobre 1991.
+*   **Stabilisation Technique** :
+    *   **Bouton Token** : Ajout d'une validation manuelle du token GitHub dans l'admin.
+    *   **Correctif UTF-8** : Implémentation de `utf8_to_b64` et `b64_to_utf8` pour garantir l'intégrité des accents et emojis lors des appels API GitHub.
+    *   **Horaires Low-Tech** : Blocage automatique de l'accès au site entre 00h et 08h (UTC+2) pour promouvoir la déconnexion et l'économie d'énergie.
+
+---
+*Note : Le site est maintenant prêt pour la reprise éditoriale manuelle des 40 articles importés.*
+
 ## À faire (Demandes utilisateur en attente)
 - [ ] **Contenu** : Reprise manuelle des images de couverture et catégories des 40 articles importés.
 - [ ] **SEO** : Vérification des Meta descriptions générées.
