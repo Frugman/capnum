@@ -17,31 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
         tokenInput.value = savedToken;
         if (document.getElementById('manage-articles-list')) {
             loadAdminArticles();
-        } else {
+        } else if (document.getElementById('title')) {
             checkForEditId();
         }
     }
     
-    tokenInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') saveToken();
-    });
-});
-
-window.saveToken = function() {
-    const token = document.getElementById('github-token').value.trim();
-    if (!token) {
-        alert("Veuillez saisir un token.");
-        return;
+    if (tokenInput) {
+        tokenInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') saveToken();
+        });
     }
-    localStorage.setItem('gh_token', token);
-    showStatus("Token enregistré localement ! Chargement des données...", "success");
-    
-    if (document.getElementById('manage-articles-list')) {
-        loadAdminArticles();
-    } else {
-        checkForEditId();
-    }
-};
 
     // Gestion de l'image de couverture (seulement sur edit.html)
     const imgUpload = document.getElementById('image-upload');
@@ -56,16 +41,33 @@ window.saveToken = function() {
     if (btnPublish) {
         btnPublish.addEventListener('click', publishArticle);
         // Date du jour par défaut
-        if (!new URLSearchParams(window.location.search).get('id')) {
+        if (!new URLSearchParams(window.location.search).get('id') && document.getElementById('date')) {
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
         }
     }
 });
 
+window.saveToken = function() {
+    const tokenInput = document.getElementById('github-token');
+    const token = tokenInput.value.trim();
+    if (!token) {
+        alert("Veuillez saisir un token.");
+        return;
+    }
+    localStorage.setItem('gh_token', token);
+    showStatus("Token enregistré localement ! Chargement des données...", "success");
+    
+    if (document.getElementById('manage-articles-list')) {
+        loadAdminArticles();
+    } else {
+        checkForEditId();
+    }
+};
+
 async function checkForEditId() {
     const urlParams = new URLSearchParams(window.location.search);
     const editId = urlParams.get('id');
-    const token = document.getElementById('github-token').value;
+    const token = document.getElementById('github-token').value.trim();
     if (editId && token) {
         try {
             const { data } = await getGitHubFile('data/articles.json', token);
@@ -73,15 +75,17 @@ async function checkForEditId() {
             if (article) {
                 window.currentEditingArticle = article; // Mémoriser l'article en cours
                 document.getElementById('title').value = article.title;
-                document.getElementById('date').value = article.date; // Charger la date
+                if (document.getElementById('date')) document.getElementById('date').value = article.date;
                 document.getElementById('category').value = article.category;
                 document.getElementById('tags').value = article.tags.join(', ');
                 document.getElementById('editor').innerHTML = article.content;
                 
                 if (article.image) {
                     const preview = document.getElementById('image-preview');
-                    preview.src = article.image.startsWith('http') ? article.image : '../' + article.image;
-                    preview.style.display = 'block';
+                    if (preview) {
+                        preview.src = article.image.startsWith('http') ? article.image : '../' + article.image;
+                        preview.style.display = 'block';
+                    }
                 }
                 showStatus("Article chargé.", "success");
             }
@@ -90,7 +94,6 @@ async function checkForEditId() {
         }
     }
 }
-
 
 let coverImageBase64 = null;
 
@@ -126,7 +129,7 @@ async function handleContentImageUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
 
-    const token = document.getElementById('github-token').value;
+    const token = document.getElementById('github-token').value.trim();
     if (!token) {
         alert("Veuillez d'abord saisir votre Token GitHub en bas de page.");
         return;
@@ -170,7 +173,7 @@ async function handleContentImageUpload(e) {
 async function publishArticle() {
     const token = document.getElementById('github-token').value.trim();
     const title = document.getElementById('title').value;
-    const date = document.getElementById('date').value; // Récupérer la date du champ
+    const date = document.getElementById('date').value;
     const category = document.getElementById('category').value;
     const tags = document.getElementById('tags').value.split(',').map(t => t.trim());
     let content = document.getElementById('editor').innerHTML;
@@ -278,7 +281,7 @@ async function publishArticle() {
                     if (cached) w.innerText = cached;
                     if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
                         try {
-                            const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
+                            const r = await fetch('https://api.github.com/repos/Frugman/capnum');
                             const d = await r.json();
                             if (d.size) {
                                 w.innerText = d.size;
@@ -324,12 +327,8 @@ async function publishArticle() {
 
         // 3. Mettre à jour articles.json
         const { sha, data } = await getGitHubFile('data/articles.json', token);
-        
-        // On récupère l'ancienne image si on n'en a pas mis de nouvelle
-        const existingImg = window.currentEditingArticle ? window.currentEditingArticle.image : 'https://picsum.photos/400/300';
-        const finalImage = finalImagePath || existingImg;
-
-        const newArticle = { id, title, date, category, tags, image: finalImage, content, views: 0, draft: false };
+        const finalImageJson = finalImage.startsWith('../') ? finalImage.substring(3) : finalImage;
+        const newArticle = { id, title, date, category, tags, image: finalImageJson, content, views: 0, draft: false };
         
         // Eviter les doublons
         const index = data.articles.findIndex(a => a.id === id);
@@ -393,6 +392,7 @@ async function updateGitHubFile(path, content, sha, token, message) {
 
 function showStatus(msg, type) {
     const s = document.getElementById('status');
+    if (!s) return;
     s.innerText = msg;
     s.className = 'status-msg ' + type;
 }
@@ -400,9 +400,11 @@ function showStatus(msg, type) {
 // ---- GESTION DES ARTICLES ----
 
 async function loadAdminArticles() {
-    const token = document.getElementById('github-token').value;
+    const tInput = document.getElementById('github-token');
+    const token = tInput ? tInput.value.trim() : localStorage.getItem('gh_token');
     if (!token) return;
     const listDiv = document.getElementById('manage-articles-list');
+    if (!listDiv) return;
     listDiv.innerHTML = '<p>Chargement des articles...</p>';
     try {
         const { data } = await getGitHubFile('data/articles.json', token);
@@ -433,7 +435,7 @@ async function loadAdminArticles() {
 
 window.deleteArticle = async function(id) {
     if (!confirm("Supprimer cet article définitivement ?")) return;
-    const token = document.getElementById('github-token').value;
+    const token = document.getElementById('github-token').value.trim();
     showStatus("Suppression en cours...", "");
     try {
         // 1. Mettre à jour JSON
