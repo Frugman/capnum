@@ -104,7 +104,7 @@ h1, h2, h3 {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
-    min-height: 800px; /* Fixe la hauteur mini pour éviter le saut au filtrage */
+    align-items: start;
 }
 
 .article-card {

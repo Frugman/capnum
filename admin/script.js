@@ -138,14 +138,14 @@ async function publishArticle() {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header><a href="../index.html">← Retour à l'accueil</a></header>
+    <header style="padding: 2rem; max-width: 900px; margin: auto;"><a href="../index.html" style="color: var(--accent-color); text-decoration: none; font-family: 'JetBrains Mono', monospace;">← Retour à l'accueil</a></header>
     <main class="article-full">
-        <div class="card-meta">${category} • ${date}</div>
-        <h1>${title}</h1>
+        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">${category} • ${date}</div>
+        <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">${title}</h1>
         <img src="../${imagePath}" class="article-hero-img">
         <div class="article-content">${content}</div>
     </main>
-    <footer><p>Blog Capnum - 2026</p></footer>
+    <footer style="margin-top: 5rem; padding: 2rem; text-align: center; background: var(--footer-bg);"><p>Blog Capnum - 2026</p></footer>
 </body>
 </html>`;
 
@@ -180,9 +180,11 @@ async function getGitHubFile(path, token) {
     });
     if (!resp.ok) throw new Error("Impossible de lire " + path);
     const json = await resp.json();
+    // Décodage UTF-8 robuste
+    const decoded = decodeURIComponent(escape(atob(json.content)));
     return {
         sha: json.sha,
-        data: JSON.parse(atob(json.content))
+        data: JSON.parse(decoded)
     };
 }
 
