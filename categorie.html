@@ -15,13 +15,29 @@
         .cat-header {
             margin: 2rem 0 1.5rem;
             display: flex;
-            align-items: baseline;
-            gap: 1.5rem;
+            align-items: center;
+            gap: 1rem;
         }
-        .cat-header h1 { margin: 0; font-size: 1.8rem; }
-        .cat-header a { font-size: 0.9rem; opacity: 0.7; }
-        @media (max-width: 700px) { .cat-grid { grid-template-columns: 1fr; } }
-        @media (min-width: 701px) and (max-width: 1000px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+        .cat-header h1 { 
+            margin: 0; 
+            font-size: 2.2rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            color: var(--accent-color);
+        }
+        .cat-header .cat-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            object-fit: contain;
+        }
+        .cat-header a { font-size: 0.9rem; opacity: 0.7; color: var(--text-color); text-decoration: none; }
+        .cat-header a:hover { text-decoration: underline; }
+        
+        @media (max-width: 768px) { 
+            .cat-grid { grid-template-columns: 1fr; }
+            .cat-header { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -29,12 +45,12 @@
         <a href="index.html" class="site-logo">CAPNUM</a>
         <div class="header-right">
             <nav class="main-nav">
-                <a href="categorie.html?cat=Environnement">🌱 Environnement</a>
-                <a href="categorie.html?cat=Data">📊 Data</a>
-                <a href="categorie.html?cat=IA">🤖 IA</a>
-                <a href="categorie.html?cat=Low Tech">⚙️ Low Tech</a>
-                <a href="categorie.html?cat=Solarpunk">☀️ Solarpunk</a>
-                <a href="categorie.html?cat=Dégafamisation">🌐 Dégafamisation</a>
+                <a href="categorie.html?cat=Environnement">Environnement</a>
+                <a href="categorie.html?cat=Data">Data</a>
+                <a href="categorie.html?cat=IA">IA</a>
+                <a href="categorie.html?cat=Low Tech">Low Tech</a>
+                <a href="categorie.html?cat=Solarpunk">Solarpunk</a>
+                <a href="categorie.html?cat=Dégafamisation">Dégafamisation</a>
             </nav>
             <label class="theme-switch" aria-label="Changer de thème">
                 <input type="checkbox" id="theme-toggle-input" onchange="
@@ -69,23 +85,9 @@
 
     <footer>
         <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem;">
-            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
-            <script>
-                (async function() {
-                    const w = document.getElementById('site-weight');
-                    const cached = localStorage.getItem('siteWeight');
-                    if (cached) w.innerText = cached;
-                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
-                        try {
-                            const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
-                            const d = await r.json();
-                            if (d.size) { w.innerText = d.size; localStorage.setItem('siteWeight', d.size); localStorage.setItem('siteWeightTime', Date.now()); }
-                        } catch(e) {}
-                    }
-                })();
-            </script>
+            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong>. En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
         </div>
-        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
+        <nav class="footer-links">
             <a href="admin/dashboard.html">Admin</a> • 
             <a href="mentions-legales.html">Mentions légales</a> • 
             <a href="random.html" id="link-random">RANDOM</a>
@@ -93,33 +95,48 @@
     </footer>
 
     <script>
-        const ICONS = { 'Environnement': '🌱', 'Data': '📊', 'IA': '🤖', 'Low Tech': '⚙️', 'Solarpunk': '☀️', 'Dégafamisation': '🌐' };
+        const ICONS = { 
+            'Environnement': 'icoenv.svg', 
+            'Data': 'icodata.svg', 
+            'IA': 'icoia.svg', 
+            'Low Tech': 'icolowtech.svg', 
+            'Solarpunk': 'icosolar.svg', 
+            'Dégafamisation': 'icodegaf.svg' 
+        };
 
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const cat = params.get('cat');
+            const tag = params.get('tag');
             const titleEl = document.getElementById('cat-title');
             const grid = document.getElementById('cat-grid');
 
             if (cat) {
-                const icon = ICONS[cat] || '';
-                titleEl.textContent = `${icon} ${cat}`;
+                const iconFile = ICONS[cat];
+                const iconHtml = iconFile ? `<img src="images/${iconFile}" class="cat-icon" alt="">` : '';
+                titleEl.innerHTML = `${iconHtml}<span>${cat}</span>`;
                 document.title = `${cat} | CAPNUM`;
+                
                 document.querySelectorAll('.main-nav a').forEach(a => {
                     if (decodeURIComponent(a.href).includes(`cat=${cat}`)) {
                         a.style.opacity = '1'; a.style.fontWeight = 'bold';
                     }
                 });
+            } else if (tag) {
+                titleEl.innerHTML = `<span>#${tag}</span>`;
+                document.title = `#${tag} | CAPNUM`;
             }
 
             try {
                 const res = await fetch('data/articles.json');
                 const data = await res.json();
                 let articles = data.articles.filter(a => !a.draft && a.category !== 'RANDOM');
+                
                 if (cat) articles = articles.filter(a => a.category === cat);
+                if (tag) articles = articles.filter(a => a.tags.includes(tag));
 
                 if (articles.length === 0) {
-                    grid.innerHTML = '<p>Aucun article dans cette catégorie pour le moment.</p>';
+                    grid.innerHTML = '<p>Aucun article trouvé pour le moment.</p>';
                     return;
                 }
 
@@ -127,9 +144,9 @@
                     <a href="articles/${a.id}.html" class="article-card">
                         <img src="${a.image}" alt="${a.title}" class="card-image">
                         <div class="card-content">
-                            <div class="card-meta">${a.category} • ${a.date}</div>
                             <h3 class="card-title">${a.title}</h3>
-                            <p>${a.content.substring(0, 100).replace(/<[^>]*>/g, '')}...</p>
+                            <p class="card-excerpt">${a.content.substring(0, 100).replace(/<[^>]*>/g, '')}...</p>
+                            <div class="card-meta">${a.category} • ${a.date.split('-').reverse().join('/')}</div>
                         </div>
                     </a>
                 `).join('');
