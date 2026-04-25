@@ -105,7 +105,7 @@ async function handleImageUpload(e) {
     
     // Options de compression
     const options = {
-        maxSizeMB: 0.2, // 200Ko max pour rester low-tech
+        maxSizeMB: 0.2,
         maxWidthOrHeight: 1200,
         useWebWorker: true,
         fileType: 'image/webp'
@@ -144,21 +144,18 @@ async function handleContentImageUpload(e) {
         const fileName = `img_${Date.now()}.webp`;
         const path = `images/${fileName}`;
 
-        // Lecture du fichier pour GitHub
         const reader = new FileReader();
         reader.onload = async (event) => {
-            const content = event.target.result.split(',')[1]; // Base64
+            const content = event.target.result.split(',')[1];
             
             showStatus("Envoi sur GitHub...", "");
             
-            // On envoie l'image directement sur GitHub
             await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: `Upload image: ${fileName}`, content: content })
             });
 
-            // Insertion dans l'éditeur
             const imgUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/main/${path}`;
             document.execCommand('insertImage', false, imgUrl);
             
@@ -177,14 +174,13 @@ async function publishArticle() {
     const category = document.getElementById('category').value;
     const tags = document.getElementById('tags').value.split(',').map(t => t.trim());
     let content = document.getElementById('editor').innerHTML;
-    const status = document.getElementById('status');
 
     if (!token || !title || !content || !date) {
         showStatus("Erreur : Token, titre, date et contenu obligatoires.", "error");
         return;
     }
 
-    // --- AUTOMATISATION DES LIENS (target="_blank") ---
+    // Automatisation des liens
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = content;
     tempDiv.querySelectorAll('a').forEach(link => {
@@ -201,30 +197,21 @@ async function publishArticle() {
     let finalImagePath = null;
 
     try {
-        // 1. Envoyer l'image de couverture si elle existe
         if (coverImageBase64) {
             finalImagePath = `images/${id}-${timestamp}.webp`;
-            const imgRes = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${finalImagePath}`, {
+            await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${finalImagePath}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: `Cover image: ${id}`, content: coverImageBase64 })
             });
-            
-            if (!imgRes.ok) {
-                const errData = await imgRes.json();
-                throw new Error("Erreur upload image: " + (errData.message || imgRes.statusText));
-            }
         }
 
-        // On détermine l'image finale pour le JSON et le HTML
         const existingImg = window.currentEditingArticle ? window.currentEditingArticle.image : 'https://picsum.photos/400/300';
         const finalImage = finalImagePath || existingImg;
         const formattedDate = date.split('-').reverse().join('/');
 
-        // 2. Générer la page HTML de l'article
+        // Template HTML de l'article
         const heroSrc = finalImage.startsWith('http') ? finalImage : '../' + finalImage;
-        const heroHtml = `<img src="${heroSrc}" class="article-hero-img">`;
-
         const articleHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -245,7 +232,7 @@ async function publishArticle() {
                 <a href="../index.html?cat=Solarpunk">☀️ Solarpunk</a>
                 <a href="../index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
             </nav>
-            <label class="theme-switch" aria-label="Changer de thème">
+            <label class="theme-switch">
                 <input type="checkbox" id="theme-toggle-input" onchange="
                     let nt = this.checked ? 'dark' : 'light';
                     document.documentElement.setAttribute('data-theme', nt);
@@ -256,47 +243,17 @@ async function publishArticle() {
                     <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </div>
             </label>
-            <script>
-                (function() {
-                    let t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                    document.documentElement.setAttribute('data-theme', t);
-                    document.getElementById('theme-toggle-input').checked = (t === 'dark');
-                })();
-            </script>
         </div>
     </header>
     <main class="article-full">
-        <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">${category} • ${formattedDate}</div>
-        <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">${title}</h1>
-        ${heroHtml}
+        <div class="card-meta">${category} • ${formattedDate}</div>
+        <h1>${title}</h1>
+        <img src="${heroSrc}" class="article-hero-img">
         <div class="article-content">${content}</div>
     </main>
     <footer>
-        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
-            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
-            <script>
-                (async function() {
-                    const w = document.getElementById('site-weight');
-                    const cached = localStorage.getItem('siteWeight');
-                    if (cached) w.innerText = cached;
-                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
-                        try {
-                            const r = await fetch('https://api.github.com/repos/Frugman/capnum');
-                            const d = await r.json();
-                            if (d.size) {
-                                w.innerText = d.size;
-                                localStorage.setItem('siteWeight', d.size);
-                                localStorage.setItem('siteWeightTime', Date.now());
-                            }
-                        } catch(e) {}
-                    }
-                })();
-            </script>
-        </div>
-        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
-            <a href="../admin/dashboard.html">Admin</a> • 
-            <a href="../mentions-legales.html">Mentions légales</a> • 
-            <a href="../random.html" id="link-random">RANDOM</a>
+        <nav class="footer-links" style="text-align: center; padding: 2rem 0;">
+            <a href="../admin/dashboard.html">Admin</a> • <a href="../index.html">Accueil</a>
         </nav>
     </footer>
 </body>
@@ -306,31 +263,15 @@ async function publishArticle() {
         try {
             const { sha } = await getGitHubFile(`articles/${id}.html`, token);
             htmlSha = sha;
-        } catch (e) {
-            // Fichier n'existe pas, c'est normal
-        }
+        } catch (e) {}
 
-        const htmlRes = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/articles/${id}.html`, {
-            method: 'PUT',
-            headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                message: `Article HTML: ${id}`, 
-                content: btoa(unescape(encodeURIComponent(articleHtml))),
-                sha: htmlSha 
-            })
-        });
+        await updateGitHubFile(`articles/${id}.html`, articleHtml, htmlSha, token, `Article HTML: ${id}`);
 
-        if (!htmlRes.ok) {
-            const errData = await htmlRes.json();
-            throw new Error("Erreur génération HTML: " + (errData.message || htmlRes.statusText));
-        }
-
-        // 3. Mettre à jour articles.json
+        // Update articles.json
         const { sha, data } = await getGitHubFile('data/articles.json', token);
         const finalImageJson = finalImage.startsWith('../') ? finalImage.substring(3) : finalImage;
         const newArticle = { id, title, date, category, tags, image: finalImageJson, content, views: 0, draft: false };
         
-        // Eviter les doublons
         const index = data.articles.findIndex(a => a.id === id);
         if (index > -1) data.articles[index] = newArticle;
         else data.articles.unshift(newArticle);
@@ -339,53 +280,42 @@ async function publishArticle() {
 
         showStatus("🚀 Article publié et page générée !", "success");
     } catch (error) {
-        console.error("Détails de l'erreur:", error);
-        if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
-            showStatus("Erreur Réseau : Vérifiez votre connexion ou votre Token GitHub.", "error");
-        } else {
-            showStatus("Erreur : " + error.message, "error");
-        }
+        showStatus("Erreur : " + error.message, "error");
     }
+}
+
+/**
+ * Encofage UTF-8 sûr pour GitHub
+ */
+function utf8_to_b64(str) {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+function b64_to_utf8(str) {
+    return decodeURIComponent(escape(window.atob(str)));
 }
 
 async function getGitHubFile(path, token) {
     const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`;
-    const resp = await fetch(url, {
-        headers: { 'Authorization': `token ${token}` }
-    });
+    const resp = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
     if (!resp.ok) throw new Error("Impossible de lire " + path);
     const json = await resp.json();
-    const decoded = decodeURIComponent(escape(atob(json.content)));
+    const decoded = b64_to_utf8(json.content);
     
     let parsedData = null;
     if (path.endsWith('.json')) {
-        try {
-            parsedData = JSON.parse(decoded);
-        } catch (e) {
-            console.error("Erreur de parsing JSON pour " + path);
-        }
+        try { parsedData = JSON.parse(decoded); } catch (e) {}
     }
 
-    return {
-        sha: json.sha,
-        content: decoded,
-        data: parsedData
-    };
+    return { sha: json.sha, content: decoded, data: parsedData };
 }
 
 async function updateGitHubFile(path, content, sha, token, message) {
     const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`;
     const resp = await fetch(url, {
         method: 'PUT',
-        headers: { 
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            message,
-            content: btoa(unescape(encodeURIComponent(content))),
-            sha
-        })
+        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, content: utf8_to_b64(content), sha })
     });
     if (!resp.ok) throw new Error("Échec de la mise à jour GitHub");
 }
@@ -397,65 +327,38 @@ function showStatus(msg, type) {
     s.className = 'status-msg ' + type;
 }
 
-// ---- GESTION DES ARTICLES ----
-
 async function loadAdminArticles() {
-    const tInput = document.getElementById('github-token');
-    const token = tInput ? tInput.value.trim() : localStorage.getItem('gh_token');
+    const token = document.getElementById('github-token').value.trim() || localStorage.getItem('gh_token');
     if (!token) return;
     const listDiv = document.getElementById('manage-articles-list');
     if (!listDiv) return;
-    listDiv.innerHTML = '<p>Chargement des articles...</p>';
+    listDiv.innerHTML = '<p>Chargement...</p>';
     try {
         const { data } = await getGitHubFile('data/articles.json', token);
-        if (!data.articles || data.articles.length === 0) {
-            listDiv.innerHTML = '<p>Aucun article trouvé.</p>';
-            return;
-        }
-        
-        // TRI : Du plus récent au plus ancien
         const sortedArticles = data.articles.sort((a, b) => b.date.localeCompare(a.date));
-        window.allAdminArticles = sortedArticles;
-
         listDiv.innerHTML = sortedArticles.map(a => `
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0.5rem; border-bottom: 1px solid var(--border-color); gap: 1rem;">
-                <span style="flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${a.title}">
-                    ${a.title} <span style="opacity: 0.5; font-size: 0.8rem; margin-left: 5px;">(${a.date})</span>
+                <span style="flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${a.title} <span style="opacity: 0.5; font-size: 0.8rem;">(${a.date})</span>
                 </span>
-                <div style="display: flex; gap: 15px; flex-shrink: 0;">
-                    <button onclick="window.location.href='edit.html?id=${a.id}'" style="background:none; border:none; color:var(--accent-color); font-family: inherit; font-weight: bold; cursor:pointer; padding: 5px;">Éditer</button>
-                    <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-family: inherit; font-weight: bold; cursor:pointer; padding: 5px;">Supprimer</button>
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="window.location.href='edit.html?id=${a.id}'" style="background:none; border:none; color:var(--accent-color); font-weight:bold; cursor:pointer;">Éditer</button>
+                    <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-weight:bold; cursor:pointer;">Supprimer</button>
                 </div>
             </div>
         `).join('');
     } catch (e) {
-        listDiv.innerHTML = '<p style="color:#dc3545;">Erreur chargement. Ton token est-il valide ?</p>';
+        listDiv.innerHTML = '<p style="color:#dc3545;">Erreur. Token valide ?</p>';
     }
 }
 
 window.deleteArticle = async function(id) {
-    if (!confirm("Supprimer cet article définitivement ?")) return;
+    if (!confirm("Supprimer cet article ?")) return;
     const token = document.getElementById('github-token').value.trim();
-    showStatus("Suppression en cours...", "");
     try {
-        // 1. Mettre à jour JSON
         const { sha, data } = await getGitHubFile('data/articles.json', token);
         data.articles = data.articles.filter(a => a.id !== id);
-        await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Delete article: ${id}`);
-        
-        // 2. Supprimer la page HTML
-        try {
-            const htmlData = await getGitHubFile(`articles/${id}.html`, token);
-            await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/articles/${id}.html`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: `Delete HTML: ${id}`, sha: htmlData.sha })
-            });
-        } catch(e) { console.log("HTML introuvable, skip"); }
-        
-        showStatus("Article supprimé avec succès !", "success");
+        await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Delete: ${id}`);
         loadAdminArticles();
-    } catch (e) {
-        showStatus("Erreur suppression: " + e.message, "error");
-    }
+    } catch (e) {}
 };
