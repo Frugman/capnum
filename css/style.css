@@ -10,6 +10,7 @@
     --border-color: #e0e0e0;
     --footer-bg: #f0f0f0;
     --shadow: 0 4px 12px rgba(0,0,0,0.05);
+    --menu-link-color: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +24,7 @@
         --border-color: #333;
         --footer-bg: #1a1a1a;
         --shadow: 0 4px 12px rgba(0,0,0,0.3);
+        --menu-link-color: #ffffff;
     }
 }
 
@@ -36,6 +38,7 @@
     --border-color: #333;
     --footer-bg: #1a1a1a;
     --shadow: 0 4px 12px rgba(0,0,0,0.3);
+    --menu-link-color: #ffffff;
 }
 
 [data-theme="light"] {
@@ -48,6 +51,7 @@
     --border-color: #e0e0e0;
     --footer-bg: #f0f0f0;
     --shadow: 0 4px 12px rgba(0,0,0,0.05);
+    --menu-link-color: #000000;
 }
 
 body {
@@ -125,7 +129,7 @@ h1, h2, h3 {
 }
 
 .main-nav a {
-    color: #ffffff !important;
+    color: var(--menu-link-color) !important;
     opacity: 1;
     text-shadow: none !important; /* Pas de laser ici */
 }
