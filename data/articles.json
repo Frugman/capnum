@@ -1,66 +1,12 @@
 {
-  "articles": [
-    {
-      "id": "test-17",
-      "title": "Test 17",
-      "date": "2026-04-25",
-      "category": "Solarpunk",
-      "tags": [
-        "frugalité"
-      ],
-      "image": "images/test-17-1777116448550.webp",
-      "content": "test",
-      "views": 0,
-      "draft": false
-    },
-    {
-      "id": "test-15",
-      "title": "Test 15",
-      "date": "2026-04-25",
-      "category": "IA",
-      "tags": [
-        "souveraineté"
-      ],
-      "image": "images/test-15-1777112851473.webp",
-      "content": "test",
-      "views": 0,
-      "draft": false
-    },
-    {
-      "id": "test-2",
-      "title": "Test 2",
-      "date": "2026-04-25",
-      "category": "Environnement",
-      "tags": [
-        "agriculture"
-      ],
-      "image": "images/test-2-1777112445981.webp",
-      "content": "test",
-      "views": 0,
-      "draft": false
-    },
-    {
-      "id": "test-1",
-      "title": "Test 1",
-      "date": "2026-04-25",
-      "category": "Data",
-      "tags": [
-        "open data",
-        "data FAIR"
-      ],
-      "image": "images/test-1.webp",
-      "content": "<div>Test</div><div><b>Texte en gras</b></div><h2>Titre 2</h2><div><img src=\"https://raw.githubusercontent.com/FRUGMAN/CAPNUM/main/images/img_1777111517507.webp\"><br></div><h3>Titre 3</h3><div><br></div><div><i>Italique</i></div><div><br></div><div><a href=\"https://fr.wikipedia.org/wiki/Wiki\">Lien important</a></div><div><br></div><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>",
-      "views": 0,
-      "draft": false
-    }
-  ],
+  "articles": [],
   "categories": [
     "Environnement",
     "Data",
     "IA",
     "Low Tech",
     "Solarpunk",
-    "DÃ©gafamisation"
+    "Dégafamisation"
   ],
   "site_metadata": {
     "total_weight_kb": 0,
