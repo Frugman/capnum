@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-publish').addEventListener('click', publishArticle);
 });
 
+let coverImageBase64 = null;
+
 async function handleImageUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -43,7 +45,7 @@ async function handleImageUpload(e) {
         reader.onload = (event) => {
             preview.src = event.target.result;
             preview.style.display = 'block';
-            preview.dataset.blob = event.target.result; // On stocke pour plus tard
+            coverImageBase64 = event.target.result.split(',')[1];
         };
         reader.readAsDataURL(compressedFile);
     } catch (error) {
@@ -103,7 +105,6 @@ async function publishArticle() {
     const tags = document.getElementById('tags').value.split(',').map(t => t.trim());
     const content = document.getElementById('editor').innerHTML;
     const status = document.getElementById('status');
-    const imagePreview = document.getElementById('image-preview');
 
     if (!token || !title || !content) {
         showStatus("Erreur : Token, titre et contenu obligatoires.", "error");
@@ -116,16 +117,16 @@ async function publishArticle() {
     const id = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ /g, '-').replace(/[^\w-]/g, '');
     const date = new Date().toISOString().split('T')[0];
     const timestamp = Date.now();
-    const imagePath = `images/${id}-${timestamp}.webp`;
+    let finalImagePath = null;
 
     try {
         // 1. Envoyer l'image de couverture si elle existe
-        if (imagePreview.dataset.blob) {
-            const base64Image = imagePreview.dataset.blob.split(',')[1];
-            const imgRes = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${imagePath}`, {
+        if (coverImageBase64) {
+            finalImagePath = `images/${id}-${timestamp}.webp`;
+            const imgRes = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${finalImagePath}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: `Cover image: ${id}`, content: base64Image })
+                body: JSON.stringify({ message: `Cover image: ${id}`, content: coverImageBase64 })
             });
             
             if (!imgRes.ok) {
@@ -135,6 +136,7 @@ async function publishArticle() {
         }
 
         // 2. Générer la page HTML de l'article
+        const heroHtml = finalImagePath ? `<img src="../${finalImagePath}" class="article-hero-img">` : '';
         const articleHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -148,7 +150,7 @@ async function publishArticle() {
     <main class="article-full">
         <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">${category} • ${date}</div>
         <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">${title}</h1>
-        <img src="../${imagePath}" class="article-hero-img">
+        ${heroHtml}
         <div class="article-content">${content}</div>
     </main>
     <footer style="margin-top: 5rem; padding: 2rem; text-align: center; background: var(--footer-bg);"><p>Blog Capnum - 2026</p></footer>
@@ -163,7 +165,7 @@ async function publishArticle() {
 
         // 3. Mettre à jour articles.json
         const { sha, data } = await getGitHubFile('data/articles.json', token);
-        const newArticle = { id, title, date, category, tags, image: imagePath, content, views: 0, draft: false };
+        const newArticle = { id, title, date, category, tags, image: finalImagePath || 'https://picsum.photos/400/200', content, views: 0, draft: false };
         
         // Eviter les doublons
         const index = data.articles.findIndex(a => a.id === id);
