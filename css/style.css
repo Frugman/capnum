@@ -245,8 +245,8 @@ input:checked + .slider .moon-icon {
 
 .profile-section p {
     margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: 1.00rem;
+    line-height: 1.5;
     color: var(--text-color);
 }
 
