@@ -27,7 +27,6 @@
             text-transform: uppercase;
         }
 
-        /* Barre supérieure */
         .to8-header {
             background-color: var(--to8-dark);
             width: 100%;
@@ -57,23 +56,21 @@
             font-weight: bold;
         }
 
-        /* Infos système */
         .system-info {
             width: 900px;
             display: flex;
             justify-content: space-between;
-            padding: 1rem 0;
+            padding: 0.5rem 0;
             font-size: 1.8rem;
             border-bottom: 2px solid var(--to8-dark);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* Menu */
         .menu-container {
             width: 900px;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .menu-item {
@@ -82,7 +79,7 @@
             gap: 1rem;
             text-decoration: none;
             color: var(--to8-text);
-            font-size: 2rem;
+            font-size: 1.8rem;
             transition: all 0.1s;
             cursor: pointer;
         }
@@ -93,8 +90,8 @@
         }
 
         .block-icon {
-            width: 80px;
-            height: 40px;
+            width: 60px;
+            height: 35px;
             background-color: var(--to8-accent);
             border: 2px solid var(--to8-dark);
             display: flex;
@@ -107,23 +104,38 @@
             border-top: 2px solid var(--to8-dark);
         }
 
-        /* Liste secrète */
-        #random-list {
-            margin-top: 2rem;
-            font-size: 1.5rem;
+        /* Tic-Tac-Toe Modal */
+        #game-overlay {
             display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            justify-content: center; align-items: center;
+            flex-direction: column;
         }
 
-        #random-list a {
-            color: var(--to8-dark);
-            display: block;
-            margin-bottom: 0.5rem;
-            text-decoration: none;
+        .ttt-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            background: var(--to8-dark);
+            padding: 5px;
         }
 
-        #random-list a:hover {
-            text-decoration: underline;
+        .ttt-cell {
+            background: var(--to8-bg);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 4rem; cursor: pointer;
         }
+
+        .ttt-cell:hover { background: #fff; }
+
+        #random-list { margin-top: 1rem; font-size: 1.4rem; display: none; }
+        #random-list a { color: var(--to8-dark); display: block; margin-bottom: 0.3rem; text-decoration: none; }
+
+        .dingue { color: #d32f2f; font-weight: bold; margin-left: 20px; display: none; font-size: 1.4rem; }
 
     </style>
 </head>
@@ -135,7 +147,7 @@
     </div>
 
     <div class="system-info">
-        <div id="to8-date">DATE: --/--/--</div>
+        <div>DATE: 12-10-91</div>
         <div>RAM: 512K</div>
     </div>
 
@@ -147,30 +159,36 @@
         
         <div class="menu-item" onclick="toggleSecretList()">
             <div class="block-icon"></div>
-            <span>2 ACCÈDER AUX ARCHIVES SECRÈTES</span>
+            <span>2 ACCÉDER AUX FICHIERS SECRETS</span>
         </div>
 
-        <div class="menu-item" onclick="toggleSiteTheme()">
+        <div class="menu-item" onclick="openGame()">
             <div class="block-icon"></div>
-            <span>3 RÉGLAGES ET PRÉFÉRENCES</span>
+            <span>3 FAIRE UNE PARTIE DE TIC-TAC-TOE</span>
+        </div>
+
+        <div class="menu-item" onclick="launchWar()">
+            <div class="block-icon"></div>
+            <span>4 GUERRE THERMO-NUCLÉAIRE GLOBALE</span>
+            <span id="dingue-msg" class="dingue">(NAN MAIS VOUS ÊTES DINGUE ?)</span>
         </div>
 
         <a href="index.html" class="menu-item">
             <div class="block-icon"></div>
-            <span>4 EXPLOITATION DE FICHIERS (ACCUEIL)</span>
+            <span>5 EXPLOITATION DE FICHIERS (ACCUEIL)</span>
         </a>
 
-        <div id="random-list">
-            <p>Scanning classified data...</p>
-        </div>
+        <div id="random-list"></div>
+    </div>
+
+    <div id="game-overlay">
+        <h2 style="color:white; font-size: 3rem; margin-bottom: 1rem;">TIC-TAC-TOE</h2>
+        <div class="ttt-grid" id="ttt-grid"></div>
+        <button onclick="closeGame()" style="margin-top: 2rem; font-family: inherit; font-size: 1.5rem; padding: 0.5rem 2rem; cursor: pointer;">QUITTER</button>
+        <p id="game-status" style="color:white; font-size: 2rem; margin-top: 1rem;"></p>
     </div>
 
     <script>
-        // Date format TO8 (jj-mm-aa)
-        const d = new Date();
-        const formattedDate = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getFullYear()).slice(-2)}`;
-        document.getElementById('to8-date').innerText = `DATE: ${formattedDate}`;
-
         let allArticles = [];
 
         async function loadArticles() {
@@ -178,9 +196,7 @@
                 const response = await fetch('data/articles.json');
                 const data = await response.json();
                 allArticles = data.articles;
-            } catch (e) {
-                console.error("Erreur chargement articles", e);
-            }
+            } catch (e) {}
         }
 
         function pickSurprise() {
@@ -192,26 +208,82 @@
         function toggleSecretList() {
             const list = document.getElementById('random-list');
             const randomArticles = allArticles.filter(a => a.category === 'RANDOM');
-            
-            if (list.style.display === 'block') {
-                list.style.display = 'none';
+            list.style.display = list.style.display === 'block' ? 'none' : 'block';
+            if (randomArticles.length === 0) {
+                list.innerHTML = "<p>ERREUR: AUCUN FICHIER TROUVÉ.</p>";
             } else {
-                list.style.display = 'block';
-                if (randomArticles.length === 0) {
-                    list.innerHTML = "<p>ERREUR: AUCUN FICHIER TROUVÉ.</p>";
-                } else {
-                    list.innerHTML = randomArticles.map(a => `
-                        <a href="articles/${a.id}.html">> ${a.title}</a>
-                    `).join('');
-                }
+                list.innerHTML = randomArticles.map(a => `<a href="articles/${a.id}.html">> ${a.title}</a>`).join('');
             }
         }
 
-        function toggleSiteTheme() {
-            const current = localStorage.getItem('theme') || 'dark';
-            const next = current === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', next);
-            alert(`MODE ${next.toUpperCase()} ACTIVÉ POUR TOUT LE SITE.`);
+        function launchWar() {
+            document.getElementById('dingue-msg').style.display = 'inline';
+            setTimeout(() => { document.getElementById('dingue-msg').style.display = 'none'; }, 3000);
+        }
+
+        // --- TIC TAC TOE LOGIC ---
+        let board = ["", "", "", "", "", "", "", "", ""];
+        let gameActive = true;
+
+        function openGame() {
+            document.getElementById('game-overlay').style.display = 'flex';
+            resetGame();
+        }
+
+        function closeGame() {
+            document.getElementById('game-overlay').style.display = 'none';
+        }
+
+        function resetGame() {
+            board = ["", "", "", "", "", "", "", "", ""];
+            gameActive = true;
+            document.getElementById('game-status').innerText = "À VOUS DE JOUER (X)";
+            renderTTT();
+        }
+
+        function renderTTT() {
+            const grid = document.getElementById('ttt-grid');
+            grid.innerHTML = board.map((cell, i) => `
+                <div class="ttt-cell" onclick="handleMove(${i})">${cell}</div>
+            `).join('');
+        }
+
+        function handleMove(i) {
+            if (!gameActive || board[i] !== "") return;
+            board[i] = "X";
+            if (checkWin("X")) {
+                gameActive = false;
+                document.getElementById('game-status').innerText = "X A GAGNÉ !";
+            } else if (board.every(cell => cell !== "")) {
+                gameActive = false;
+                document.getElementById('game-status').innerText = "ÉGALITÉ !";
+            } else {
+                document.getElementById('game-status').innerText = "L'ORDINATEUR RÉFLÉCHIT...";
+                setTimeout(computerMove, 500);
+            }
+            renderTTT();
+        }
+
+        function computerMove() {
+            if (!gameActive) return;
+            const emptyCells = board.map((c, i) => c === "" ? i : null).filter(c => c !== null);
+            const move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            board[move] = "O";
+            if (checkWin("O")) {
+                gameActive = false;
+                document.getElementById('game-status').innerText = "L'ORDINATEUR A GAGNÉ !";
+            } else if (board.every(cell => cell !== "")) {
+                gameActive = false;
+                document.getElementById('game-status').innerText = "ÉGALITÉ !";
+            } else {
+                document.getElementById('game-status').innerText = "À VOUS DE JOUER (X)";
+            }
+            renderTTT();
+        }
+
+        function checkWin(p) {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            return wins.some(w => w.every(i => board[i] === p));
         }
 
         loadArticles();
