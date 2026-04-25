@@ -506,3 +506,100 @@ footer {
     margin: 2rem auto;
     display: block;
 }
+
+/* --- RESPONSIVE DESIGN (MOBILE) --- */
+@media (max-width: 768px) {
+    header, main, footer {
+        padding: 1rem;
+    }
+
+    .site-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .header-right {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .main-nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    /* Portrait mobile */
+    .profile-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .profile-section img {
+        width: 120px; /* Taille modeste comme demandé */
+        height: 120px;
+        margin: 0 auto;
+    }
+
+    .profile-section p {
+        font-size: 0.95rem;
+        line-height: 1.4; /* Interligne plus faible pour compacité */
+        text-align: justify;
+    }
+
+    /* Filtres et Grille */
+    #filters {
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    #articles-grid {
+        grid-template-columns: 1fr; /* 1 seule colonne sur mobile */
+        gap: 1.5rem;
+    }
+
+    /* Articles plein écran sur mobile */
+    .article-full {
+        padding: 0;
+        margin-top: 1rem;
+    }
+
+    .article-full h1 {
+        font-size: 1.8rem;
+        padding: 0 1rem;
+    }
+
+    .article-content {
+        padding: 0 1rem;
+        font-size: 1rem;
+    }
+
+    .article-hero-img {
+        border-radius: 0; /* Plus immersif sur mobile */
+    }
+
+    /* Footer mobile */
+    footer {
+        text-align: center;
+        margin-top: 3rem;
+        padding: 2rem 1rem;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+}
