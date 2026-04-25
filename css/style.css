@@ -325,8 +325,8 @@ input:checked + .slider .moon-icon {
 .card-excerpt {
     font-size: 0.9rem;
     line-height: 1.5;
-    color: var(--text-color);
-    opacity: 0.8;
+    color: var(--text-color); /* Noir ou Blanc selon le thème */
+    opacity: 1; /* On remet à 100% pour que ça claque */
     margin-bottom: 1.5rem;
     flex-grow: 1;
 }
