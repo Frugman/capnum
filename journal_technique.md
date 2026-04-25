@@ -22,8 +22,22 @@
 - **GitHub Pages** : Configuration en cours.
 - **Admin** : `admin/script.js` configuré pour l'utilisateur `FRUGMAN`.
 
+## 2026-04-25 - Étape 4 : Migration WordPress & Administration
+- **Migration WP** : 
+    - Tentative d'import complet (XML) via PowerShell.
+    - **Rétropédalage** : Problèmes d'encodage (UTF-8) et de layout. Reset complet vers une base saine.
+    - **Import Minimal** : Migration réussie de 40 articles (texte uniquement). Nettoyage strict du HTML WordPress pour ne garder que le texte brut et le formatage de base (bold, links, h2/h3). Suppression de toutes les images pour une reprise manuelle propre.
+- **Admin Dashboard** : 
+    - Ajout de la liste des articles avec fonctions **Éditer** et **Supprimer**.
+    - Tri automatique du plus récent au plus ancien.
+    - Optimisation UI : Titres longs tronqués proprement, boutons fixes à droite, conteneur élargi.
+- **Bug Fixes** :
+    - Correction de l'erreur "SHA missing" lors de l'édition (distinction fichiers JSON/HTML).
+    - Correction du `NetworkError` lié au renommage du dépôt GitHub (`Frugman/capnum`).
+    - Ajout du support pour conserver l'image de couverture existante lors d'une édition.
+    - Encodage forcé en UTF-8 sans BOM sur tous les scripts de génération.
+
 ## À faire (Demandes utilisateur en attente)
-- [ ] **CSS** : Corriger l'image de couverture qui déborde du cadre à droite dans les articles.
-- [ ] **Footer** : Uniformiser le footer des articles avec celui de la page d'accueil.
-- [ ] **Admin** : Supprimer le bouton "Aperçu".
-- [ ] **Admin** : Créer une fonctionnalité pour éditer et supprimer les articles existants.
+- [ ] **Contenu** : Reprise manuelle des images de couverture et catégories des 40 articles importés.
+- [ ] **SEO** : Vérification des Meta descriptions générées.
+- [ ] **Performance** : Monitoring du `site-weight` via l'API GitHub.
