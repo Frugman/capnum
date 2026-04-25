@@ -225,12 +225,12 @@ async function publishArticle() {
         <a href="../index.html" class="site-logo">CAPNUM</a>
         <div class="header-right">
             <nav class="main-nav">
-                <a href="../index.html?cat=Environnement">🌱 Environnement</a>
-                <a href="../index.html?cat=Data">📊 Data</a>
-                <a href="../index.html?cat=IA">🤖 IA</a>
-                <a href="../index.html?cat=Low Tech">⚙️ Low Tech</a>
-                <a href="../index.html?cat=Solarpunk">☀️ Solarpunk</a>
-                <a href="../index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
+                <a href="../index.html?cat=Environnement">Environnement</a>
+                <a href="../index.html?cat=Data">Data</a>
+                <a href="../index.html?cat=IA">IA</a>
+                <a href="../index.html?cat=Low Tech">Low Tech</a>
+                <a href="../index.html?cat=Solarpunk">Solarpunk</a>
+                <a href="../index.html?cat=Dégafamisation">Dégafamisation</a>
             </nav>
             <label class="theme-switch">
                 <input type="checkbox" id="theme-toggle-input" onchange="

@@ -257,21 +257,36 @@ input:checked + .slider .moon-icon {
         #editor img { max-width: 100%; height: auto; display: block; margin: 1.5rem auto; border-radius: 8px; }
 
 .filter-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    border-radius: 20px;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #e2e8f0;
+    background: #ffffff; /* Boutons blancs universels */
+    color: #1a1a1a; /* Texte noir pour lisibilité sur blanc */
+    border-radius: 30px;
     cursor: pointer;
     font-family: inherit;
-    transition: all 0.2s;
-    color: var(--text-color);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.filter-btn:hover, .filter-btn.active {
+.cat-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    object-fit: contain;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.filter-btn.active {
     background: var(--accent-color);
     color: #000000;
     border-color: var(--accent-color);
-    transform: translateY(-2px);
 }
 
 /* Articles Grid */
