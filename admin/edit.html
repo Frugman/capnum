@@ -15,15 +15,8 @@
         .toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; background: var(--footer-bg); padding: 0.8rem; border-radius: 8px 8px 0 0; border: 1px solid var(--border-color); border-bottom: none; }
         .toolbar button { padding: 0.5rem 0.8rem; cursor: pointer; border: 1px solid var(--border-color); background: var(--card-bg); border-radius: 6px; color: var(--text-color); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; transition: all 0.2s; }
         .toolbar button:hover { background: var(--accent-color); color: white; border-color: var(--accent-color); }
-        #editor { min-height: 400px; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 0 0 8px 8px; background: var(--card-bg); overflow-y: auto; }
-        #editor img { max-width: 100%; height: auto; display: block; margin: 1.5rem/* Articles Grid */
-#articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-    min-height: 600px; /* Evite le saut d'écran lors du filtrage */
-}
+        #editor { height: 500px; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 0 0 8px 8px; background: var(--card-bg); overflow-y: auto; }
+        #editor img { max-width: 100%; height: auto; display: block; margin: 1.5rem auto; border-radius: 8px; }
         .btn-publier { background: var(--accent-color); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn-preview { background: var(--accent-light); color: var(--accent-color); border: 1px solid var(--accent-color); padding: 1rem 2rem; border-radius: 8px; cursor: pointer; }
         

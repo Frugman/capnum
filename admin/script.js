@@ -115,17 +115,23 @@ async function publishArticle() {
 
     const id = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ /g, '-').replace(/[^\w-]/g, '');
     const date = new Date().toISOString().split('T')[0];
-    const imagePath = `images/${id}.webp`;
+    const timestamp = Date.now();
+    const imagePath = `images/${id}-${timestamp}.webp`;
 
     try {
         // 1. Envoyer l'image de couverture si elle existe
         if (imagePreview.dataset.blob) {
             const base64Image = imagePreview.dataset.blob.split(',')[1];
-            await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${imagePath}`, {
+            const imgRes = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${imagePath}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: `Cover image: ${id}`, content: base64Image })
             });
+            
+            if (!imgRes.ok) {
+                const errData = await imgRes.json();
+                throw new Error("Erreur upload image: " + (errData.message || imgRes.statusText));
+            }
         }
 
         // 2. Générer la page HTML de l'article
