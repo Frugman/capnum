@@ -19,9 +19,7 @@ function initTheme() {
 
     toggleBtn.addEventListener('click', () => {
         let theme = document.documentElement.getAttribute('data-theme');
-        if (!theme) {
-            theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        if (!theme) theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
@@ -30,28 +28,34 @@ function initTheme() {
 }
 
 let allArticles = [];
+let currentFilterMode = 'cat'; // 'cat' ou 'tag'
+let currentFilter = 'all';
 
 async function loadArticles() {
     try {
         const response = await fetch('data/articles.json');
         const data = await response.json();
         allArticles = data.articles;
-        
-        // Filtrage depuis l'URL (nav depuis le header)
+
+        // Filtrage depuis l'URL
         const urlParams = new URLSearchParams(window.location.search);
         const cat = urlParams.get('cat');
-        
+        const tag = urlParams.get('tag');
+
         if (cat) {
             const btn = document.querySelector(`.filter-btn[data-filter="${cat}"]`);
             if (btn) {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             }
-            renderGrid(allArticles, cat);
-        } else {
-            renderGrid(allArticles);
+            currentFilterMode = 'cat';
+            currentFilter = cat;
+        } else if (tag) {
+            currentFilterMode = 'tag';
+            currentFilter = tag;
         }
-        
+
+        renderGrid(allArticles, currentFilterMode, currentFilter);
         renderTags(allArticles);
     } catch (e) {
         console.error("Erreur chargement articles:", e);
@@ -59,17 +63,20 @@ async function loadArticles() {
     }
 }
 
-function renderGrid(articles, filter = 'all') {
+function renderGrid(articles, mode = 'cat', filter = 'all') {
     const grid = document.getElementById('articles-grid');
     grid.innerHTML = '';
 
-    const filtered = filter === 'all' 
-        ? articles.filter(a => !a.draft && a.category !== 'RANDOM')
-        : articles.filter(a => !a.draft && a.category === filter);
+    let filtered;
+    if (mode === 'tag') {
+        filtered = articles.filter(a => !a.draft && a.category !== 'RANDOM' && a.tags.includes(filter));
+    } else if (filter === 'all') {
+        filtered = articles.filter(a => !a.draft && a.category !== 'RANDOM');
+    } else {
+        filtered = articles.filter(a => !a.draft && a.category === filter);
+    }
 
-    const toShow = filtered.slice(0, 5);
-
-    toShow.forEach(article => {
+    filtered.slice(0, 5).forEach(article => {
         const card = document.createElement('a');
         card.href = `articles/${article.id}.html`;
         card.className = 'article-card';
@@ -84,11 +91,16 @@ function renderGrid(articles, filter = 'all') {
         grid.appendChild(card);
     });
 
-    // Toujours afficher le bouton "+" en 6e position
-    const catParam = filter === 'all' ? 'all' : encodeURIComponent(filter);
+    // Bouton "+" toujours en 6e position, lien selon le mode
     const more = document.createElement('a');
     more.className = 'article-card view-all-card';
-    more.href = filter === 'all' ? 'categorie.html' : `categorie.html?cat=${catParam}`;
+    if (mode === 'tag') {
+        more.href = `tag.html?tag=${encodeURIComponent(filter)}`;
+    } else if (filter === 'all') {
+        more.href = 'categorie.html';
+    } else {
+        more.href = `categorie.html?cat=${encodeURIComponent(filter)}`;
+    }
     more.innerHTML = `
         <span class="view-all-plus">+</span>
         <span class="view-all-link">Voir les autres articles</span>
@@ -99,17 +111,41 @@ function renderGrid(articles, filter = 'all') {
 function renderTags(articles) {
     const container = document.querySelector('.tags-container');
     if (!container) return;
-    const tags = new Set();
+
+    // Compter les articles par tag (hors RANDOM et brouillons)
+    const tagCount = {};
     articles.forEach(a => {
-        if (a.category !== 'RANDOM') a.tags.forEach(t => tags.add(t));
+        if (a.category !== 'RANDOM' && !a.draft) {
+            a.tags.forEach(t => {
+                tagCount[t] = (tagCount[t] || 0) + 1;
+            });
+        }
     });
-    
-    container.innerHTML = Array.from(tags).map(t => `<a href="#" class="tag">#${t}</a>`).join('');
+
+    // Trier par fréquence décroissante
+    const sortedTags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]);
+
+    container.innerHTML = sortedTags.map(([t, count]) =>
+        `<a href="#" class="tag" data-tag="${t}" onclick="filterByTag('${t}'); return false;">#${t}<sup style="font-size:0.7em; opacity:0.5; margin-left:2px;">${count}</sup></a>`
+    ).join('');
 }
+
+window.filterByTag = function(tag) {
+    // Désactiver les filtres catégorie
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    // Highlighter le tag actif
+    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+    const activeTag = document.querySelector(`.tag[data-tag="${tag}"]`);
+    if (activeTag) activeTag.classList.add('active');
+
+    currentFilterMode = 'tag';
+    currentFilter = tag;
+    renderGrid(allArticles, 'tag', tag);
+};
 
 function checkOpeningHours() {
     const now = new Date();
-    const hour = now.getUTCHours() + 2; 
+    const hour = now.getUTCHours() + 2;
     const currentHour = hour >= 24 ? hour - 24 : hour;
     const isOpen = currentHour >= 8 && currentHour < 24;
 
@@ -117,7 +153,7 @@ function checkOpeningHours() {
         document.body.insertAdjacentHTML('afterbegin', `
             <div id="closed-message" style="display: flex;">
                 <h2>🌙 Le site se repose...</h2>
-                <p>🌍 Ce blog est low-tech : il dort pour économiser l’énergie.<br>
+                <p>🌍 Ce blog est low-tech : il dort pour économiser l'énergie.<br>
                 Ouverture de <strong>8h à 24h (UTC+2)</strong>.<br>
                 Revenez nous voir demain !</p>
             </div>
@@ -125,11 +161,14 @@ function checkOpeningHours() {
     }
 }
 
-// Logique de filtrage
+// Filtrage par catégorie via les boutons
 document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
-        renderGrid(allArticles, btn.dataset.filter);
+        currentFilterMode = 'cat';
+        currentFilter = btn.dataset.filter;
+        renderGrid(allArticles, 'cat', btn.dataset.filter);
     });
 });

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles | CAPNUM</title>
+    <title>Tag | CAPNUM</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         .cat-grid {
@@ -18,7 +18,7 @@
             align-items: baseline;
             gap: 1.5rem;
         }
-        .cat-header h1 { margin: 0; font-size: 1.8rem; }
+        .cat-header h1 { margin: 0; font-size: 1.8rem; font-family: 'JetBrains Mono', monospace; }
         .cat-header a { font-size: 0.9rem; opacity: 0.7; }
         @media (max-width: 700px) { .cat-grid { grid-template-columns: 1fr; } }
         @media (min-width: 701px) and (max-width: 1000px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -59,10 +59,10 @@
 
     <main>
         <div class="cat-header">
-            <h1 id="cat-title">Tous les articles</h1>
+            <h1 id="tag-title">Articles</h1>
             <a href="index.html">← Retour à l'accueil</a>
         </div>
-        <div id="cat-grid" class="cat-grid">
+        <div id="tag-grid" class="cat-grid">
             <p>Chargement...</p>
         </div>
     </main>
@@ -93,33 +93,27 @@
     </footer>
 
     <script>
-        const ICONS = { 'Environnement': '🌱', 'Data': '📊', 'IA': '🤖', 'Low Tech': '⚙️', 'Solarpunk': '☀️', 'Dégafamisation': '🌐' };
-
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
-            const cat = params.get('cat');
-            const titleEl = document.getElementById('cat-title');
-            const grid = document.getElementById('cat-grid');
+            const tag = params.get('tag');
+            const titleEl = document.getElementById('tag-title');
+            const grid = document.getElementById('tag-grid');
 
-            if (cat) {
-                const icon = ICONS[cat] || '';
-                titleEl.textContent = `${icon} ${cat}`;
-                document.title = `${cat} | CAPNUM`;
-                document.querySelectorAll('.main-nav a').forEach(a => {
-                    if (decodeURIComponent(a.href).includes(`cat=${cat}`)) {
-                        a.style.opacity = '1'; a.style.fontWeight = 'bold';
-                    }
-                });
+            if (tag) {
+                titleEl.textContent = `#${tag}`;
+                document.title = `#${tag} | CAPNUM`;
+            } else {
+                titleEl.textContent = 'Tous les articles';
             }
 
             try {
                 const res = await fetch('data/articles.json');
                 const data = await res.json();
                 let articles = data.articles.filter(a => !a.draft && a.category !== 'RANDOM');
-                if (cat) articles = articles.filter(a => a.category === cat);
+                if (tag) articles = articles.filter(a => a.tags.includes(tag));
 
                 if (articles.length === 0) {
-                    grid.innerHTML = '<p>Aucun article dans cette catégorie pour le moment.</p>';
+                    grid.innerHTML = '<p>Aucun article avec ce mot-clé pour le moment.</p>';
                     return;
                 }
 

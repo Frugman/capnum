@@ -374,7 +374,7 @@ input:checked + .slider .moon-icon {
     border: 1px solid var(--border-color);
 }
 
-.tag:hover {
+.tag:hover, .tag.active {
     background: var(--accent-color);
     color: white;
 }
