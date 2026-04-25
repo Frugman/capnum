@@ -3,8 +3,8 @@
  */
 
 const GITHUB_CONFIG = {
-    owner: 'FRUGMAN',
-    repo: 'CAPNUM',
+    owner: 'Frugman',
+    repo: 'capnum',
     branch: 'main'
 };
 
@@ -53,11 +53,18 @@ async function checkForEditId() {
             const { data } = await getGitHubFile('data/articles.json', token);
             const article = data.articles.find(a => a.id === editId);
             if (article) {
+                window.currentEditingArticle = article; // Mémoriser l'article en cours
                 document.getElementById('title').value = article.title;
                 document.getElementById('category').value = article.category;
                 document.getElementById('tags').value = article.tags.join(', ');
                 document.getElementById('editor').innerHTML = article.content;
-                showStatus("Article chargé. L'image n'est pas pré-chargée.", "success");
+                
+                if (article.image) {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = article.image.startsWith('http') ? article.image : '../' + article.image;
+                    preview.style.display = 'block';
+                }
+                showStatus("Article chargé.", "success");
             }
         } catch (e) {
             showStatus("Impossible de charger l'article à éditer.", "error");
@@ -142,7 +149,7 @@ async function handleContentImageUpload(e) {
 }
 
 async function publishArticle() {
-    const token = document.getElementById('github-token').value;
+    const token = document.getElementById('github-token').value.trim();
     const title = document.getElementById('title').value;
     const category = document.getElementById('category').value;
     const tags = document.getElementById('tags').value.split(',').map(t => t.trim());
@@ -282,7 +289,12 @@ async function publishArticle() {
 
         // 3. Mettre à jour articles.json
         const { sha, data } = await getGitHubFile('data/articles.json', token);
-        const newArticle = { id, title, date, category, tags, image: finalImagePath || 'https://picsum.photos/400/200', content, views: 0, draft: false };
+        
+        // On récupère l'ancienne image si on n'en a pas mis de nouvelle
+        const existingImg = window.currentEditingArticle ? window.currentEditingArticle.image : 'https://picsum.photos/400/300';
+        const finalImage = finalImagePath || existingImg;
+
+        const newArticle = { id, title, date, category, tags, image: finalImage, content, views: 0, draft: false };
         
         // Eviter les doublons
         const index = data.articles.findIndex(a => a.id === id);
@@ -293,8 +305,12 @@ async function publishArticle() {
 
         showStatus("🚀 Article publié et page générée !", "success");
     } catch (error) {
-        console.error(error);
-        showStatus("Erreur : " + error.message, "error");
+        console.error("Détails de l'erreur:", error);
+        if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+            showStatus("Erreur Réseau : Vérifiez votre connexion ou votre Token GitHub.", "error");
+        } else {
+            showStatus("Erreur : " + error.message, "error");
+        }
     }
 }
 
