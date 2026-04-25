@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentions Légales | CAPNUM</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .legal-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+        }
+        .legal-content h1 {
+            font-family: 'JetBrains Mono', monospace;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .legal-content h2 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            color: var(--accent-color);
+        }
+        .legal-content p {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html" class="site-logo">CAPNUM</a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="index.html?cat=Environnement">🌱 Environnement</a>
+                <a href="index.html?cat=Data">📊 Data</a>
+                <a href="index.html?cat=IA">🤖 IA</a>
+                <a href="index.html?cat=Low Tech">⚙️ Low Tech</a>
+                <a href="index.html?cat=Solarpunk">☀️ Solarpunk</a>
+                <a href="index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
+            </nav>
+            <label class="theme-switch" aria-label="Changer de thème">
+                <input type="checkbox" id="theme-toggle-input" onchange="
+                    let nt = this.checked ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-theme', nt);
+                    localStorage.setItem('theme', nt);
+                ">
+                <div class="slider round">
+                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
+            </label>
+            <script>
+                (function() {
+                    let t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                    document.documentElement.setAttribute('data-theme', t);
+                    document.getElementById('theme-toggle-input').checked = (t === 'dark');
+                })();
+            </script>
+        </div>
+    </header>
+
+    <main>
+        <section class="legal-content">
+            <h1>Mentions Légales</h1>
+            
+            <p>Conformément aux dispositions de la loi pour la confiance dans l'économie numérique (LCEN), il est précisé aux utilisateurs du site CAPNUM l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi.</p>
+
+            <h2>1. Édition du site</h2>
+            <p>Le site <strong>CAPNUM</strong> est édité à titre personnel par :<br>
+            <strong>Responsable de publication :</strong> Hortense Chevalier.</p>
+
+            <h2>2. Hébergement et nom de domaine</h2>
+            <p><strong>Hébergeur :</strong> Le site est hébergé de manière statique via <strong>GitHub Pages</strong>, un service proposé par GitHub, Inc. (88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis).</p>
+            <p><strong>Nom de domaine :</strong> Le nom de domaine est géré par la société <strong>Infomaniak</strong> (Rue Eugène-Marziano 25, 1227 Genève, Suisse).</p>
+
+            <h2>3. Respect de la vie privée et sobriété (RGPD)</h2>
+            <p>Dans une démarche low-tech et respectueuse de vos droits fondamentaux :</p>
+            <ul>
+                <li><strong>Aucune donnée personnelle</strong> n'est collectée, traitée ou revendue.</li>
+                <li><strong>Aucun cookie de traçage</strong> (Google Analytics ou autre) n'est déposé sur votre appareil.</li>
+                <li>La seule donnée mémorisée localement par votre navigateur est votre choix de thème (clair/sombre). Cette information ne quitte jamais votre appareil.</li>
+            </ul>
+
+            <h2>4. Contact</h2>
+            <p>Pour toute question ou demande, vous pouvez me contacter à l'adresse suivante :</p>
+            <p>
+                <script>
+                    // Obfuscation basique pour éviter le spam par les robots
+                    var user = "fc.hortense.chevalier";
+                    var domain = "mailo.com";
+                    document.write('<a href="mailto:' + user + '@' + domain + '" style="font-family: \'JetBrains Mono\', monospace; color: var(--accent-color);">' + user + '@' + domain + '</a>');
+                </script>
+                <noscript>
+                    fc.hortense.chevalier [arobase] mailo [point] com
+                </noscript>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
+            <script>
+                (async function() {
+                    const w = document.getElementById('site-weight');
+                    const cached = localStorage.getItem('siteWeight');
+                    if (cached) w.innerText = cached;
+                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
+                        try {
+                            const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
+                            const d = await r.json();
+                            if (d.size) {
+                                w.innerText = d.size;
+                                localStorage.setItem('siteWeight', d.size);
+                                localStorage.setItem('siteWeightTime', Date.now());
+                            }
+                        } catch(e) {}
+                    }
+                })();
+            </script>
+        </div>
+        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
+            <a href="admin/dashboard.html">Admin</a> • 
+            <a href="mentions-legales.html">Mentions légales</a> • 
+            <a href="random.html" id="link-random">RANDOM</a>
+        </nav>
+    </footer>
+</body>
+</html>
