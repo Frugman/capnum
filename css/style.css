@@ -270,6 +270,7 @@ input:checked + .slider .moon-icon {
 #filters {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.8rem;
     margin: 2rem 0;
 }
