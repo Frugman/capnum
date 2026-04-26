@@ -7,18 +7,29 @@ async function loadPartials() {
     const headerPlaceholder = document.querySelector('header.site-header');
     const footerPlaceholder = document.querySelector('footer');
 
+    // Déterminer la racine du site à partir de l'emplacement de common.js
+    const script = document.querySelector('script[src*="common.js"]');
+    const scriptSrc = script ? script.getAttribute('src') : '';
+    const rootPath = scriptSrc.replace('js/common.js', '');
+
     if (headerPlaceholder) {
         try {
-            const resp = await fetch('/partials/header.html');
-            const html = await resp.text();
+            const resp = await fetch(rootPath + 'partials/header.html');
+            if (!resp.ok) throw new Error("Header not found at " + rootPath);
+            let html = await resp.text();
+            // Ajuster les liens root-relative (/...) pour qu'ils utilisent rootPath
+            html = html.replace(/href="\//g, `href="${rootPath}`);
             headerPlaceholder.outerHTML = html;
         } catch (e) { console.error("Error loading header:", e); }
     }
 
     if (footerPlaceholder) {
         try {
-            const resp = await fetch('/partials/footer.html');
-            const html = await resp.text();
+            const resp = await fetch(rootPath + 'partials/footer.html');
+            if (!resp.ok) throw new Error("Footer not found at " + rootPath);
+            let html = await resp.text();
+            // Ajuster les liens root-relative (/...) pour qu'ils utilisent rootPath
+            html = html.replace(/href="\//g, `href="${rootPath}`);
             footerPlaceholder.outerHTML = html;
         } catch (e) { console.error("Error loading footer:", e); }
     }
