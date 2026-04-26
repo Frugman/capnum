@@ -631,5 +631,16 @@ footer {
 }
 
 .home-page main {
-    max-width: 950px !important;
+    max-width: 1000px !important;
+}
+
+@media (min-width: 1000px) {
+    #filters {
+        flex-wrap: nowrap !important;
+        gap: 0.5rem !important;
+    }
+    .filter-btn {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.9rem !important;
+    }
 }
