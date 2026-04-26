@@ -192,7 +192,13 @@ async function publishArticle() {
     localStorage.setItem('gh_token', token);
     showStatus("Publication en cours...", "");
 
-    const id = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ /g, '-').replace(/[^\w-]/g, '');
+    const id = title.toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ /g, '-')
+        .replace(/[^\w-]/g, '')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '');
     const timestamp = Date.now();
     let finalImagePath = null;
 
@@ -310,12 +316,14 @@ async function loadAdminArticles() {
     try {
         const { data } = await getGitHubFile('data/articles.json', token);
         
-        // Déduplication par ID pour éviter les doublons à l'affichage
+        // Déduplication stricte par ID normalisé pour éviter les doublons à l'affichage
         const uniqueArticles = [];
         const seenIds = new Set();
         for (const a of data.articles) {
-            if (!seenIds.has(a.id)) {
-                seenIds.add(a.id);
+            // On normalise l'ID pour la comparaison afin de fusionner les anciens IDs (doublons de tirets)
+            const normId = a.id.replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+            if (!seenIds.has(normId)) {
+                seenIds.add(normId);
                 uniqueArticles.push(a);
             }
         }
