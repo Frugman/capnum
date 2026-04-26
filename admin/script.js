@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnPublish) {
         btnPublish.addEventListener('click', publishArticle);
         // Date du jour par défaut
-        if (!new URLSearchParams(window.location.search).get('id') && document.getElementById('date')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (!urlParams.get('id') && !urlParams.get('uid') && document.getElementById('date')) {
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
         }
     }
@@ -66,12 +67,15 @@ window.saveToken = function() {
 
 async function checkForEditId() {
     const urlParams = new URLSearchParams(window.location.search);
-    const editId = urlParams.get('id');
+    const editUid = urlParams.get('uid');
+    const editId = urlParams.get('id'); // Fallback pour les anciens liens
+    const searchId = editUid || editId;
+    
     const token = document.getElementById('github-token').value.trim();
-    if (editId && token) {
+    if (searchId && token) {
         try {
             const { data } = await getGitHubFile('data/articles.json', token);
-            const article = data.articles.find(a => a.id === editId);
+            const article = data.articles.find(a => a.uid === searchId || a.id === searchId);
             if (article) {
                 window.currentEditingArticle = article; // Mémoriser l'article en cours
                 document.getElementById('title').value = article.title;
@@ -199,6 +203,9 @@ async function publishArticle() {
         .replace(/[^\w-]/g, '')
         .replace(/-+/g, '-')
         .replace(/^-+|-+$/g, '');
+    
+    // Gérer l'UID
+    const uid = window.currentEditingArticle ? window.currentEditingArticle.uid : Date.now().toString();
     const timestamp = Date.now();
     let finalImagePath = null;
 
@@ -239,6 +246,21 @@ async function publishArticle() {
 </body>
 </html>`;
 
+        // Si on édite et que le slug (id) a changé, on supprime l'ancien fichier
+        if (window.currentEditingArticle && window.currentEditingArticle.id !== id) {
+            try {
+                const oldPath = `articles/${window.currentEditingArticle.id}.html`;
+                const { sha: oldSha } = await getGitHubFile(oldPath, token);
+                await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${oldPath}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: `Rename article: ${window.currentEditingArticle.id} -> ${id}`, sha: oldSha })
+                });
+            } catch (e) {
+                console.log("Ancien fichier non trouvé ou déjà supprimé.");
+            }
+        }
+
         let htmlSha;
         try {
             const { sha } = await getGitHubFile(`articles/${id}.html`, token);
@@ -250,22 +272,24 @@ async function publishArticle() {
         // Update articles.json
         const { sha, data } = await getGitHubFile('data/articles.json', token);
         const finalImageJson = finalImage.startsWith('../') ? finalImage.substring(3) : finalImage;
-        const newArticle = { id, title, date, category, tags, image: finalImageJson, content, views: 0, draft: false };
+        const newArticle = { uid, id, title, date, category, tags, image: finalImageJson, content, views: 0, draft: false };
         
-        const index = data.articles.findIndex(a => a.id === id);
+        const index = data.articles.findIndex(a => a.uid === uid);
         if (index > -1) data.articles[index] = newArticle;
         else data.articles.unshift(newArticle);
 
         await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Update articles.json: ${title}`);
 
         showStatus("🚀 Article publié et page générée !", "success");
+        // Mettre à jour l'objet local
+        window.currentEditingArticle = newArticle;
     } catch (error) {
         showStatus("Erreur : " + error.message, "error");
     }
 }
 
 /**
- * Encofage UTF-8 sûr pour GitHub
+ * Encodage UTF-8 sûr pour GitHub
  */
 function utf8_to_b64(str) {
     return window.btoa(unescape(encodeURIComponent(str)));
@@ -316,14 +340,13 @@ async function loadAdminArticles() {
     try {
         const { data } = await getGitHubFile('data/articles.json', token);
         
-        // Déduplication stricte par ID normalisé pour éviter les doublons à l'affichage
+        // Déduplication par UID
         const uniqueArticles = [];
-        const seenIds = new Set();
+        const seenUids = new Set();
         for (const a of data.articles) {
-            // On normalise l'ID pour la comparaison afin de fusionner les anciens IDs (doublons de tirets)
-            const normId = a.id.replace(/-+/g, '-').replace(/^-+|-+$/g, '');
-            if (!seenIds.has(normId)) {
-                seenIds.add(normId);
+            const uid = a.uid || a.id; // Fallback pour transition
+            if (!seenUids.has(uid)) {
+                seenUids.add(uid);
                 uniqueArticles.push(a);
             }
         }
@@ -335,8 +358,8 @@ async function loadAdminArticles() {
                     ${a.title} <span style="opacity: 0.5; font-size: 0.8rem;">(${a.date})</span>
                 </span>
                 <div style="display: flex; gap: 15px;">
-                    <button onclick="window.location.href='edit.html?id=${a.id}'" style="background:none; border:none; color:var(--accent-color); font-weight:bold; cursor:pointer;">Éditer</button>
-                    <button onclick="deleteArticle('${a.id}')" style="background:none; border:none; color:#dc3545; font-weight:bold; cursor:pointer;">Supprimer</button>
+                    <button onclick="window.location.href='edit.html?uid=${a.uid || a.id}'" style="background:none; border:none; color:var(--accent-color); font-weight:bold; cursor:pointer;">Éditer</button>
+                    <button onclick="deleteArticle('${a.uid || a.id}')" style="background:none; border:none; color:#dc3545; font-weight:bold; cursor:pointer;">Supprimer</button>
                 </div>
             </div>
         `).join('');
@@ -345,13 +368,13 @@ async function loadAdminArticles() {
     }
 }
 
-window.deleteArticle = async function(id) {
+window.deleteArticle = async function(uid) {
     if (!confirm("Supprimer cet article ?")) return;
     const token = document.getElementById('github-token').value.trim();
     try {
         const { sha, data } = await getGitHubFile('data/articles.json', token);
-        data.articles = data.articles.filter(a => a.id !== id);
-        await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Delete: ${id}`);
+        data.articles = data.articles.filter(a => (a.uid || a.id) !== uid);
+        await updateGitHubFile('data/articles.json', JSON.stringify(data, null, 2), sha, token, `Delete: ${uid}`);
         loadAdminArticles();
     } catch (e) {}
 };
