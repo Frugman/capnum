@@ -115,19 +115,16 @@ h3 { font-size: 1.15rem; }
     margin: auto;
     padding: 1.5rem 2rem;
     text-align: center;
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 1000;
-    background: rgba(18, 18, 18, 0.8); /* Fond semi-transparent */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--bg-color);
     border-bottom: 1px solid var(--border-color);
     width: 100%;
 }
 
 /* On force le fond opaque pour le light mode si besoin */
 [data-theme="light"] .site-header {
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--bg-color);
 }
 
 .site-logo {
