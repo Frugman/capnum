@@ -619,3 +619,12 @@ footer {
         gap: 0.8rem;
     }
 }
+
+.footer-quote {
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
