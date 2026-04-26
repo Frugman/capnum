@@ -7,37 +7,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header class="site-header">
-        <a href="../index.html" class="site-logo">CAPNUM</a>
-        <div class="header-right">
-            <nav class="main-nav">
-                <a href="../index.html?cat=Environnement">🌱 Environnement</a>
-                <a href="../index.html?cat=Data">📊 Data</a>
-                <a href="../index.html?cat=IA">🤖 IA</a>
-                <a href="../index.html?cat=Low Tech">⚙️ Low Tech</a>
-                <a href="../index.html?cat=Solarpunk">☀️ Solarpunk</a>
-                <a href="../index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
-            </nav>
-            <label class="theme-switch" aria-label="Changer de thème">
-                <input type="checkbox" id="theme-toggle-input" onchange="
-                    let nt = this.checked ? 'dark' : 'light';
-                    document.documentElement.setAttribute('data-theme', nt);
-                    localStorage.setItem('theme', nt);
-                ">
-                <div class="slider round">
-                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </div>
-            </label>
-            <script>
-                (function() {
-                    let t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                    document.documentElement.setAttribute('data-theme', t);
-                    document.getElementById('theme-toggle-input').checked = (t === 'dark');
-                })();
-            </script>
-        </div>
-    </header>
+    <header class="site-header"></header>
     <main class="article-full">
         <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">Data • 19/10/2023</div>
         <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">Houston, we've got a data problem...</h1>
@@ -73,33 +43,7 @@ Mars dont on le croyait encore éloigné de 170 km</b> !</p>
 personne n’est à l’abri d’une donnée de mauvaise qualité aux 
 conséquences importantes !</i></strong></p><p>Le documentaire pour en savoir plus : <a href="https://www.youtube.com/watch?v=lcYkOh4nweE" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=lcYkOh4nweE</a></p></div>
     </main>
-    <footer>
-        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
-            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
-            <script>
-                (async function() {
-                    const w = document.getElementById('site-weight');
-                    const cached = localStorage.getItem('siteWeight');
-                    if (cached) w.innerText = cached;
-                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
-                        try {
-                            const r = await fetch('https://api.github.com/repos/Frugman/capnum');
-                            const d = await r.json();
-                            if (d.size) {
-                                w.innerText = d.size;
-                                localStorage.setItem('siteWeight', d.size);
-                                localStorage.setItem('siteWeightTime', Date.now());
-                            }
-                        } catch(e) {}
-                    }
-                })();
-            </script>
-        </div>
-        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
-            <a href="../admin/dashboard.html">Admin</a> • 
-            <a href="../mentions-legales.html">Mentions légales</a> • 
-            <a href="../random.html" id="link-random">RANDOM</a>
-        </nav>
-    </footer>
+    <footer></footer>
+<script src="../js/common.js"></script>
 </body>
 </html>
