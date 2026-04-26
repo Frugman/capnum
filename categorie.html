@@ -68,7 +68,7 @@
             'IA': 'icoia.svg', 
             'Low Tech': 'icolowtech.svg', 
             'Solarpunk': 'icosolar.svg', 
-            'Dégafamisation': 'icodegaf.svg' 
+            'Adieu GAFAM': 'icodegaf.svg' 
         };
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -97,7 +97,9 @@
             try {
                 const res = await fetch('data/articles.json');
                 const data = await res.json();
-                let articles = data.articles.filter(a => !a.draft && a.category !== 'RANDOM');
+                let articles = data.articles
+                    .filter(a => !a.draft && a.category !== 'RANDOM')
+                    .sort((a, b) => b.date.localeCompare(a.date));
                 
                 if (cat) articles = articles.filter(a => a.category === cat);
                 if (tag) articles = articles.filter(a => a.tags.includes(tag));
