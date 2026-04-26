@@ -7,37 +7,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header class="site-header">
-        <a href="../index.html" class="site-logo">CAPNUM</a>
-        <div class="header-right">
-            <nav class="main-nav">
-                <a href="../index.html?cat=Environnement">🌱 Environnement</a>
-                <a href="../index.html?cat=Data">📊 Data</a>
-                <a href="../index.html?cat=IA">🤖 IA</a>
-                <a href="../index.html?cat=Low Tech">⚙️ Low Tech</a>
-                <a href="../index.html?cat=Solarpunk">☀️ Solarpunk</a>
-                <a href="../index.html?cat=Dégafamisation">🌐 Dégafamisation</a>
-            </nav>
-            <label class="theme-switch" aria-label="Changer de thème">
-                <input type="checkbox" id="theme-toggle-input" onchange="
-                    let nt = this.checked ? 'dark' : 'light';
-                    document.documentElement.setAttribute('data-theme', nt);
-                    localStorage.setItem('theme', nt);
-                ">
-                <div class="slider round">
-                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </div>
-            </label>
-            <script>
-                (function() {
-                    let t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                    document.documentElement.setAttribute('data-theme', t);
-                    document.getElementById('theme-toggle-input').checked = (t === 'dark');
-                })();
-            </script>
-        </div>
-    </header>
+    <header class="site-header"></header>
     <main class="article-full">
         <div class="card-meta" style="font-family: 'JetBrains Mono', monospace; color: var(--accent-color);">Data • 10/03/2024</div>
         <h1 style="font-size: 2.5rem; margin: 1rem 0 2rem 0;">Data agricole "que cultive-t-on ici ?"</h1>
@@ -45,33 +15,7 @@
         <div class="article-content">
 <p>Vous êtes-vous jamais demandé <b>ce qui était cultivé dans les champs autour de chez vous</b> ? Toutes les cultures ne sont pas forcément reconnaissables même à pleine croissance. Et surtout, peut-être vous êtes-vous posé la question de si c’était une culture bio ou pas ? Ou si votre jardin était exposé à des engrais ou des pesticides ? Or, il n’y a presque jamais un panneau devant le champ indiquant ce qu’on y fait pousser et comment. C’est là que la data agricole entre en jeu !</p><h2>Une histoire d’abeilles en fait</h2><p>A vrai dire, ma recherche portait à la base sur l’open data permettant d’identifier les parcelles de forêt publiques dans lesquelles on pouvait se balader sans problème en Vendée, mais comme souvent j’ai dérivé. J’ai en effet trouvé le <a href="https://www.data.gouv.fr/fr/datasets/bd-foret-r/" target="_blank" rel="noopener noreferrer">jeu de données « BD Forêt » de l’IGN sur data.gouv.fr</a> et je vais toujours voir l’onglet Réutilisations par curiosité. Là, j’ai vu que l’ITSAP avait utilisé ces données pour créer Beegis, un outil <b>carte pour que les apiculteurs puissent voir ce qui était cultivé autour de leurs ruches</b>, dans l’aire de butinage de leurs abeilles.<br><br><a href="https://appli.itsap.asso.fr/app/01-beegis" target="_blank" rel="noopener noreferrer">https://appli.itsap.asso.fr/app/01-beegis</a><br><br>Forcément, j’ai jeté un coup d’oeil près de chez moi à La Roche-sur-Yon car je sais que ma voisine a des ruches justement. Vous zoomez puis vous cliquez sur le terrain où vous avez votre ruche. Vous pouvez régler le périmètre de la zone en haut, puis vous cliquez sur le bouton « Charger la carte ». Résultat :<br><br></p><p><img src="https://raw.githubusercontent.com/Frugman/capnum/main/images/img_1777127159998.webp"></p><h2>Savoir ce qui est cultivé dans le coin</h2><p>A droite, vous allez trouver la <b>proportion en surface des différentes cultures dans la zone</b>. A priori chez moi, c’est beaucoup de prairie permanente, puis du maïs grain et ensilage, puis de la céréale (alors oui ça ne dit pas laquelle, j’avoue), de la graminée, etc. Ensuite, si vous cliquez sur l’une des parcelles à gauche, vous verrez non seulement à quoi elle est utilisée mais aussi <b>s’il s’agit de bio ou non et sa surface</b>, plutôt chouette non ? Qu’on soit ou pas apiculteur ou apicultrice 😀<br><br></p><h2>Observations sur ces données agricoles en Vendée</h2><h3>Quelle qualité !</h3><p>Je vous assure qu’il n’y a pas tant d’applications que ça aussi réussies que celle de Beegis et pour deux raisons. La première, elle respecte les codes visuels qu’on s’attend à trouver aujourd’hui sur internet (polices, couleurs, etc.) et c’est très agréable. La seconde, c’est que c’est techniquement MALIN : en exigeant de l’utilisateur qu’il place un marqueur et définisse un périmètre de recherche AVANT de charger la carte, ils rendent l’interface fluide. En effet, j’ai remarqué qu’en cartographie open data, beaucoup d’applicatifs « ramaient » (c’est le moins qu’on puisse dire) dès qu’il y a beaucoup de données et qu’on zoome à partir de trop loin. Là, c’est ingénieux alors bravo !</p><h3>Pas faite pour ça ?</h3><p>Oui c’est sûr, l’application n’a pas été créée pour <b>identifier les cultures</b> de manière générale mais pour les apiculteurs, et il existe sûrement d’autres bases de données plus spécifiques avec peut-être un meilleur niveau de précision sur les cultures (« céréale » c’est vrai que c’est quand même vague). J’essaierai d’en trouver une meilleure dans un prochain article. Là, je trouvais intéressant de voir qu’on pouvait <b>détourner l’usage d’une réutilisation d’open data</b> 🙂<br><br>En voici une, par exemple, créée par l’Agence BIO à partir de données de l’IGN et des déclarations faites pour demander les aides de la PAC. Elle est beaucoup plus à jour et montre même l’évolution des cultures sur une parcelle &gt; <a href="https://www.agencebio.org/cartobio/" target="_blank" rel="noopener noreferrer">https://www.agencebio.org/cartobio/</a></p><h3>Deux questions pour réfléchir</h3><p>J’avoue, ça me turlupine… je vous montre (j’ai fait une capture sur la parcelle du milieu et j’ai rajouté les infos bio/pas bio des parcelles autour sur Paint) :</p><p><img src="https://raw.githubusercontent.com/Frugman/capnum/main/images/img_1777127358607.webp"><b><br></b></p><p><b>Question 1 </b>: Dans les infos de la bulle, la source semble dater de 2021, on est en 2024 et de nombreuses parcelles ont pu changer de destination ou de méthodes (bio / pas bio) en 3 ans, du coup l’information est-elle encore à jour ? et est-elle parfois mise à jour ? à quelle fréquence ? C’est ce genre de détail qu’il faut regarder pour éviter d’affirmer des choses qui ne seraient plus vraies depuis, bref vérifiez la date de dernière mise à jour pour interpréter correctement vos données.<br><br>Pour comparer, voici la même zone sur la carto de l’Agence Bio (en vert le bio, en jaune le non bio) :<br><img src="https://raw.githubusercontent.com/Frugman/capnum/main/images/img_1777127410341.webp"><br><b>Question 2</b> : Elle ne concerne pas l’application mais la situation de cette pauvre parcelle de culture céréalière bio coincée entre plein de parcelles de cultures similaires pas du tout bio (en jaune : céréale, en jaune clair : maïs). <b>J’imagine mal les produits phytosanitaires se limiter aux contours tracés par les humains</b>, où les insectes/oiseaux ne pas transporter de graines entre les parcelles et j’ai déjà lu quelques articles sur le problème des agriculteurs bio qui se voient retirer leur certification AB à cause de ça. Or, je ne suis pas sûre que de nouveaux agriculteurs vérifient systématiquement les cultures autour de leur future exploitation (et ça peut changer dans le temps). <b>La donnée agricole est essentielle pour cela</b> bien sûr mais cela me fait me poser plein de questions à creuser dans de prochains articles.<br><br>J’arrive à la fin de cette petite découverte de la data agricole via les abeilles via la donnée sur les forêts qui montre bien qu’en commençant à gratter dans l’open data, on trouve des merveilles et que je n’ai pas fini de vous en partager 😀<br><i><br>A savoir : Je ne suis pas du tout une experte en data agricole, encore moins une agricultrice donc je peux faire et ferai certainement des erreurs.</i></p></div>
     </main>
-    <footer>
-        <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
-            <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
-            <script>
-                (async function() {
-                    const w = document.getElementById('site-weight');
-                    const cached = localStorage.getItem('siteWeight');
-                    if (cached) w.innerText = cached;
-                    if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
-                        try {
-                            const r = await fetch('https://api.github.com/repos/Frugman/capnum');
-                            const d = await r.json();
-                            if (d.size) {
-                                w.innerText = d.size;
-                                localStorage.setItem('siteWeight', d.size);
-                                localStorage.setItem('siteWeightTime', Date.now());
-                            }
-                        } catch(e) {}
-                    }
-                })();
-            </script>
-        </div>
-        <nav class="footer-links" style="text-align: center; padding-bottom: 2rem;">
-            <a href="../admin/dashboard.html">Admin</a> • 
-            <a href="../mentions-legales.html">Mentions légales</a> • 
-            <a href="../random.html" id="link-random">RANDOM</a>
-        </nav>
-    </footer>
+    <footer></footer>
+<script src="../js/common.js"></script>
 </body>
 </html>
