@@ -29,7 +29,7 @@
 
         .to8-header {
             background-color: var(--to8-dark);
-            width: 100%;
+            width: 95%;
             height: 120px;
             display: flex;
             justify-content: center;
@@ -57,7 +57,8 @@
         }
 
         .system-info {
-            width: 900px;
+            width: 95%;
+            max-width: 900px;
             display: flex;
             justify-content: space-between;
             padding: 0.5rem 0;
@@ -67,10 +68,12 @@
         }
 
         .menu-container {
-            width: 900px;
+            width: 95%;
+            max-width: 900px;
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
+            padding-bottom: 2rem;
         }
 
         .menu-item {
@@ -92,6 +95,7 @@
         .block-icon {
             width: 60px;
             height: 35px;
+            flex-shrink: 0;
             background-color: var(--to8-accent);
             border: 2px solid var(--to8-dark);
             display: flex;
@@ -102,6 +106,18 @@
             content: '';
             flex: 1;
             border-top: 2px solid var(--to8-dark);
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 700px) {
+            .to8-logo { font-size: 5rem; letter-spacing: -2px; }
+            .to8-header { height: 90px; }
+            .thomson-logo { font-size: 1rem; bottom: 5px; right: 10px; }
+            .system-info { font-size: 1.2rem; }
+            .menu-item { font-size: 1.3rem; }
+            .block-icon { width: 40px; height: 25px; }
+            .ttt-grid { grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); }
+            .ttt-cell { font-size: 2.5rem; }
         }
 
         /* Tic-Tac-Toe Modal */
