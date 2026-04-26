@@ -451,12 +451,14 @@
     {
       "uid": "vibecoding-dun-outil-de-suivi-potager-avec-lia-gemini-et-antigravity",
       "id": "vibecoding-dun-outil-de-suivi-potager-avec-lia-gemini-et-antigravity",
-      "title": "Vibecoding d'un outil de  suivi potager avec l'IA Gemini et Antigravity",
+      "title": "Vibecoding d'un outil de suivi potager avec l'IA Gemini et Antigravity",
       "date": "2026-03-21",
       "category": "Environnement",
-      "tags": [],
+      "tags": [
+        ""
+      ],
       "image": "",
-      "content": "\n<p>\n<p>\n<p>Le printemps arrive et avec lui, cette sensation familière : je regarde mes bacs, ma serre improvisée contre ma fenêtre la plus ensoleillée, je sais vaguement que j'ai semé des poivrons la",
+      "content": "\n<p>\n</p><p>\n</p><p>Le printemps arrive et avec lui, cette sensation familière : je regarde mes bacs, ma serre improvisée contre ma fenêtre la plus ensoleillée, je sais vaguement que j'ai semé des poivrons la</p>",
       "views": 0,
       "draft": false
     }
