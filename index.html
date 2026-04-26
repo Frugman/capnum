@@ -41,9 +41,9 @@
         <section class="frugal-info-section" style="margin-top: 4rem; padding: 2rem; background: var(--card-bg); border-radius: 15px; border: 1px solid var(--border-color);">
             <h3 style="margin-top: 0;">Un blog frugal</h3>
             <p style="font-size: 0.95rem; opacity: 0.9; line-height: 1.6;">
-                Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> 
-                (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). 
-                En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.
+                Ce blog est une expérimentation low-tech. Il est statique (HTML/CSS) et son poids total est de <strong><span id="site-weight">...</span> Mégaoctets</strong> 
+                alors que mon ancien blog Wordpress pesait 1,21 Gigaoctets. 
+                En le fermant de 00h à 8h, on évite aussi le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion (y compris le mien).
             </p>
             <script>
                 (async function() {
@@ -53,10 +53,11 @@
                         const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
                         const d = await r.json();
                         if (d.size) {
-                            w.innerText = d.size;
+                            // d.size est en Ko, on convertit en Mo avec 2 décimales
+                            w.innerText = (d.size / 1024).toFixed(2);
                         }
                     } catch(e) {
-                        w.innerText = "850"; // Fallback réaliste si l'API GitHub bloque
+                        w.innerText = "5.80"; // Fallback réaliste
                     }
                 })();
             </script>
