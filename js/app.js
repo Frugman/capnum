@@ -1,31 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    checkOpeningHours();
     loadArticles();
 });
-
-function initTheme() {
-    const toggleBtn = document.getElementById('theme-toggle');
-    if (!toggleBtn) return;
-
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme) {
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        toggleBtn.innerText = currentTheme === 'dark' ? 'Mode Clair' : 'Mode Sombre';
-    } else {
-        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        toggleBtn.innerText = isDark ? 'Mode Clair' : 'Mode Sombre';
-    }
-
-    toggleBtn.addEventListener('click', () => {
-        let theme = document.documentElement.getAttribute('data-theme');
-        if (!theme) theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        const newTheme = theme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        toggleBtn.innerText = newTheme === 'dark' ? 'Mode Clair' : 'Mode Sombre';
-    });
-}
 
 let allArticles = [];
 let currentFilterMode = 'cat'; // 'cat' ou 'tag'
@@ -145,24 +120,6 @@ window.filterByTag = function(tag) {
     currentFilter = tag;
     renderGrid(allArticles, 'tag', tag);
 };
-
-function checkOpeningHours() {
-    const now = new Date();
-    const hour = now.getUTCHours() + 2;
-    const currentHour = hour >= 24 ? hour - 24 : hour;
-    const isOpen = currentHour >= 8 && currentHour < 24;
-
-    if (!isOpen) {
-        document.body.insertAdjacentHTML('afterbegin', `
-            <div id="closed-message" style="display: flex;">
-                <h2>🌙 Le site se repose...</h2>
-                <p>🌍 Ce blog est low-tech : il dort pour économiser l'énergie.<br>
-                Ouverture de <strong>8h à 24h (UTC+2)</strong>.<br>
-                Revenez nous voir demain !</p>
-            </div>
-        `);
-    }
-}
 
 // Filtrage par catégorie via les boutons
 document.querySelectorAll('.filter-btn').forEach(btn => {

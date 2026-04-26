@@ -224,10 +224,21 @@
         // --- TIC TAC TOE LOGIC ---
         let board = ["", "", "", "", "", "", "", "", ""];
         let gameActive = true;
+        let currentPlayer = "X";
 
         function openGame() {
             document.getElementById('game-overlay').style.display = 'flex';
             resetGame();
+            
+            // Aléatoire : qui commence ?
+            if (Math.random() > 0.5) {
+                currentPlayer = "O";
+                document.getElementById('game-status').innerText = "L'ORDINATEUR COMMENCE...";
+                setTimeout(computerMove, 800);
+            } else {
+                currentPlayer = "X";
+                document.getElementById('game-status').innerText = "À VOUS DE JOUER (X)";
+            }
         }
 
         function closeGame() {
@@ -237,7 +248,6 @@
         function resetGame() {
             board = ["", "", "", "", "", "", "", "", ""];
             gameActive = true;
-            document.getElementById('game-status').innerText = "À VOUS DE JOUER (X)";
             renderTTT();
         }
 

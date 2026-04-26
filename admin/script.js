@@ -105,7 +105,7 @@ async function handleImageUpload(e) {
     
     // Options de compression
     const options = {
-        maxSizeMB: 0.2,
+        maxSizeMB: 0.1, // Réduit à 100Ko
         maxWidthOrHeight: 1200,
         useWebWorker: true,
         fileType: 'image/webp'
@@ -137,7 +137,7 @@ async function handleContentImageUpload(e) {
 
     showStatus("Optimisation de l'image...", "");
 
-    const options = { maxSizeMB: 0.3, maxWidthOrHeight: 1200, useWebWorker: true, fileType: 'image/webp' };
+    const options = { maxSizeMB: 0.15, maxWidthOrHeight: 1200, useWebWorker: true, fileType: 'image/webp' };
 
     try {
         const compressedFile = await imageCompression(file, options);
@@ -221,41 +221,15 @@ async function publishArticle() {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header class="site-header">
-        <a href="../index.html" class="site-logo">CAPNUM</a>
-        <div class="header-right">
-            <nav class="main-nav">
-                <a href="../index.html?cat=Environnement">Environnement</a>
-                <a href="../index.html?cat=Data">Data</a>
-                <a href="../index.html?cat=IA">IA</a>
-                <a href="../index.html?cat=Low Tech">Low Tech</a>
-                <a href="../index.html?cat=Solarpunk">Solarpunk</a>
-                <a href="../index.html?cat=Dégafamisation">Dégafamisation</a>
-            </nav>
-            <label class="theme-switch">
-                <input type="checkbox" id="theme-toggle-input" onchange="
-                    let nt = this.checked ? 'dark' : 'light';
-                    document.documentElement.setAttribute('data-theme', nt);
-                    localStorage.setItem('theme', nt);
-                ">
-                <div class="slider round">
-                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </div>
-            </label>
-        </div>
-    </header>
+    <header class="site-header"></header>
     <main class="article-full">
         <div class="card-meta">${category} • ${formattedDate}</div>
         <h1>${title}</h1>
         <img src="${heroSrc}" class="article-hero-img">
         <div class="article-content">${content}</div>
     </main>
-    <footer>
-        <nav class="footer-links" style="text-align: center; padding: 2rem 0;">
-            <a href="../admin/dashboard.html">Admin</a> • <a href="../index.html">Accueil</a>
-        </nav>
-    </footer>
+    <footer></footer>
+    <script src="../js/common.js"></script>
 </body>
 </html>`;
 
@@ -335,7 +309,18 @@ async function loadAdminArticles() {
     listDiv.innerHTML = '<p>Chargement...</p>';
     try {
         const { data } = await getGitHubFile('data/articles.json', token);
-        const sortedArticles = data.articles.sort((a, b) => b.date.localeCompare(a.date));
+        
+        // Déduplication par ID pour éviter les doublons à l'affichage
+        const uniqueArticles = [];
+        const seenIds = new Set();
+        for (const a of data.articles) {
+            if (!seenIds.has(a.id)) {
+                seenIds.add(a.id);
+                uniqueArticles.push(a);
+            }
+        }
+        
+        const sortedArticles = uniqueArticles.sort((a, b) => b.date.localeCompare(a.date));
         listDiv.innerHTML = sortedArticles.map(a => `
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0.5rem; border-bottom: 1px solid var(--border-color); gap: 1rem;">
                 <span style="flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
