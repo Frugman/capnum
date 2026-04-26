@@ -273,7 +273,6 @@ input:checked + .slider .moon-icon {
     justify-content: center;
     gap: 0.8rem;
     margin: 2rem auto;
-    max-width: 850px;
 }
 
 #editor { height: 500px; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 0 0 8px 8px; background: var(--card-bg); overflow-y: auto; }
@@ -632,5 +631,5 @@ footer {
 }
 
 .home-page main {
-    max-width: 900px;
+    max-width: 950px !important;
 }
