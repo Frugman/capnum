@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculateur de rentabilité agricole</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      color: #1f2933;
+    }
+    header {
+      background: #145388;
+      color: #fff;
+      padding: 1rem 2rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+    main {
+      max-width: 1200px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #0f172a;
+    }
+    .card h3 {
+      margin-top: 0.75rem;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      color: #111827;
+    }
+    label {
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    input[type="number"],
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.4rem;
+      border: 1px solid #cbd2e1;
+      font-size: 0.9rem;
+    }
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
+    .grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .inline-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+      margin-bottom: 0.5rem;
+    }
+    .inline-row > div {
+      flex: 1;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: #e5e7eb;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.05s, box-shadow 0.15s, color 0.15s, border-color 0.15s;
+      color: #111827;
+    }
+    .btn:hover {
+      background: #d1d5db;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-sm {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.8rem;
+    }
+    .btn-outline {
+      background: #fff;
+      border-color: #cbd2e1;
+    }
+    .btn-toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .btn-toggle {
+      background: #e5e7eb;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+    .btn-toggle.active {
+      background: #145388;
+      color: #fff;
+      border-color: #145388;
+      box-shadow: 0 4px 12px rgba(20, 83, 136, 0.4);
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #eff6ff;
+      color: #1d4ed8;
+      margin-left: 0.3rem;
+    }
+    .warning {
+      font-size: 0.8rem;
+      color: #b91c1c;
+      margin-top: 0.35rem;
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      align-items: flex-start;
+      margin-top: 1rem;
+    }
+    .results-box {
+      background: #f9fafb;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e5e7eb;
+    }
+    .results-box h3 {
+      margin-top: 0;
+      font-size: 1rem;
+    }
+    .kpi {
+      font-size: 1.1rem;
+      margin: 0.25rem 0;
+    }
+    .kpi span {
+      font-weight: 600;
+    }
+    .kpi.negative span {
+      color: #b91c1c;
+    }
+    .kpi.positive span {
+      color: #15803d;
+    }
+    .muted {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+    canvas {
+      max-width: 100%;
+    }
+    .small-note {
+      font-size: 0.9rem;
+      color: #000000;
+      margin-top: 0.35rem;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Calculateur de rentabilité agricole – Ferme personnalisée</h1>
+  <p>
+    Cet outil est purement pédagogique : aucune donnée n’est enregistrée.
+    Si vous fermez ou actualisez la page, toutes les informations saisies seront perdues.
+  </p>
+</header>
+
+<main>
+  <!-- 1. Paramètres généraux -->
+  <section class="card">
+    <h2>1. Paramètres généraux</h2>
+    <div class="grid grid-2">
+      <div>
+        <label for="totalHa">Surface totale de l'exploitation (ha) <span class="tag">obligatoire</span></label>
+        <input type="number" id="totalHa" min="0" step="0.01" placeholder="ex : 70">
+        <div class="small-note">Cette surface sert de base pour les % d'assolement et les aides à l'hectare.</div>
+      </div>
+      <div>
+        <label for="etp">Nombre d'ETP (équivalents temps plein)</label>
+        <input type="number" id="etp" min="0" step="0.1" placeholder="ex : 1.7">
+      </div>
+      <div>
+        <label for="salaire">Salaire brut annuel par ETP (€)</label>
+        <input type="number" id="salaire" min="0" step="100" placeholder="ex : 22000">
+        <div class="small-note">Coût complet : salaire + cotisations sociales, par ETP.</div>
+      </div>
+    </div>
+    <div style="margin-top:0.75rem;">
+      <button class="btn btn-sm btn-outline" id="fillAvgBtn">
+        Remplir avec les valeurs d'une exploitation française moyenne
+      </button>
+      <p class="small-note">
+        Charge un exemple type : 70 ha en grandes cultures dans le Bassin parisien, avec des ordres de grandeur réalistes
+        de rendements, prix, aides PAC et coûts.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. Cultures -->
+  <section class="card">
+    <h2>2. Cultures et produits vendus</h2>
+    <p class="muted">
+      Tu entres ici ta situation de base. Le modèle d'agriculture et le type d'année
+      ajusteront ensuite rendements et prix (bio, perma, etc.).
+    </p>
+    <div id="culturesContainer"></div>
+    <button class="btn btn-sm btn-outline" id="addCultureBtn">+ Ajouter une culture</button>
+  </section>
+
+  <!-- 3. Aides -->
+  <section class="card">
+    <h2>3. Aides (PAC, MAEC, bio, etc.)</h2>
+    <p class="muted">
+      Aides à l'hectare : tu peux préciser sur combien d'hectares elles s'appliquent (par défaut sur toute la ferme).
+      Le modèle (intensif, bio, perma…) appliquera un coefficient global sur le total.
+    </p>
+    <div id="aidesContainer"></div>
+    <button class="btn btn-sm btn-outline" id="addAideBtn">+ Ajouter une aide</button>
+  </section>
+
+  <!-- 4. Autres revenus & diversification -->
+  <section class="card">
+    <h2>4. Autres revenus & diversification</h2>
+    <p class="muted">
+      Exemple : miel, œufs, agritourisme, atelier de transformation, pensions de chevaux, location de bâtiments, etc.
+      Ces revenus ne modifient pas les surfaces éligibles à la PAC : ils s'ajoutent simplement à ton chiffre d'affaires.
+    </p>
+
+    <h3>Revenus personnalisés</h3>
+    <div id="autresRevenusContainer"></div>
+    <button class="btn btn-sm btn-outline" id="addRevenuBtn">+ Ajouter un revenu personnalisé</button>
+
+    <h3 style="margin-top:1rem;">Modules de diversification (pré-remplis)</h3>
+    <div class="inline-row">
+      <div>
+        <label for="moduleSelect">Choisir un module</label>
+        <select id="moduleSelect">
+          <option value="">-- Sélectionne un module de diversification --</option>
+          <option value="verger">Verger & petits fruits (1 ha, vente directe)</option>
+          <option value="maraichage">Maraîchage diversifié (0,5 ha, paniers)</option>
+          <option value="miel">Miel (20 ruches)</option>
+          <option value="oeufs">Œufs fermiers plein air (250 poules)</option>
+          <option value="agritourisme">Agritourisme / accueil à la ferme</option>
+          <option value="transfo">Atelier de transformation (farine, jus, confitures…)</option>
+        </select>
+      </div>
+      <div style="flex:0 0 auto;">
+        <button class="btn btn-sm btn-outline" id="addModuleBtn">Ajouter ce module</button>
+      </div>
+    </div>
+    <p class="small-note">
+      Les montants proposés pour les modules sont des ordres de grandeur pédagogiques.
+      Tu peux les modifier librement ensuite.
+    </p>
+  </section>
+
+  <!-- 5. Coûts -->
+  <section class="card">
+    <h2>5. Coûts d'exploitation (hors travail)</h2>
+    <div class="grid grid-3">
+      <div>
+        <label for="coutIntrants">Intrants (engrais, phyto, semences…) – €/an</label>
+        <input type="number" id="coutIntrants" min="0" step="100">
+      </div>
+      <div>
+        <label for="coutMeca">Mécanisation (carburant, entretien, amortissement…) – €/an</label>
+        <input type="number" id="coutMeca" min="0" step="100">
+      </div>
+      <div>
+        <label for="coutFoncier">Foncier / fermages / taxes foncières – €/an</label>
+        <input type="number" id="coutFoncier" min="0" step="100">
+      </div>
+      <div>
+        <label for="coutFrais">Frais généraux (assurances, compta, électricité, télécom…) – €/an</label>
+        <input type="number" id="coutFrais" min="0" step="100">
+      </div>
+    </div>
+    <h3>Autres coûts personnalisés</h3>
+    <div id="autresCoutsContainer"></div>
+    <button class="btn btn-sm btn-outline" id="addCoutBtn">+ Ajouter un coût personnalisé</button>
+  </section>
+
+  <!-- 6. Modèle et année -->
+  <section class="card">
+    <h2>6. Modèle d'agriculture & type d'année</h2>
+    <div class="grid grid-2">
+      <div>
+        <h3>Modèle d'agriculture</h3>
+        <div class="btn-toggle-group" id="modelButtons">
+          <button class="btn btn-toggle active" data-model="intensif">Intensif</button>
+          <button class="btn btn-toggle" data-model="raisonne">Raisonné</button>
+          <button class="btn btn-toggle" data-model="bio">Bio</button>
+          <button class="btn btn-toggle" data-model="perma">Permaculture / agroécologie</button>
+        </div>
+        <p class="small-note">
+          Le modèle applique des coefficients sur rendements, prix, aides et coûts
+          à partir de tes valeurs de base.
+        </p>
+      </div>
+      <div>
+        <h3>Type d'année</h3>
+        <div class="btn-toggle-group" id="yearButtons">
+          <button class="btn btn-toggle active" data-year="moyenne">Année moyenne</button>
+          <button class="btn btn-toggle" data-year="mauvaise">Année mauvaise</button>
+          <button class="btn btn-toggle" data-year="bonne">Année bonne</button>
+        </div>
+        <p class="small-note">
+          Année mauvaise : baisse de rendement et prix (différente selon le modèle).<br>
+          Année bonne : légère hausse de rendement et forte hausse de prix (différente selon le modèle).
+        </p>
+      </div>
+    </div>
+    <div style="margin-top: 1rem;">
+      <button class="btn btn-primary" id="calculateBtn">Calculer le résultat</button>
+      <div id="errorMsg" class="warning"></div>
+    </div>
+  </section>
+
+  <!-- 7. Résultats -->
+  <section class="card">
+    <h2>7. Résultats</h2>
+    <p class="muted">
+      Graphe des revenus (produits + aides + diversification) et des coûts, puis résultat net annuel et par hectare.
+    </p>
+    <div id="scenarioLabel" class="muted"></div>
+
+    <div class="results-grid">
+      <div class="results-box">
+        <h3>Répartition des revenus</h3>
+        <canvas id="revenusChart" height="200"></canvas>
+      </div>
+      <div class="results-box">
+        <h3>Répartition des coûts</h3>
+        <canvas id="coutsChart" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="results-grid" style="margin-top:1rem;">
+      <div class="results-box">
+        <h3>Résultats économiques</h3>
+        <p class="kpi" id="resultNet"></p>
+        <p class="kpi" id="resultNetHa"></p>
+        <p class="kpi" id="totalCA"></p>
+        <p class="kpi" id="totalCouts"></p>
+        <p class="muted" id="noteResult"></p>
+      </div>
+    </div>
+
+    <div class="results-grid" style="margin-top:1rem;">
+      <div class="results-box">
+        <h3>Profil environnemental (indicatif)</h3>
+        <canvas id="envChart" height="220"></canvas>
+        <p id="envScoreNote" class="small-note"></p>
+      </div>
+    </div>
+
+    <!-- Encarts explicatifs -->
+    <div class="results-box" style="margin-top:1rem;">
+      <h3>Ce que change ce scénario</h3>
+      <p id="coeffInfo" class="small-note"></p>
+      <p id="envInfo" class="small-note"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Calculateur pédagogique – les résultats dépendent entièrement des hypothèses saisies.
+</footer>
+
+<script>
+  // --- Config modèles : coefficients appliqués aux données saisies ---
+  const modelConfig = {
+    intensif: {
+      label: "Intensif",
+      rendement: 1.0,
+      prix: 1.0,
+      aides: 1.0,
+      intrants: 1.0,
+      meca: 1.0,
+      frais: 1.0
+    },
+    raisonne: {
+      label: "Raisonné",
+      rendement: 0.97,
+      prix: 1.0,
+      aides: 1.05,
+      intrants: 0.8,
+      meca: 1.0,
+      frais: 1.0
+    },
+    bio: {
+      label: "Bio",
+      rendement: 0.75,
+      prix: 1.3,
+      aides: 1.20,
+      intrants: 0.5,
+      meca: 1.10,
+      frais: 1.15
+    },
+    perma: {
+      label: "Permaculture / agroécologie",
+      rendement: 0.60,
+      prix: 1.80,
+      aides: 1.25,
+      intrants: 0.20,
+      meca: 0.70,
+      frais: 1.30
+    }
+  };
+
+  // --- Effets "année" sur rendements et prix, selon le modèle ---
+  const yearYieldPrice = {
+    moyenne: {
+      intensif: { rendement: 1.0, prix: 1.0 },
+      raisonne: { rendement: 1.0, prix: 1.0 },
+      bio: { rendement: 1.0, prix: 1.0 },
+      perma: { rendement: 1.0, prix: 1.0 }
+    },
+    mauvaise: {
+      intensif: { rendement: 0.93, prix: 0.90 },
+      raisonne: { rendement: 0.92, prix: 0.90 },
+      bio: { rendement: 0.88, prix: 0.90 },
+      perma: { rendement: 0.90, prix: 0.95 }
+    },
+    bonne: {
+      intensif: { rendement: 1.04, prix: 1.10 },
+      raisonne: { rendement: 1.05, prix: 1.10 },
+      bio: { rendement: 1.05, prix: 1.15 },
+      perma: { rendement: 1.03, prix: 1.20 }
+    }
+  };
+
+  // Texte environnemental plus détaillé
+  const envText = {
+    intensif: "Scénario intensif : usage massif d’engrais azotés de synthèse et de produits phytosanitaires (plus de 50 000 tonnes de pesticides vendues chaque année en France). Environ 96 % des cours d’eau et plus de 60 % des nappes y présentent au moins un pesticide détectable. Ce modèle contribue fortement aux émissions de gaz à effet de serre (fabrication d’engrais, carburant des engins, travail du sol) et à l’effondrement de la biodiversité agricole (oiseaux des champs, insectes, flore des bords de champs…).",
+    raisonne: "Scénario raisonné : réduction partielle des intrants via diagnostics de sol, meilleurs réglages, choix variétaux adaptés et parfois un peu plus de désherbage mécanique. L’IFT (Indice de Fréquence de Traitement) peut baisser par rapport à l’intensif, ce qui limite une partie des impacts sur l’eau et les milieux, mais les molécules restent globalement les mêmes. Les infrastructures agroécologiques (haies, bandes enherbées) peuvent améliorer la biodiversité locale si elles sont réellement mises en place.",
+    bio: "Scénario bio : pas d’engrais azotés de synthèse ni de pesticides de synthèse les plus dangereux. Les rotations sont plus longues, les sols sont davantage couverts et les haies / prairies permanentes plus fréquentes. En moyenne, les systèmes bio présentent plus de biodiversité fonctionnelle (pollinisateurs, vers de terre, auxiliaires), des sols plus vivants et moins de résidus de pesticides dans les eaux de surface. Les rendements sont plus faibles, mais l’empreinte par hectare est nettement meilleure sur l’eau et la biodiversité.",
+    perma: "Scénario permaculture / agroécologie : intrants externes très faibles, forte diversification des cultures et association cultures–arbres–prairies–élevage. On cherche à maximiser la couverture permanente des sols, à stocker du carbone dans la matière organique et les haies, et à accueillir un maximum de biodiversité. Les impacts résiduels sont surtout liés à la mécanisation restante, aux imports éventuels (aliments, matériaux) et aux déplacements liés à la vente, mais la pression globale sur l’eau, les sols et la faune est la plus faible des quatre scénarios."
+  };
+
+  // Scoring environnemental (0 = très défavorable, 5 = très favorable)
+  // Axes : sobriété en intrants, qualité de l'eau, émissions GES, biodiversité, stockage de carbone
+  const envScores = {
+    intensif: { label: "Intensif", data: [1, 1, 1, 1, 1] },
+    raisonne: { label: "Raisonné", data: [2, 2, 2, 2, 2] },
+    bio:      { label: "Bio",      data: [4, 4, 3, 4, 4] },
+    perma:    { label: "Perma",    data: [5, 5, 4, 5, 5] }
+  };
+
+  // --- Etat global ---
+  let selectedModel = "intensif";
+  let selectedYear = "moyenne";
+  let revenusChart = null;
+  let coutsChart = null;
+  let envChart = null;
+
+  // --- Helpers DOM pour les lignes dynamiques ---
+  function createCultureRow() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "card";
+    wrapper.style.padding = "0.75rem 0.75rem";
+    wrapper.style.marginBottom = "0.5rem";
+
+    const row1 = document.createElement("div");
+    row1.className = "grid grid-3";
+
+    const col1 = document.createElement("div");
+    const label1 = document.createElement("label");
+    label1.textContent = "Nom de la culture";
+    const input1 = document.createElement("input");
+    input1.type = "text";
+    input1.placeholder = "ex : blé tendre";
+    input1.className = "culture-nom";
+    col1.appendChild(label1);
+    col1.appendChild(input1);
+
+    const col2 = document.createElement("div");
+    const label2 = document.createElement("label");
+    label2.innerHTML = "Surface (ha)";
+    const input2 = document.createElement("input");
+    input2.type = "number";
+    input2.min = "0";
+    input2.step = "0.01";
+    input2.className = "culture-ha";
+    col2.appendChild(label2);
+    col2.appendChild(input2);
+
+    const col3 = document.createElement("div");
+    const label3 = document.createElement("label");
+    label3.innerHTML = "Surface (%) de la ferme";
+    const input3 = document.createElement("input");
+    input3.type = "number";
+    input3.min = "0";
+    input3.max = "100";
+    input3.step = "0.1";
+    input3.className = "culture-pct";
+    col3.appendChild(label3);
+    col3.appendChild(input3);
+
+    row1.appendChild(col1);
+    row1.appendChild(col2);
+    row1.appendChild(col3);
+
+    const row2 = document.createElement("div");
+    row2.className = "inline-row";
+
+    const col4 = document.createElement("div");
+    const label4 = document.createElement("label");
+    label4.textContent = "Rendement (t/ha)";
+    const input4 = document.createElement("input");
+    input4.type = "number";
+    input4.min = "0";
+    input4.step = "0.01";
+    input4.className = "culture-rendement";
+    col4.appendChild(label4);
+    col4.appendChild(input4);
+
+    const col5 = document.createElement("div");
+    const label5 = document.createElement("label");
+    label5.textContent = "Prix de vente (€/t)";
+    const input5 = document.createElement("input");
+    input5.type = "number";
+    input5.min = "0";
+    input5.step = "1";
+    input5.className = "culture-prix";
+    col5.appendChild(label5);
+    col5.appendChild(input5);
+
+    const col6 = document.createElement("div");
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "btn btn-sm btn-outline";
+    removeBtn.textContent = "Supprimer";
+    removeBtn.onclick = () => wrapper.remove();
+    col6.appendChild(removeBtn);
+
+    row2.appendChild(col4);
+    row2.appendChild(col5);
+    row2.appendChild(col6);
+
+    wrapper.appendChild(row1);
+    wrapper.appendChild(row2);
+
+    return wrapper;
+  }
+
+  function createAideRow() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "inline-row";
+
+    const col1 = document.createElement("div");
+    const label1 = document.createElement("label");
+    label1.textContent = "Nom de l'aide";
+    const input1 = document.createElement("input");
+    input1.type = "text";
+    input1.placeholder = "ex : DPB, écorégime…";
+    input1.className = "aide-nom";
+    col1.appendChild(label1);
+    col1.appendChild(input1);
+
+    const col2 = document.createElement("div");
+    const label2 = document.createElement("label");
+    label2.textContent = "Montant (€/ha)";
+    const input2 = document.createElement("input");
+    input2.type = "number";
+    input2.min = "0";
+    input2.step = "1";
+    input2.className = "aide-montant";
+    col2.appendChild(label2);
+    col2.appendChild(input2);
+
+    const col3 = document.createElement("div");
+    const label3 = document.createElement("label");
+    label3.textContent = "Surface concernée (ha)";
+    const input3 = document.createElement("input");
+    input3.type = "number";
+    input3.min = "0";
+    input3.step = "0.01";
+    input3.className = "aide-ha";
+    col3.appendChild(label3);
+    col3.appendChild(input3);
+
+    const col4 = document.createElement("div");
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "btn btn-sm btn-outline";
+    removeBtn.textContent = "Supprimer";
+    removeBtn.onclick = () => wrapper.remove();
+    col4.appendChild(removeBtn);
+
+    wrapper.appendChild(col1);
+    wrapper.appendChild(col2);
+    wrapper.appendChild(col3);
+    wrapper.appendChild(col4);
+
+    return wrapper;
+  }
+
+  function createCoutRow() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "inline-row";
+
+    const col1 = document.createElement("div");
+    const label1 = document.createElement("label");
+    label1.textContent = "Nom du coût";
+    const input1 = document.createElement("input");
+    input1.type = "text";
+    input1.placeholder = "ex : location matériel, transformation…";
+    input1.className = "autrecout-nom";
+    col1.appendChild(label1);
+    col1.appendChild(input1);
+
+    const col2 = document.createElement("div");
+    const label2 = document.createElement("label");
+    label2.textContent = "Montant annuel (€)";
+    const input2 = document.createElement("input");
+    input2.type = "number";
+    input2.min = "0";
+    input2.step = "50";
+    input2.className = "autrecout-montant";
+    col2.appendChild(label2);
+    col2.appendChild(input2);
+
+    const col3 = document.createElement("div");
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "btn btn-sm btn-outline";
+    removeBtn.textContent = "Supprimer";
+    removeBtn.onclick = () => wrapper.remove();
+    col3.appendChild(removeBtn);
+
+    wrapper.appendChild(col1);
+    wrapper.appendChild(col2);
+    wrapper.appendChild(col3);
+
+    return wrapper;
+  }
+
+  function createRevenuRow(nom = "", montant = 0) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "inline-row";
+
+    const col1 = document.createElement("div");
+    const label1 = document.createElement("label");
+    label1.textContent = "Nom du revenu";
+    const input1 = document.createElement("input");
+    input1.type = "text";
+    input1.placeholder = "ex : Miel, pension chevaux…";
+    input1.className = "autrerevenu-nom";
+    input1.value = nom || "";
+    col1.appendChild(label1);
+    col1.appendChild(input1);
+
+    const col2 = document.createElement("div");
+    const label2 = document.createElement("label");
+    label2.textContent = "Montant annuel (€)";
+    const input2 = document.createElement("input");
+    input2.type = "number";
+    input2.min = "0";
+    input2.step = "50";
+    input2.className = "autrerevenu-montant";
+    if (montant > 0) input2.value = montant;
+    col2.appendChild(label2);
+    col2.appendChild(input2);
+
+    const col3 = document.createElement("div");
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "btn btn-sm btn-outline";
+    removeBtn.textContent = "Supprimer";
+    removeBtn.onclick = () => wrapper.remove();
+    col3.appendChild(removeBtn);
+
+    wrapper.appendChild(col1);
+    wrapper.appendChild(col2);
+    wrapper.appendChild(col3);
+
+    return wrapper;
+  }
+
+  // --- Initialisation des containers dynamiques ---
+  const culturesContainer = document.getElementById("culturesContainer");
+  const aidesContainer = document.getElementById("aidesContainer");
+  const autresCoutsContainer = document.getElementById("autresCoutsContainer");
+  const autresRevenusContainer = document.getElementById("autresRevenusContainer");
+
+  document.getElementById("addCultureBtn").addEventListener("click", () => {
+    culturesContainer.appendChild(createCultureRow());
+  });
+  document.getElementById("addAideBtn").addEventListener("click", () => {
+    aidesContainer.appendChild(createAideRow());
+  });
+  document.getElementById("addCoutBtn").addEventListener("click", () => {
+    autresCoutsContainer.appendChild(createCoutRow());
+  });
+  document.getElementById("addRevenuBtn").addEventListener("click", () => {
+    autresRevenusContainer.appendChild(createRevenuRow());
+  });
+
+  // Modules de diversification
+  document.getElementById("addModuleBtn").addEventListener("click", () => {
+    const select = document.getElementById("moduleSelect");
+    const val = select.value;
+    if (!val) return;
+    let nom = "";
+    let montant = 0;
+
+    switch (val) {
+      case "verger":
+        nom = "Verger & petits fruits (1 ha, vente directe)";
+        montant = 10800; // ~12 t/ha * 900 €/t
+        break;
+      case "maraichage":
+        nom = "Maraîchage diversifié (0,5 ha, paniers)";
+        montant = 18000; // ~36 000 €/ha sur 0,5 ha
+        break;
+      case "miel":
+        nom = "Miel (20 ruches)";
+        montant = 4800; // 20 ruches * 20 kg * 12 €/kg
+        break;
+      case "oeufs":
+        nom = "Œufs fermiers plein air (250 poules)";
+        montant = 16500; // 250 * 220 œufs * 0,30 €
+        break;
+      case "agritourisme":
+        nom = "Agritourisme / accueil à la ferme";
+        montant = 15000;
+        break;
+      case "transfo":
+        nom = "Atelier de transformation (farine, jus, confitures…)";
+        montant = 10000;
+        break;
+    }
+
+    if (nom && montant > 0) {
+      autresRevenusContainer.appendChild(createRevenuRow(nom, montant));
+    }
+  });
+
+  // Une ligne par défaut
+  culturesContainer.appendChild(createCultureRow());
+  aidesContainer.appendChild(createAideRow());
+
+  // --- Boutons modèle & année ---
+  const modelButtons = document.getElementById("modelButtons");
+  modelButtons.addEventListener("click", (e) => {
+    if (e.target.matches("button[data-model]")) {
+      [...modelButtons.querySelectorAll("button")].forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
+      selectedModel = e.target.getAttribute("data-model");
+    }
+  });
+
+  const yearButtons = document.getElementById("yearButtons");
+  yearButtons.addEventListener("click", (e) => {
+    if (e.target.matches("button[data-year]")) {
+      [...yearButtons.querySelectorAll("button")].forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
+      selectedYear = e.target.getAttribute("data-year");
+    }
+  });
+
+  // --- Formatage nombres ---
+  function fmtEuro(x) {
+    if (isNaN(x)) return "-";
+    return x.toLocaleString("fr-FR", { maximumFractionDigits: 0 }) + " €";
+  }
+  function fmtEuroHa(x) {
+    if (isNaN(x)) return "-";
+    return x.toLocaleString("fr-FR", { maximumFractionDigits: 0 }) + " €/ha";
+  }
+
+  // Mise à jour des encarts explicatifs
+  function updateInfoPanels(modelCfg, yearCfg, totalHa) {
+    const coeffInfo = document.getElementById("coeffInfo");
+    const envInfo = document.getElementById("envInfo");
+    if (!coeffInfo || !envInfo) return;
+
+    const baseText =
+      "Par rapport à vos valeurs de base, ce modèle applique environ : " +
+      "rendements ×" + modelCfg.rendement.toFixed(2) + ", " +
+      "prix ×" + modelCfg.prix.toFixed(2) + ", " +
+      "aides ×" + modelCfg.aides.toFixed(2) + ", " +
+      "intrants ×" + modelCfg.intrants.toFixed(2) + ", " +
+      "mécanisation ×" + modelCfg.meca.toFixed(2) + ", " +
+      "frais généraux ×" + modelCfg.frais.toFixed(2) + ".";
+
+    let yearText = "";
+    if (selectedYear !== "moyenne") {
+      yearText =
+        " Pour le type d’année choisi, on applique en plus : " +
+        "rendements ×" + yearCfg.rendement.toFixed(2) + ", " +
+        "prix ×" + yearCfg.prix.toFixed(2) + ".";
+    }
+
+    const surfaceText = totalHa && totalHa > 0
+      ? " Scénario appliqué à une surface totale de " + totalHa.toLocaleString("fr-FR") + " ha."
+      : "";
+
+    coeffInfo.textContent = baseText + yearText + surfaceText;
+    envInfo.textContent = envText[selectedModel] || "";
+  }
+
+  // --- Pré-remplissage exploitation moyenne ---
+  document.getElementById("fillAvgBtn").addEventListener("click", () => {
+    // Paramètres généraux
+    document.getElementById("totalHa").value = 70;
+    document.getElementById("etp").value = 1.7;
+    document.getElementById("salaire").value = 22000;
+
+    // Cultures : 50% blé, 20% orge, 20% maïs, 10% colza
+    culturesContainer.innerHTML = "";
+
+    const c1 = createCultureRow();
+    c1.querySelector(".culture-nom").value = "Blé tendre";
+    c1.querySelector(".culture-pct").value = 50;
+    c1.querySelector(".culture-rendement").value = 7.2; // t/ha
+    c1.querySelector(".culture-prix").value = 220; // €/t
+    culturesContainer.appendChild(c1);
+
+    const c2 = createCultureRow();
+    c2.querySelector(".culture-nom").value = "Orge";
+    c2.querySelector(".culture-pct").value = 20;
+    c2.querySelector(".culture-rendement").value = 6.0;
+    c2.querySelector(".culture-prix").value = 200;
+    culturesContainer.appendChild(c2);
+
+    const c3 = createCultureRow();
+    c3.querySelector(".culture-nom").value = "Maïs grain";
+    c3.querySelector(".culture-pct").value = 20;
+    c3.querySelector(".culture-rendement").value = 9.0;
+    c3.querySelector(".culture-prix").value = 190;
+    culturesContainer.appendChild(c3);
+
+    const c4 = createCultureRow();
+    c4.querySelector(".culture-nom").value = "Colza";
+    c4.querySelector(".culture-pct").value = 10;
+    c4.querySelector(".culture-rendement").value = 3.2;
+    c4.querySelector(".culture-prix").value = 450;
+    culturesContainer.appendChild(c4);
+
+    // Aides : une ligne PAC moyenne DPB + écorégime
+    aidesContainer.innerHTML = "";
+    const a1 = createAideRow();
+    a1.querySelector(".aide-nom").value = "PAC : DPB + écorégime moyen";
+    a1.querySelector(".aide-montant").value = 280; // €/ha
+    // surface laissée vide => appliquée à toute la ferme (70 ha)
+    aidesContainer.appendChild(a1);
+
+    // Autres revenus / coûts reset
+    autresRevenusContainer.innerHTML = "";
+    autresCoutsContainer.innerHTML = "";
+
+    // Coûts d'exploitation (ordres de grandeur)
+    document.getElementById("coutIntrants").value = 48000;
+    document.getElementById("coutMeca").value = 35000;
+    document.getElementById("coutFoncier").value = 10000;
+    document.getElementById("coutFrais").value = 12000;
+
+    // Modèle & année : intensif / moyenne par défaut
+    selectedModel = "intensif";
+    selectedYear = "moyenne";
+    [...modelButtons.querySelectorAll("button")].forEach(btn => btn.classList.remove("active"));
+    modelButtons.querySelector('button[data-model="intensif"]').classList.add("active");
+    [...yearButtons.querySelectorAll("button")].forEach(btn => btn.classList.remove("active"));
+    yearButtons.querySelector('button[data-year="moyenne"]').classList.add("active");
+
+    document.getElementById("errorMsg").textContent =
+      "Exemple d'exploitation moyenne chargé : ajuste les chiffres si besoin puis clique sur « Calculer le résultat ».";
+  });
+
+  // --- Calcul principal ---
+  document.getElementById("calculateBtn").addEventListener("click", () => {
+    const errorMsg = document.getElementById("errorMsg");
+    errorMsg.textContent = "";
+
+    const totalHa = parseFloat(document.getElementById("totalHa").value);
+    const etp = parseFloat(document.getElementById("etp").value) || 0;
+    const salaire = parseFloat(document.getElementById("salaire").value) || 0;
+
+    if (!totalHa || totalHa <= 0) {
+      errorMsg.textContent = "Merci de renseigner une surface totale d'exploitation (> 0).";
+      return;
+    }
+
+    const modelCfg = modelConfig[selectedModel];
+    const yearCfg = yearYieldPrice[selectedYear][selectedModel];
+
+    // Cultures
+    const cultureCards = culturesContainer.querySelectorAll(".card");
+    let revenusCultures = [];
+    let totalRevenusCultures = 0;
+
+    cultureCards.forEach(card => {
+      const nom = card.querySelector(".culture-nom").value.trim() || "Culture sans nom";
+      const haVal = parseFloat(card.querySelector(".culture-ha").value) || 0;
+      const pctVal = parseFloat(card.querySelector(".culture-pct").value) || 0;
+      const rendementBase = parseFloat(card.querySelector(".culture-rendement").value) || 0;
+      const prixBase = parseFloat(card.querySelector(".culture-prix").value) || 0;
+
+      if (rendementBase > 0 && prixBase > 0 && (haVal > 0 || pctVal > 0)) {
+        const surface = haVal > 0 ? haVal : (pctVal / 100) * totalHa;
+        const rendementEff = rendementBase * modelCfg.rendement * yearCfg.rendement;
+        const prixEff = prixBase * modelCfg.prix * yearCfg.prix;
+        const revenu = surface * rendementEff * prixEff;
+        revenusCultures.push({ nom, montant: revenu });
+        totalRevenusCultures += revenu;
+      }
+    });
+
+    // Aides
+    const aideRows = aidesContainer.querySelectorAll(".inline-row");
+    let totalRevenusAidesBase = 0;
+    aideRows.forEach(row => {
+      const montantHa = parseFloat(row.querySelector(".aide-montant").value) || 0;
+      let haAide = parseFloat(row.querySelector(".aide-ha").value);
+      if (!haAide || haAide <= 0) haAide = totalHa;
+      if (montantHa > 0) {
+        totalRevenusAidesBase += montantHa * haAide;
+      }
+    });
+    const totalRevenusAides = totalRevenusAidesBase * modelCfg.aides;
+
+    // Autres revenus (diversification + personnalisés) – pas modifiés par modèle / année
+    const autresRevRows = autresRevenusContainer.querySelectorAll(".inline-row");
+    let totalRevenusAutres = 0;
+    let revenusAutresList = [];
+    autresRevRows.forEach(row => {
+      const nom = row.querySelector(".autrerevenu-nom").value.trim() || "Autre revenu";
+      const montant = parseFloat(row.querySelector(".autrerevenu-montant").value) || 0;
+      if (montant > 0) {
+        totalRevenusAutres += montant;
+        revenusAutresList.push({ nom, montant });
+      }
+    });
+
+    const totalRevenus = totalRevenusCultures + totalRevenusAides + totalRevenusAutres;
+
+    // Coûts hors travail (après coefficients modèle)
+    const coutIntrantsBase = parseFloat(document.getElementById("coutIntrants").value) || 0;
+    const coutMecaBase = parseFloat(document.getElementById("coutMeca").value) || 0;
+    const coutFoncier = parseFloat(document.getElementById("coutFoncier").value) || 0;
+    const coutFraisBase = parseFloat(document.getElementById("coutFrais").value) || 0;
+
+    const coutIntrantsEff = coutIntrantsBase * modelCfg.intrants;
+    const coutMecaEff = coutMecaBase * modelCfg.meca;
+    const coutFraisEff = coutFraisBase * modelCfg.frais;
+
+    let coutsAutres = [];
+    let totalCoutsAutres = 0;
+    const autresRows = autresCoutsContainer.querySelectorAll(".inline-row");
+    autresRows.forEach(row => {
+      const nom = row.querySelector(".autrecout-nom").value.trim() || "Autre coût";
+      const montant = parseFloat(row.querySelector(".autrecout-montant").value) || 0;
+      if (montant > 0) {
+        coutsAutres.push({ nom, montant });
+        totalCoutsAutres += montant;
+      }
+    });
+
+    const coutMainOeuvre = etp * salaire;
+
+    const totalCouts = coutIntrantsEff + coutMecaEff + coutFoncier + coutFraisEff + totalCoutsAutres + coutMainOeuvre;
+
+    const resultNet = totalRevenus - totalCouts;
+    const resultNetHa = resultNet / totalHa;
+
+    // --- Affichage résultats ---
+    const resultNetElem = document.getElementById("resultNet");
+    const resultNetHaElem = document.getElementById("resultNetHa");
+    const totalCAElem = document.getElementById("totalCA");
+    const totalCoutsElem = document.getElementById("totalCouts");
+    const noteResult = document.getElementById("noteResult");
+
+    resultNetElem.className = "kpi " + (resultNet >= 0 ? "positive" : "negative");
+    resultNetElem.innerHTML = `Résultat net annuel : <span>${fmtEuro(resultNet)}</span>`;
+    resultNetHaElem.className = "kpi " + (resultNetHa >= 0 ? "positive" : "negative");
+    resultNetHaElem.innerHTML = `Résultat net par hectare : <span>${fmtEuroHa(resultNetHa)}</span>`;
+    totalCAElem.className = "kpi";
+    totalCAElem.innerHTML = `Chiffre d'affaires total (produits + aides ajustées + diversification) : <span>${fmtEuro(totalRevenus)}</span>`;
+    totalCoutsElem.className = "kpi";
+    totalCoutsElem.innerHTML = `Coûts totaux (y compris main d'œuvre) : <span>${fmtEuro(totalCouts)}</span>`;
+
+    noteResult.textContent = "Les revenus de diversification (miel, œufs, agritourisme, etc.) s'ajoutent au chiffre d'affaires sans modifier tes surfaces éligibles à la PAC.";
+
+    // Label scénario
+    const scenarioLabel = document.getElementById("scenarioLabel");
+    const yearLabels = {
+      moyenne: "année moyenne",
+      mauvaise: "année mauvaise",
+      bonne: "année bonne"
+    };
+    scenarioLabel.textContent = `Scénario : modèle ${modelCfg.label} – ${yearLabels[selectedYear]}`;
+
+    // --- Graphique revenus ---
+    const revenusLabels = [];
+    const revenusData = [];
+
+    revenusCultures.forEach(c => {
+      revenusLabels.push(c.nom);
+      revenusData.push(c.montant);
+    });
+    if (totalRevenusAides > 0) {
+      revenusLabels.push("Aides (ajustées)");
+      revenusData.push(totalRevenusAides);
+    }
+    revenusAutresList.forEach(r => {
+      revenusLabels.push(r.nom);
+      revenusData.push(r.montant);
+    });
+
+    const revenusCtx = document.getElementById("revenusChart").getContext("2d");
+    if (revenusChart) revenusChart.destroy();
+    revenusChart = new Chart(revenusCtx, {
+      type: "pie",
+      data: {
+        labels: revenusLabels,
+        datasets: [{
+          data: revenusData,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: "bottom" },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const label = context.label || "";
+                const value = context.parsed || 0;
+                const pct = totalRevenus > 0 ? (value / totalRevenus * 100) : 0;
+                return `${label}: ${fmtEuro(value)} (${pct.toFixed(1)}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // --- Graphique coûts ---
+    const coutsLabels = [];
+    const coutsData = [];
+
+    if (coutIntrantsEff > 0) {
+      coutsLabels.push("Intrants");
+      coutsData.push(coutIntrantsEff);
+    }
+    if (coutMecaEff > 0) {
+      coutsLabels.push("Mécanisation");
+      coutsData.push(coutMecaEff);
+    }
+    if (coutFoncier > 0) {
+      coutsLabels.push("Foncier / fermage");
+      coutsData.push(coutFoncier);
+    }
+    if (coutFraisEff > 0) {
+      coutsLabels.push("Frais généraux");
+      coutsData.push(coutFraisEff);
+    }
+    coutsAutres.forEach(c => {
+      coutsLabels.push(c.nom);
+      coutsData.push(c.montant);
+    });
+    if (coutMainOeuvre > 0) {
+      coutsLabels.push("Main d'œuvre");
+      coutsData.push(coutMainOeuvre);
+    }
+
+    const coutsCtx = document.getElementById("coutsChart").getContext("2d");
+    if (coutsChart) coutsChart.destroy();
+    coutsChart = new Chart(coutsCtx, {
+      type: "pie",
+      data: {
+        labels: coutsLabels,
+        datasets: [{
+          data: coutsData,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: "bottom" },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const label = context.label || "";
+                const value = context.parsed || 0;
+                const pct = totalCouts > 0 ? (value / totalCouts * 100) : 0;
+                return `${label}: ${fmtEuro(value)} (${pct.toFixed(1)}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // --- Radar environnement ---
+    const envCfg = envScores[selectedModel];
+    const envCtx = document.getElementById("envChart").getContext("2d");
+    if (envChart) envChart.destroy();
+    envChart = new Chart(envCtx, {
+      type: "radar",
+      data: {
+        labels: [
+          "Sobriété en intrants",
+          "Qualité de l'eau",
+          "Émissions de GES",
+          "Biodiversité",
+          "Stockage de carbone"
+        ],
+        datasets: [{
+          label: envCfg.label,
+          data: envCfg.data,
+          fill: true,
+          pointRadius: 3
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            suggestedMin: 0,
+            suggestedMax: 5,
+            ticks: { stepSize: 1 }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    const envScoreNote = document.getElementById("envScoreNote");
+    envScoreNote.textContent =
+      "Pour votre exploitation de " +
+      totalHa.toLocaleString("fr-FR") +
+      " ha, ce profil environnemental est indicatif : plus la zone est étendue vers l’extérieur, plus le modèle est favorable (score de 0 à 5) en sobriété en intrants, qualité de l’eau, émissions de gaz à effet de serre, biodiversité et stockage de carbone.";
+
+    // Met à jour les encarts explicatifs (coefficients + texte environnemental long)
+    updateInfoPanels(modelCfg, yearCfg, totalHa);
+  });
+</script>
+</body>
+</html>
