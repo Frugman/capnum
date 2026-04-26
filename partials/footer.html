@@ -1,27 +1,8 @@
 <footer>
-    <div id="site-info" style="font-size: 0.95rem; opacity: 0.9; text-align: justify; margin-bottom: 1.5rem;">
-        <p>Ce blog est une expérimentation low-tech. Son poids total est de <strong><span id="site-weight">...</span> Ko</strong> (alors qu'une seule page web non-optimisée pèse souvent plus de 3 Mo !). En le fermant de 00h à 8h, on évite le trafic automatisé inutile la nuit tout en valorisant le droit humain à la déconnexion.</p>
-        <script>
-            (async function() {
-                const w = document.getElementById('site-weight');
-                if (!w) return;
-                const cached = localStorage.getItem('siteWeight');
-                if (cached) w.innerText = cached;
-                if (!cached || Date.now() - (localStorage.getItem('siteWeightTime') || 0) > 86400000) {
-                    try {
-                        const r = await fetch('https://api.github.com/repos/FRUGMAN/CAPNUM');
-                        const d = await r.json();
-                        if (d.size) {
-                            w.innerText = d.size;
-                            localStorage.setItem('siteWeight', d.size);
-                            localStorage.setItem('siteWeightTime', Date.now());
-                        }
-                    } catch(e) {}
-                }
-            })();
-        </script>
+    <div class="footer-quote" style="max-width: 800px; margin: 0 auto 2rem auto; font-style: italic; opacity: 0.8; line-height: 1.6;">
+        "Quand le dernier arbre aura été abattu, quand la dernière rivière aura été empoisonnée, quand le dernier poisson aura été péché, alors on saura que l’argent ne se mange pas." — Geronimo
     </div>
-    <nav class="footer-links" style="text-align: center;">
+    <nav class="footer-links" style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
         <a href="/admin/dashboard.html">Admin</a> • 
         <a href="/mentions-legales.html">Mentions légales</a> • 
         <a href="/random.html" id="link-random">RANDOM</a>
