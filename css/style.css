@@ -630,3 +630,7 @@ footer {
     max-width: 700px;
     margin: 0 auto;
 }
+
+.home-page main {
+    max-width: 900px;
+}
