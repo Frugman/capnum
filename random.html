@@ -207,12 +207,14 @@
 
         function toggleSecretList() {
             const list = document.getElementById('random-list');
-            const randomArticles = allArticles.filter(a => a.category === 'RANDOM');
+            const randomArticles = allArticles
+                .filter(a => a.category === 'RANDOM')
+                .sort((a, b) => b.date.localeCompare(a.date));
             list.style.display = list.style.display === 'block' ? 'none' : 'block';
             if (randomArticles.length === 0) {
                 list.innerHTML = "<p>ERREUR: AUCUN FICHIER TROUVÉ.</p>";
             } else {
-                list.innerHTML = randomArticles.map(a => `<a href="articles/${a.id}.html">> ${a.title}</a>`).join('');
+                list.innerHTML = randomArticles.map(a => `<a href="articles/${a.id}.html">> ${a.title} (${a.date})</a>`).join('');
             }
         }
 
