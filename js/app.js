@@ -10,7 +10,7 @@ async function loadArticles() {
     try {
         const response = await fetch('data/articles.json');
         const data = await response.json();
-        allArticles = data.articles;
+        allArticles = data.articles.sort((a, b) => b.date.localeCompare(a.date));
 
         // Filtrage depuis l'URL
         const urlParams = new URLSearchParams(window.location.search);
