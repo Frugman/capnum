@@ -58,7 +58,9 @@
             try {
                 const res = await fetch('data/articles.json');
                 const data = await res.json();
-                let articles = data.articles.filter(a => !a.draft && a.category !== 'RANDOM');
+                let articles = data.articles
+                    .filter(a => !a.draft && a.category !== 'RANDOM')
+                    .sort((a, b) => b.date.localeCompare(a.date));
                 if (tag) articles = articles.filter(a => a.tags.includes(tag));
 
                 if (articles.length === 0) {
