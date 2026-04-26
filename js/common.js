@@ -1,7 +1,29 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadPartials();
+document.addEventListener('DOMContentLoaded', async () => {
+    initTheme();
+    await loadPartials();
+    syncThemeToggle();
     checkOpeningHours();
 });
+
+function initTheme() {
+    const t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', t);
+}
+
+function syncThemeToggle() {
+    const toggle = document.getElementById('theme-toggle-input');
+    if (toggle) {
+        const t = document.documentElement.getAttribute('data-theme');
+        toggle.checked = (t === 'dark');
+        
+        // Ré-attacher l'événement au cas où l'injection outerHTML ait perdu les listeners inline
+        toggle.addEventListener('change', function() {
+            let nt = this.checked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', nt);
+            localStorage.setItem('theme', nt);
+        });
+    }
+}
 
 async function loadPartials() {
     const headerPlaceholder = document.querySelector('header.site-header');
@@ -62,8 +84,6 @@ function checkOpeningHours() {
                 </div>
             </div>
         `;
-        // Appliquer le thème même en mode fermé si possible
-        const t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', t);
+        initTheme();
     }
 }
